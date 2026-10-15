@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================= LIBRARY AUTHORS ================= -->
+
+    <!-- Vista lista de autores -->
+    <record id="view_library_author_tree" model="ir.ui.view">
+        <field name="name">library.author.tree</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <tree string="Authors">
+                <field name="name"/>
+                <field name="birth_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario de autores -->
+    <record id="view_library_author_form" model="ir.ui.view">
+        <field name="name">library.author.form</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <form string="Author">
+                <sheet>
+                    
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_library_book)d" type="action" class="oe_stat_button" icon="fa-book">
+                            <field name="book_ids" widget="statinfo" string="Books"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="birth_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Biography">
+                            <field name="bio" placeholder="Write a brief biography..."/>
+                        </page>
+                        <page string="Books">
+                            <field name="book_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para autores -->
+    <record id="action_library_author" model="ir.actions.act_window">
+        <field name="name">Authors</field>
+        <field name="res_model">library.author</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- 4. Menús-->
+    <menuitem id="menu_library_root"
+              name="Library"
+              sequence="10"/>
+
+    <menuitem id="menu_library_management"
+              name="Management"
+              parent="menu_library_root"
+              sequence="10"/>
+
+    <menuitem id="menu_library_author"
+              name="Authors"
+              parent="menu_library_management"
+              action="action_library_author"
+              sequence="10"/>
+
+    <!-- ================= LIBRARY BOOKS ================= -->
+
+    <!-- 1. Vista lista de libros -->
+    <record id="view_library_book_tree" model="ir.ui.view">
+        <field name="name">library.book.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree string="Books">
+                <field name="name"/>
+                <field name="isbn"/>
+                <field name="author_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Vista formulario de libros-->
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="Book">
+                <header>
+                    <field name="state" widget="statusbar" 
+                    options="{'clickable': '1'}"></field>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Book Title..."></field></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="author_id"></field>
+                            <field name="isbn"></field>
+                        </group>
+                        <group>
+                            <field name="pages"></field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Write a brief description of the book..."></field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ventana de accion para libros-->
+     <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu de libros-->
+     <menuitem id="menu_library_book"
+        name="Books"
+        parent="menu_library_management"
+        action="action_library_book"
+        sequence="20"/>
+</odoo>
