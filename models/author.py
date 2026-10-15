@@ -17,9 +17,20 @@ class LibraryAuthor(models.Model):
     )
 
     # Contador dinamico de libros de cada autor
-    book_count = fields.Interget(strings='Book Count', compute='_compute_book_count')
+    book_count = fields.Integer(string='Book Count', compute='_compute_book_count')
 
     @api.depends('book_ids')
     def _compute_book_count(self):
         for author in self:
             author.book_count = len(author.book.ids)
+
+    def action_view_author_books(self):
+        self.ensure_one()
+        return {
+            'name': 'Books',
+            'type': 'ir.actions.act_window',
+            'res_model': 'library.book',
+            'view_mode': 'tree,form',
+            'domain': [('author_id', '=', self.id)],
+            'context': {'default_author_id': self.id},
+        }
