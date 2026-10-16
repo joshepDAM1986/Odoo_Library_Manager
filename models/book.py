@@ -31,3 +31,8 @@ class LibraryBook(models.Model):
         'category_id',
         string='Categories'
     )
+
+    _sql_constraints = [
+        ('isbn_unique', 'UNIQUE(isbn)', 'The ISBN must be unique.'),
+        ('name_unique', 'UNIQUE(name)', 'The book title must be unique.'),
+    ]

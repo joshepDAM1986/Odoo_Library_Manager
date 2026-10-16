@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+from datetime import date
 
 class LibraryAuthor(models.Model):
     _name = 'library.author'
@@ -19,6 +21,10 @@ class LibraryAuthor(models.Model):
     # Contador dinamico de libros de cada autor
     book_count = fields.Integer(string='Book Count', compute='_compute_book_count')
 
+    _sql_constraints = [
+        ('name_unique', 'UNIQUE(name)', 'The author name must be unique.'),
+    ]
+
     @api.depends('book_ids')
     def _compute_book_count(self):
         for author in self:
@@ -34,3 +40,9 @@ class LibraryAuthor(models.Model):
             'domain': [('author_id', '=', self.id)],
             'context': {'default_author_id': self.id},
         }
+
+    @api.constrains('birth_date')
+    def _check_birth_date(self):
+        for author in self:
+            if author.birth_date and author.birth_date > date.today():
+                raise ValidationError("The birth date cannot be in the future!")
