@@ -8,8 +8,10 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'views/library_author_views.xml',
+        'views/library_book_views.xml',
+        'views/library_category_views.xml',
         'data/library_demo_data.xml',
-        'views/library_views.xml',
     ],
     'installable': True,
     'application': True,

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista lista de categorías -->
+    <record id="view_library_category_tree" model="ir.ui.view">
+        <field name="name">library.category.tree</field>
+        <field name="model">library.category</field>
+        <field name="arch" type="xml">
+            <tree string="Categories">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista formulario de categorías (opcional pero muy útil para editar colores y descripción) -->
+    <record id="view_library_category_form" model="ir.ui.view">
+        <field name="name">library.category.form</field>
+        <field name="model">library.category</field>
+        <field name="arch" type="xml">
+            <form string="Category">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Books">
+                            <field name="book_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción y Menú de Categorías -->
+    <record id="action_library_category" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">library.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_library_category"
+              name="Categories"
+              parent="menu_library_management"
+              action="action_library_category"
+              sequence="30"/>
+</odoo>
