@@ -22,7 +22,7 @@ class LibraryAuthor(models.Model):
     @api.depends('book_ids')
     def _compute_book_count(self):
         for author in self:
-            author.book_count = len(author.book.ids)
+            author.book_count = len(author.book_ids)
 
     def action_view_author_books(self):
         self.ensure_one()

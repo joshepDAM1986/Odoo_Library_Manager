@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ==================== CATEGORÍAS ==================== -->
+        <record id="category_fiction" model="library.category">
+            <field name="name">Ficción</field>
+            <field name="description">Obras literarias basadas en la imaginación y la creatividad.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_classic" model="library.category">
+            <field name="name">Clásico</field>
+            <field name="description">Obras de gran relevancia histórica y universal.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_scifi" model="library.category">
+            <field name="name">Ciencia Ficción</field>
+            <field name="description">Historias basadas en avances científicos o mundos futuristas.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_horror" model="library.category">
+            <field name="name">Terror / Suspense</field>
+            <field name="description">Obras diseñadas para asustar, perturbar o generar tensión.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_poetry" model="library.category">
+            <field name="name">Poesía</field>
+            <field name="description">Obras en verso que expresan emociones y belleza.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_essay" model="library.category">
+            <field name="name">Ensayo</field>
+            <field name="description">Textos de análisis, reflexión crítica o filosofía.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_biography" model="library.category">
+            <field name="name">Biografía / Memorias</field>
+            <field name="description">Narraciones sobre la vida de personajes reales.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_adventure" model="library.category">
+            <field name="name">Aventura</field>
+            <field name="description">Relatos marcados por viajes y acción trepidante.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_fantasy" model="library.category">
+            <field name="name">Fantasía</field>
+            <field name="description">Universos mágicos y mundos imaginarios.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_history" model="library.category">
+            <field name="name">Historia</field>
+            <field name="description">Crónicas y estudios sobre acontecimientos del pasado.</field>
+            <field name="color">10</field>
+        </record>
+
+
+        <!-- ==================== AUTORES ==================== -->
+        <record id="author_cervantes" model="library.author">
+            <field name="name">Miguel de Cervantes</field>
+            <field name="birth_date">1547-09-29</field>
+            <field name="bio">Novelista, poeta, dramaturgo y soldado español, universalmente conocido por escribir Don Quijote de la Mancha.</field>
+        </record>
+        <record id="author_garcia_marquez" model="library.author">
+            <field name="name">Gabriel García Márquez</field>
+            <field name="birth_date">1927-03-06</field>
+            <field name="bio">Escritor, guionista, editor y periodista colombiano, figura fundamental del realismo mágico y premio Nobel de Literatura.</field>
+        </record>
+        <record id="author_allende" model="library.author">
+            <field name="name">Isabel Allende</field>
+            <field name="birth_date">1942-08-02</field>
+            <field name="bio">Escritora chilena, una de las autoras más leídas del mundo hispanoamericano, célebre por La casa de los espíritus.</field>
+        </record>
+        <record id="author_borges" model="library.author">
+            <field name="name">Jorge Luis Borges</field>
+            <field name="birth_date">1899-08-24</field>
+            <field name="bio">Escritor argentino, uno de los autores más destacados de la literatura del siglo XX por sus cuentos y ensayos fantásticos.</field>
+        </record>
+        <record id="author_vargas_llosa" model="library.author">
+            <field name="name">Mario Vargas Llosa</field>
+            <field name="birth_date">1936-03-28</field>
+            <field name="bio">Escritor peruano (con nacionalidad española), exponente clave del Boom latinoamericano y premio Nobel de Literatura.</field>
+        </record>
+        <record id="author_austen" model="library.author">
+            <field name="name">Jane Austen</field>
+            <field name="birth_date">1775-12-16</field>
+            <field name="bio">Novelista británica cuya obra critica con ironía la sociedad y el papel de la mujer en la Inglaterra georgiana.</field>
+        </record>
+        <record id="author_orwell" model="library.author">
+            <field name="name">George Orwell</field>
+            <field name="birth_date">1903-06-25</field>
+            <field name="bio">Seudónimo de Eric Arthur Blair, novelista y periodista británico conocido por sus críticas al totalitarismo.</field>
+        </record>
+        <record id="author_king" model="library.author">
+            <field name="name">Stephen King</field>
+            <field name="birth_date">1947-09-21</field>
+            <field name="bio">Escritor estadounidense conocido por sus novelas de terror, ficción sobrenatural y suspense.</field>
+        </record>
+        <record id="author_tolkien" model="library.author">
+            <field name="name">J.R.R. Tolkien</field>
+            <field name="birth_date">1892-01-03</field>
+            <field name="bio">Escritor, poeta y profesor universitario británico, autor de las célebres obras épicas de la Tierra Media.</field>
+        </record>
+        <record id="author_poe" model="library.author">
+            <field name="name">Edgar Allan Poe</field>
+            <field name="birth_date">1809-01-19</field>
+            <field name="bio">Escritor, poeta y crítico estadounidense, considerado uno de los maestros universales del relato corto y creador del género policial.</field>
+        </record>
+
+
+        <!-- ==================== LIBROS ==================== -->
+
+        <!-- 1. Miguel de Cervantes -->
+        <record id="book_cervantes_1" model="library.book">
+            <field name="name">Don Quijote de la Mancha</field>
+            <field name="isbn">978-84-376-0494-7</field>
+            <field name="pages">863</field>
+            <field name="description">La obra cumbre de la literatura española que narra las aventuras de un hidalgo enloquecido por la lectura.</field>
+            <field name="author_id" ref="author_cervantes"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction')), (4, ref('category_adventure'))]"/>
+        </record>
+        <record id="book_cervantes_2" model="library.book">
+            <field name="name">Novelas ejemplares</field>
+            <field name="isbn">978-84-204-7185-3</field>
+            <field name="pages">350</field>
+            <field name="description">Colección de doce novelas breves de carácter moral, satírico o amoroso escritas por Cervantes.</field>
+            <field name="author_id" ref="author_cervantes"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_cervantes_3" model="library.book">
+            <field name="name">La Galatea</field>
+            <field name="isbn">978-84-249-2270-2</field>
+            <field name="pages">320</field>
+            <field name="description">Primera novela publicada por Miguel de Cervantes, enmarcada dentro del género pastoril.</field>
+            <field name="author_id" ref="author_cervantes"/>
+            <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
+        </record>
+        <record id="book_cervantes_4" model="library.book">
+            <field name="name">Los trabajos de Persiles y Sigismunda</field>
+            <field name="isbn">978-84-376-1939-2</field>
+            <field name="pages">410</field>
+            <field name="description">Novela bizantina póstuma de Cervantes donde se relatan las peripecias de dos príncipes nórdicos.</field>
+            <field name="author_id" ref="author_cervantes"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_adventure'))]"/>
+        </record>
+
+        <!-- 2. Gabriel García Márquez -->
+        <record id="book_ggm_1" model="library.book">
+            <field name="name">Cien años de soledad</field>
+            <field name="isbn">978-84-376-0104-5</field>
+            <field name="pages">471</field>
+            <field name="description">La historia de la familia Buendía en el mítico pueblo de Macondo, obra cumbre del realismo mágico.</field>
+            <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_ggm_2" model="library.book">
+            <field name="name">El amor en los tiempos del cólera</field>
+            <field name="isbn">978-84-204-7186-0</field>
+            <field name="pages">464</field>
+            <field name="description">Una apasionante y paciente historia de amor que abarca más de cincuenta años.</field>
+            <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="category_ids" eval="[(4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_ggm_3" model="library.book">
+            <field name="name">Crónica de una muerte anunciada</field>
+            <field name="isbn">978-84-376-0810-5</field>
+            <field name="pages">120</field>
+            <field name="description">Reconstrucción periodística y narrativa del asesinato de Santiago Nasar.</field>
+            <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="category_ids" eval="[(4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_ggm_4" model="library.book">
+            <field name="name">Vivir para contarla</field>
+            <field name="isbn">978-84-204-4318-8</field>
+            <field name="pages">576</field>
+            <field name="description">Las memorias de Gabriel García Márquez que repasan sus primeros años de vida.</field>
+            <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="category_ids" eval="[(4, ref('category_biography'))]"/>
+        </record>
+
+        <!-- 3. Isabel Allende -->
+        <record id="book_allende_1" model="library.book">
+            <field name="name">La casa de los espíritus</field>
+            <field name="isbn">978-84-01-34658-0</field>
+            <field name="pages">448</field>
+            <field name="description">Saga familiar que narra los altibajos de la familia Trueba en un país latinoamericano.</field>
+            <field name="author_id" ref="author_allende"/>
+            <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_classic'))]"/>
+        </record>
+        <record id="book_allende_2" model="library.book">
+            <field name="name">Paula</field>
+            <field name="isbn">978-84-01-34659-7</field>
+            <field name="pages">378</field>
+            <field name="description">Conmovedoras memorias escritas por la autora junto al lecho de su hija hospitalizada.</field>
+            <field name="author_id" ref="author_allende"/>
+            <field name="category_ids" eval="[(4, ref('category_biography'))]"/>
+        </record>
+        <record id="book_allende_3" model="library.book">
+            <field name="name">La ciudad de las bestias</field>
+            <field name="isbn">978-84-08-04356-9</field>
+            <field name="pages">300</field>
+            <field name="description">Aventura juvenil enmarcada en la selva amazónica junto a la misteriosa Bestia.</field>
+            <field name="author_id" ref="author_allende"/>
+            <field name="category_ids" eval="[(4, ref('category_adventure')), (4, ref('category_fantasy'))]"/>
+        </record>
+
+        <!-- 4. Jorge Luis Borges -->
+        <record id="book_borges_1" model="library.book">
+            <field name="name">Ficciones</field>
+            <field name="isbn">978-950-03-9366-9</field>
+            <field name="pages">208</field>
+            <field name="description">Famoso compendio de cuentos fantásticos que incluye obras maestras como 'Tlön, Uqbar'.</field>
+            <field name="author_id" ref="author_borges"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction')), (4, ref('category_fantasy'))]"/>
+        </record>
+        <record id="book_borges_2" model="library.book">
+            <field name="name">Otras inquisiciones</field>
+            <field name="isbn">978-950-03-9370-6</field>
+            <field name="pages">230</field>
+            <field name="description">Fascinante libro de ensayos literarios y filosóficos escritos por Jorge Luis Borges.</field>
+            <field name="author_id" ref="author_borges"/>
+            <field name="category_ids" eval="[(4, ref('category_essay'))]"/>
+        </record>
+        <record id="book_borges_3" model="library.book">
+            <field name="name">El hacedor</field>
+            <field name="isbn">978-950-03-9368-3</field>
+            <field name="pages">140</field>
+            <field name="description">Libro híbrido de poemas y prosas breves que reflexiona sobre la creación artística y la ceguera.</field>
+            <field name="author_id" ref="author_borges"/>
+            <field name="category_ids" eval="[(4, ref('category_poetry'))]"/>
+        </record>
+
+        <!-- 5. Mario Vargas Llosa -->
+        <record id="book_vargas_1" model="library.book">
+            <field name="name">La ciudad y los perros</field>
+            <field name="isbn">978-84-376-0711-5</field>
+            <field name="pages">440</field>
+            <field name="description">Crónica rigurosa y violenta sobre la vida de los cadetes en un colegio militar en Lima.</field>
+            <field name="author_id" ref="author_vargas_llosa"/>
+            <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_classic'))]"/>
+        </record>
+        <record id="book_vargas_2" model="library.book">
+            <field name="name">La llamada de la tribu</field>
+            <field name="isbn">978-84-670-5309-8</field>
+            <field name="pages">272</field>
+            <field name="description">Ensayo intelectual donde Vargas Llosa repasa los autores liberales que marcaron su pensamiento.</field>
+            <field name="author_id" ref="author_vargas_llosa"/>
+            <field name="category_ids" eval="[(4, ref('category_essay'))]"/>
+        </record>
+
+        <!-- 6. Jane Austen -->
+        <record id="book_austen_1" model="library.book">
+            <field name="name">Orgullo y prejuicio</field>
+            <field name="isbn">978-84-376-0495-4</field>
+            <field name="pages">416</field>
+            <field name="description">La mítica relación de amor y tira y afloja entre Elizabeth Bennet y el señor Darcy.</field>
+            <field name="author_id" ref="author_austen"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_austen_2" model="library.book">
+            <field name="name">Emma</field>
+            <field name="isbn">978-84-204-7191-4</field>
+            <field name="pages">480</field>
+            <field name="description">Comedia de costumbres centrada en la joven Emma Woodhouse.</field>
+            <field name="author_id" ref="author_austen"/>
+            <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
+        </record>
+
+        <!-- 7. George Orwell -->
+        <record id="book_orwell_1" model="library.book">
+            <field name="name">1984</field>
+            <field name="isbn">978-84-376-0331-5</field>
+            <field name="pages">326</field>
+            <field name="description">Famosa distopía sobre un estado totalitario vigilado por el Gran Hermano.</field>
+            <field name="author_id" ref="author_orwell"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_scifi'))]"/>
+        </record>
+        <record id="book_orwell_2" model="library.book">
+            <field name="name">Homenaje a Cataluña</field>
+            <field name="isbn">978-84-8306-125-9</field>
+            <field name="pages">264</field>
+            <field name="description">Relato autobiográfico de la experiencia personal de Orwell combatiendo en la guerra civil española.</field>
+            <field name="author_id" ref="author_orwell"/>
+            <field name="category_ids" eval="[(4, ref('category_history')), (4, ref('category_biography'))]"/>
+        </record>
+
+        <!-- 8. Stephen King -->
+        <record id="book_king_1" model="library.book">
+            <field name="name">El resplandor</field>
+            <field name="isbn">978-84-663-3243-9</field>
+            <field name="pages">688</field>
+            <field name="description">Un hotel aislado en las montañas y la lenta bajada a la locura de Jack Torrance.</field>
+            <field name="author_id" ref="author_king"/>
+            <field name="category_ids" eval="[(4, ref('category_horror'))]"/>
+        </record>
+        <record id="book_king_2" model="library.book">
+            <field name="name">It (Eso)</field>
+            <field name="isbn">978-84-663-3244-6</field>
+            <field name="pages">1504</field>
+            <field name="description">Un grupo de amigos se enfrenta a una criatura malévola con forma de payaso en Derry.</field>
+            <field name="author_id" ref="author_king"/>
+            <field name="category_ids" eval="[(4, ref('category_horror'))]"/>
+        </record>
+
+        <!-- 9. J.R.R. Tolkien -->
+        <record id="book_tolkien_1" model="library.book">
+            <field name="name">El Señor de los Anillos</field>
+            <field name="isbn">978-84-450-7380-0</field>
+            <field name="pages">1200</field>
+            <field name="description">La gran epopeya de fantasía heroica sobre la destrucción del Anillo Único en la Tierra Media.</field>
+            <field name="author_id" ref="author_tolkien"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fantasy')), (4, ref('category_adventure'))]"/>
+        </record>
+        <record id="book_tolkien_2" model="library.book">
+            <field name="name">El Hobbit</field>
+            <field name="isbn">978-84-450-7381-7</field>
+            <field name="pages">310</field>
+            <field name="description">Las aventuras previas de Bilbo Bolsón acompañando a un grupo de enanos hacia la Montaña Solitaria.</field>
+            <field name="author_id" ref="author_tolkien"/>
+            <field name="category_ids" eval="[(4, ref('category_fantasy')), (4, ref('category_adventure'))]"/>
+        </record>
+
+        <!-- 10. Edgar Allan Poe -->
+        <record id="book_poe_1" model="library.book">
+            <field name="name">El cuervo</field>
+            <field name="isbn">978-84-241-1823-1</field>
+            <field name="pages">64</field>
+            <field name="description">Famoso poema narrativo sobre la visita nocturna de un misterioso cuervo parlante.</field>
+            <field name="author_id" ref="author_poe"/>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_poetry')), (4, ref('category_horror'))]"/>
+        </record>
+        <record id="book_poe_2" model="library.book">
+            <field name="name">Los crímenes de la calle Morgue</field>
+            <field name="isbn">978-84-241-1824-8</field>
+            <field name="pages">96</field>
+            <field name="description">Considerada la primera historia de detectives de la literatura moderna.</field>
+            <field name="author_id" ref="author_poe"/>
+            <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
+        </record>
+
+    </data>
+</odoo>

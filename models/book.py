@@ -19,7 +19,15 @@ class LibraryBook(models.Model):
     )
     
     state = fields.Selection([
-        ('available', 'Available'),
-        ('borrowed', 'Borrowed'),
-        ('lost', 'Lost'),
+        ('available', 'Disponible'),
+        ('borrowed', 'Prestado'),
+        ('lost', 'Perdido'),
     ], string='Status', default='available', tracking=True)
+
+    category_ids = fields.Many2many(
+        'library.category',
+        'library_book_category_rel',
+        'book_id',
+        'category_id',
+        string='Categories'
+    )

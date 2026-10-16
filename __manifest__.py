@@ -1,14 +1,17 @@
 {
     'name': 'Library Manager',
     'version': '17.0.1.0.0',
-    'category': 'Services',
+    'category': 'Services/Library',
     'summary': 'Module for managing books, authors, and loans',
     'author': 'Jose Miguel',
+    'sequence': -100,
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'data/library_demo_data.xml',
         'views/library_views.xml',
     ],
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
 }

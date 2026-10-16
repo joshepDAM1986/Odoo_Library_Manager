@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
 
     <!-- ================= AUTORES ================= -->
@@ -11,6 +12,7 @@
             <tree string="Authors">
                 <field name="name"/>
                 <field name="birth_date"/>
+                <field name="book_count"/>
             </tree>
         </field>
     </record>
@@ -85,6 +87,7 @@
                 <field name="name"/>
                 <field name="isbn"/>
                 <field name="author_id"/>
+                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -106,11 +109,12 @@
                     </div>
                     <group>
                         <group>
-                            <field name="author_id"></field>
-                            <field name="isbn"></field>
+                            <field name="author_id"/>
+                            <field name="isbn"/>
+                            <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
-                            <field name="pages"></field>
+                            <field name="pages"/>
                         </group>
                     </group>
                     <notebook>
@@ -130,10 +134,38 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Menu de libros-->
-     <menuitem id="menu_library_book"
+    <!-- Menú de libros -->
+    <menuitem id="menu_library_book"
         name="Books"
         parent="menu_library_management"
         action="action_library_book"
         sequence="20"/>
+
+    <!-- ================= CATEGORÍAS ================= -->
+
+    <!-- Vista lista de categorías -->
+    <record id="view_library_category_tree" model="ir.ui.view">
+        <field name="name">library.category.tree</field>
+        <field name="model">library.category</field>
+        <field name="arch" type="xml">
+            <tree string="Categories">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para categorías -->
+    <record id="action_library_category" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">library.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menú de categorías -->
+    <menuitem id="menu_library_category"
+        name="Categories"
+        parent="menu_library_management"
+        action="action_library_category"
+        sequence="30"/>
+
 </odoo>
