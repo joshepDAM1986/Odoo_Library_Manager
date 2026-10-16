@@ -21,6 +21,8 @@ class LibraryAuthor(models.Model):
     # Contador dinamico de libros de cada autor
     book_count = fields.Integer(string='Book Count', compute='_compute_book_count')
 
+    total_pages = fields.Integer(string='Total Pages Written', compute='_compute_total_pages', store=True)
+
     _sql_constraints = [
         ('name_unique', 'UNIQUE(name)', 'The author name must be unique.'),
     ]
@@ -29,6 +31,12 @@ class LibraryAuthor(models.Model):
     def _compute_book_count(self):
         for author in self:
             author.book_count = len(author.book_ids)
+
+    @api.depends('book_ids.pages')
+    def _compute_total_pages(self):
+        for author in self:
+            total_pages = sum(book.pages for book in author.book_ids)
+            author.total_pages = total_pages
 
     def action_view_author_books(self):
         self.ensure_one()

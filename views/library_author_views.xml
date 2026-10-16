@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="birth_date"/>
                 <field name="book_count"/>
+                <field name="total_pages"/>
             </tree>
         </field>
     </record>

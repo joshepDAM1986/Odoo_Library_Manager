@@ -7,6 +7,7 @@ class LibraryBook(models.Model):
 
     name = fields.Char(string='Book Title', required=True, index=True)
     isbn = fields.Char(string='ISBN')
+    publication_year = fields.Char(string='Publication Year', size=4)
     pages = fields.Integer(string='Pages')
     description = fields.Text(string='Description')
     

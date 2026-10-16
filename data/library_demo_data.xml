@@ -117,6 +117,7 @@
             <field name="pages">863</field>
             <field name="description">La obra cumbre de la literatura española que narra las aventuras de un hidalgo enloquecido por la lectura.</field>
             <field name="author_id" ref="author_cervantes"/>
+            <field name="publication_year">1605</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction')), (4, ref('category_adventure'))]"/>
         </record>
         <record id="book_cervantes_2" model="library.book">
@@ -125,6 +126,7 @@
             <field name="pages">350</field>
             <field name="description">Colección de doce novelas breves de carácter moral, satírico o amoroso escritas por Cervantes.</field>
             <field name="author_id" ref="author_cervantes"/>
+            <field name="publication_year">1613</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
         </record>
         <record id="book_cervantes_3" model="library.book">
@@ -133,6 +135,7 @@
             <field name="pages">320</field>
             <field name="description">Primera novela publicada por Miguel de Cervantes, enmarcada dentro del género pastoril.</field>
             <field name="author_id" ref="author_cervantes"/>
+            <field name="publication_year">1585</field>
             <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
         </record>
         <record id="book_cervantes_4" model="library.book">
@@ -141,6 +144,7 @@
             <field name="pages">410</field>
             <field name="description">Novela bizantina póstuma de Cervantes donde se relatan las peripecias de dos príncipes nórdicos.</field>
             <field name="author_id" ref="author_cervantes"/>
+            <field name="publication_year">1617</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_adventure'))]"/>
         </record>
 
@@ -151,6 +155,7 @@
             <field name="pages">471</field>
             <field name="description">La historia de la familia Buendía en el mítico pueblo de Macondo, obra cumbre del realismo mágico.</field>
             <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="publication_year">1967</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
         </record>
         <record id="book_ggm_2" model="library.book">
@@ -159,6 +164,7 @@
             <field name="pages">464</field>
             <field name="description">Una apasionante y paciente historia de amor que abarca más de cincuenta años.</field>
             <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="publication_year">1985</field>
             <field name="category_ids" eval="[(4, ref('category_fiction'))]"/>
         </record>
         <record id="book_ggm_3" model="library.book">
@@ -167,6 +173,7 @@
             <field name="pages">120</field>
             <field name="description">Reconstrucción periodística y narrativa del asesinato de Santiago Nasar.</field>
             <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="publication_year">1981</field>
             <field name="category_ids" eval="[(4, ref('category_fiction'))]"/>
         </record>
         <record id="book_ggm_4" model="library.book">
@@ -175,6 +182,7 @@
             <field name="pages">576</field>
             <field name="description">Las memorias de Gabriel García Márquez que repasan sus primeros años de vida.</field>
             <field name="author_id" ref="author_garcia_marquez"/>
+            <field name="publication_year">1994</field>
             <field name="category_ids" eval="[(4, ref('category_biography'))]"/>
         </record>
 
@@ -185,6 +193,7 @@
             <field name="pages">448</field>
             <field name="description">Saga familiar que narra los altibajos de la familia Trueba en un país latinoamericano.</field>
             <field name="author_id" ref="author_allende"/>
+            <field name="publication_year">1982</field>
             <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_classic'))]"/>
         </record>
         <record id="book_allende_2" model="library.book">
@@ -193,6 +202,7 @@
             <field name="pages">378</field>
             <field name="description">Conmovedoras memorias escritas por la autora junto al lecho de su hija hospitalizada.</field>
             <field name="author_id" ref="author_allende"/>
+            <field name="publication_year">1985</field>
             <field name="category_ids" eval="[(4, ref('category_biography'))]"/>
         </record>
         <record id="book_allende_3" model="library.book">
@@ -201,6 +211,7 @@
             <field name="pages">300</field>
             <field name="description">Aventura juvenil enmarcada en la selva amazónica junto a la misteriosa Bestia.</field>
             <field name="author_id" ref="author_allende"/>
+            <field name="publication_year">1981</field>
             <field name="category_ids" eval="[(4, ref('category_adventure')), (4, ref('category_fantasy'))]"/>
         </record>
 
@@ -211,6 +222,7 @@
             <field name="pages">208</field>
             <field name="description">Famoso compendio de cuentos fantásticos que incluye obras maestras como 'Tlön, Uqbar'.</field>
             <field name="author_id" ref="author_borges"/>
+            <field name="publication_year">1944</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction')), (4, ref('category_fantasy'))]"/>
         </record>
         <record id="book_borges_2" model="library.book">
@@ -219,6 +231,7 @@
             <field name="pages">230</field>
             <field name="description">Fascinante libro de ensayos literarios y filosóficos escritos por Jorge Luis Borges.</field>
             <field name="author_id" ref="author_borges"/>
+            <field name="publication_year">1952</field>
             <field name="category_ids" eval="[(4, ref('category_essay'))]"/>
         </record>
         <record id="book_borges_3" model="library.book">
@@ -227,6 +240,7 @@
             <field name="pages">140</field>
             <field name="description">Libro híbrido de poemas y prosas breves que reflexiona sobre la creación artística y la ceguera.</field>
             <field name="author_id" ref="author_borges"/>
+            <field name="publication_year">1960</field>
             <field name="category_ids" eval="[(4, ref('category_poetry'))]"/>
         </record>
 
@@ -237,6 +251,7 @@
             <field name="pages">440</field>
             <field name="description">Crónica rigurosa y violenta sobre la vida de los cadetes en un colegio militar en Lima.</field>
             <field name="author_id" ref="author_vargas_llosa"/>
+            <field name="publication_year">1969</field>
             <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_classic'))]"/>
         </record>
         <record id="book_vargas_2" model="library.book">
@@ -245,6 +260,7 @@
             <field name="pages">272</field>
             <field name="description">Ensayo intelectual donde Vargas Llosa repasa los autores liberales que marcaron su pensamiento.</field>
             <field name="author_id" ref="author_vargas_llosa"/>
+            <field name="publication_year">1981</field>
             <field name="category_ids" eval="[(4, ref('category_essay'))]"/>
         </record>
 
@@ -255,6 +271,7 @@
             <field name="pages">416</field>
             <field name="description">La mítica relación de amor y tira y afloja entre Elizabeth Bennet y el señor Darcy.</field>
             <field name="author_id" ref="author_austen"/>
+            <field name="publication_year">1813</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
         </record>
         <record id="book_austen_2" model="library.book">
@@ -263,6 +280,7 @@
             <field name="pages">480</field>
             <field name="description">Comedia de costumbres centrada en la joven Emma Woodhouse.</field>
             <field name="author_id" ref="author_austen"/>
+            <field name="publication_year">1815</field>
             <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
         </record>
 
@@ -273,6 +291,7 @@
             <field name="pages">326</field>
             <field name="description">Famosa distopía sobre un estado totalitario vigilado por el Gran Hermano.</field>
             <field name="author_id" ref="author_orwell"/>
+            <field name="publication_year">1948</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_scifi'))]"/>
         </record>
         <record id="book_orwell_2" model="library.book">
@@ -281,6 +300,7 @@
             <field name="pages">264</field>
             <field name="description">Relato autobiográfico de la experiencia personal de Orwell combatiendo en la guerra civil española.</field>
             <field name="author_id" ref="author_orwell"/>
+            <field name="publication_year">1937</field>
             <field name="category_ids" eval="[(4, ref('category_history')), (4, ref('category_biography'))]"/>
         </record>
 
@@ -291,6 +311,7 @@
             <field name="pages">688</field>
             <field name="description">Un hotel aislado en las montañas y la lenta bajada a la locura de Jack Torrance.</field>
             <field name="author_id" ref="author_king"/>
+            <field name="publication_year">1977</field>
             <field name="category_ids" eval="[(4, ref('category_horror'))]"/>
         </record>
         <record id="book_king_2" model="library.book">
@@ -299,6 +320,7 @@
             <field name="pages">1504</field>
             <field name="description">Un grupo de amigos se enfrenta a una criatura malévola con forma de payaso en Derry.</field>
             <field name="author_id" ref="author_king"/>
+            <field name="publication_year">1986</field>
             <field name="category_ids" eval="[(4, ref('category_horror'))]"/>
         </record>
 
@@ -309,6 +331,7 @@
             <field name="pages">1200</field>
             <field name="description">La gran epopeya de fantasía heroica sobre la destrucción del Anillo Único en la Tierra Media.</field>
             <field name="author_id" ref="author_tolkien"/>
+            <field name="publication_year">1954</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fantasy')), (4, ref('category_adventure'))]"/>
         </record>
         <record id="book_tolkien_2" model="library.book">
@@ -317,6 +340,7 @@
             <field name="pages">310</field>
             <field name="description">Las aventuras previas de Bilbo Bolsón acompañando a un grupo de enanos hacia la Montaña Solitaria.</field>
             <field name="author_id" ref="author_tolkien"/>
+            <field name="publication_year">1937</field>
             <field name="category_ids" eval="[(4, ref('category_fantasy')), (4, ref('category_adventure'))]"/>
         </record>
 
@@ -327,6 +351,7 @@
             <field name="pages">64</field>
             <field name="description">Famoso poema narrativo sobre la visita nocturna de un misterioso cuervo parlante.</field>
             <field name="author_id" ref="author_poe"/>
+            <field name="publication_year">1845</field>
             <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_poetry')), (4, ref('category_horror'))]"/>
         </record>
         <record id="book_poe_2" model="library.book">
@@ -335,6 +360,7 @@
             <field name="pages">96</field>
             <field name="description">Considerada la primera historia de detectives de la literatura moderna.</field>
             <field name="author_id" ref="author_poe"/>
+            <field name="publication_year">1841</field>
             <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
         </record>
 

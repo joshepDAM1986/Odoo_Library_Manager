@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="isbn"/>
                 <field name="author_id"/>
+                <field name="publication_year"/>
                 <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
             </tree>
@@ -32,6 +33,7 @@
                         <group>
                             <field name="author_id"/>
                             <field name="isbn"/>
+                            <field name="publication_year"/>
                             <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
