@@ -26,7 +26,7 @@
                                 type="object" 
                                 class="oe_stat_button" 
                                 icon="fa-book">
-                            <field name="book_ids" widget="statinfo" string="Books"/>
+                            <field name="book_count" widget="statinfo" string="Books"/>
                         </button>
                     </div>
                     <group>
@@ -55,18 +55,15 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_root"
-              name="Library"
-              sequence="10"/>
-
-    <menuitem id="menu_library_management"
-              name="Management"
-              parent="menu_library_root"
-              sequence="10"/>
-
-    <menuitem id="menu_library_author"
-              name="Authors"
-              parent="menu_library_management"
-              action="action_library_author"
-              sequence="10"/>
+    <!-- Vista de busqueda de autores -->
+    <record id="view_library_author_search" model="ir.ui.view">
+        <field name="name">library.author.search</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <search string="Authors">
+                <field name="name"/>
+                <field name="bio"/>
+            </search>
+        </field>
+    </record>
 </odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Se carga al final del manifest: todas las acciones ya existen -->
+    <menuitem id="menu_library_root"
+              name="Library"
+              groups="library_manager.group_library_user"
+              sequence="10"/>
+
+    <menuitem id="menu_library_management"
+              name="Management"
+              parent="menu_library_root"
+              sequence="10"/>
+
+    <menuitem id="menu_library_author"
+              name="Authors"
+              parent="menu_library_management"
+              action="action_library_author"
+              sequence="10"/>
+
+    <menuitem id="menu_library_book"
+              name="Books"
+              parent="menu_library_management"
+              action="action_library_book"
+              sequence="20"/>
+
+    <menuitem id="menu_library_category"
+              name="Categories"
+              parent="menu_library_management"
+              action="action_library_category"
+              sequence="30"/>
+</odoo>

@@ -182,7 +182,7 @@
             <field name="pages">576</field>
             <field name="description">Las memorias de Gabriel García Márquez que repasan sus primeros años de vida.</field>
             <field name="author_id" ref="author_garcia_marquez"/>
-            <field name="publication_year">1994</field>
+            <field name="publication_year">2002</field>
             <field name="category_ids" eval="[(4, ref('category_biography'))]"/>
         </record>
 
@@ -211,7 +211,7 @@
             <field name="pages">300</field>
             <field name="description">Aventura juvenil enmarcada en la selva amazónica junto a la misteriosa Bestia.</field>
             <field name="author_id" ref="author_allende"/>
-            <field name="publication_year">1981</field>
+            <field name="publication_year">2002</field>
             <field name="category_ids" eval="[(4, ref('category_adventure')), (4, ref('category_fantasy'))]"/>
         </record>
 
@@ -260,7 +260,7 @@
             <field name="pages">272</field>
             <field name="description">Ensayo intelectual donde Vargas Llosa repasa los autores liberales que marcaron su pensamiento.</field>
             <field name="author_id" ref="author_vargas_llosa"/>
-            <field name="publication_year">1981</field>
+            <field name="publication_year">2018</field>
             <field name="category_ids" eval="[(4, ref('category_essay'))]"/>
         </record>
 

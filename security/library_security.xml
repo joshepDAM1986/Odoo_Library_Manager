@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lector: solo consulta -->
+    <record id="group_library_user" model="res.groups">
+        <field name="name">Library: Reader</field>
+    </record>
+
+    <!-- Bibliotecario: control total (incluye lo del lector) -->
+    <record id="group_library_manager" model="res.groups">
+        <field name="name">Library: Librarian</field>
+        <field name="implied_ids" eval="[(4, ref('group_library_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

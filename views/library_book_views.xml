@@ -9,7 +9,7 @@
                 <field name="name"/>
                 <field name="isbn"/>
                 <field name="author_id"/>
-                <field name="publication_year"/>
+                <field name="publication_year" options="{'format': false}"/>
                 <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
             </tree>
@@ -23,7 +23,22 @@
         <field name="arch" type="xml">
             <form string="Book">
                 <header>
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    <button name="action_borrow" string="Borrow" type="object"
+                            class="btn-primary"
+                            invisible="state != 'available'"
+                            groups="library_manager.group_library_manager"/>
+                    <button name="action_return" string="Return" type="object"
+                            class="btn-primary"
+                            invisible="state != 'borrowed'"
+                            groups="library_manager.group_library_manager"/>
+                    <button name="action_mark_lost" string="Mark as Lost" type="object"
+                            invisible="state not in ('available', 'borrowed')"
+                            groups="library_manager.group_library_manager"/>
+                    <button name="action_recover" string="Recover" type="object"
+                            invisible="state != 'lost'"
+                            groups="library_manager.group_library_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="available,borrowed,lost"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -33,7 +48,7 @@
                         <group>
                             <field name="author_id"/>
                             <field name="isbn"/>
-                            <field name="publication_year"/>
+                            <field name="publication_year" options="{'format': false}"/>
                             <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
@@ -46,20 +61,40 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
 
-    <!-- Acción y Menú de Libros -->
+    <!-- Vista de busqueda de libros -->
+    <record id="view_library_book_search" model="ir.ui.view">
+        <field name="name">library.book.search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search string="Books">
+                <field name="name" string="Title or ISBN"
+                       filter_domain="['|', ('name', 'ilike', self), ('isbn', 'ilike', self)]"/>
+                <field name="author_id"/>
+                <field name="category_ids"/>
+                <separator/>
+                <filter name="filter_available" string="Available" domain="[('state', '=', 'available')]"/>
+                <filter name="filter_borrowed" string="Borrowed" domain="[('state', '=', 'borrowed')]"/>
+                <filter name="filter_lost" string="Lost" domain="[('state', '=', 'lost')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_author" string="Author" context="{'group_by': 'author_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción de Libros -->
     <record id="action_library_book" model="ir.actions.act_window">
         <field name="name">Books</field>
         <field name="res_model">library.book</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem id="menu_library_book"
-              name="Books"
-              parent="menu_library_management"
-              action="action_library_book"
-              sequence="20"/>
 </odoo>
