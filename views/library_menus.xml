@@ -23,9 +23,21 @@
               action="action_library_book"
               sequence="20"/>
 
+    <menuitem id="menu_library_member"
+              name="Members"
+              parent="menu_library_management"
+              action="action_library_member"
+              sequence="25"/>
+
     <menuitem id="menu_library_category"
               name="Categories"
               parent="menu_library_management"
               action="action_library_category"
               sequence="30"/>
+    
+    <menuitem id="menu_library_loan"
+              name="Loans"
+              parent="menu_library_management"
+              action="action_library_loan"
+              sequence="40"/>
 </odoo>

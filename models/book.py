@@ -56,9 +56,7 @@ class LibraryBook(models.Model):
                 raise ValidationError(_(
                     "The publication year must be between 1000 and %s.", current_year))
 
-    # ------------------------------------------------------------------
     # Acciones de los botones de estado
-    # ------------------------------------------------------------------
     def action_borrow(self):
         """Available -> Borrowed"""
         if any(book.state != 'available' for book in self):

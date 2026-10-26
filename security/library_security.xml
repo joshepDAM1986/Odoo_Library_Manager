@@ -8,7 +8,9 @@
     <!-- Bibliotecario: control total (incluye lo del lector) -->
     <record id="group_library_manager" model="res.groups">
         <field name="name">Library: Librarian</field>
-        <field name="implied_ids" eval="[(4, ref('group_library_user'))]"/>
+        <!-- group_partner_manager: necesario para crear/editar contactos (res.partner),
+             porque cada socio lleva un contacto asociado -->
+        <field name="implied_ids" eval="[(4, ref('group_library_user')), (4, ref('base.group_partner_manager'))]"/>
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 </odoo>

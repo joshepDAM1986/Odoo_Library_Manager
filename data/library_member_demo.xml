@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="member_demo_1" model="library.member">
+        <field name="name">Ana Martínez</field>
+        <field name="email">ana.martinez@example.com</field>
+        <field name="phone">+34 600 111 222</field>
+    </record>
+    <record id="member_demo_2" model="library.member">
+        <field name="name">Luis Fernández</field>
+        <field name="email">luis.fernandez@example.com</field>
+        <field name="phone">+34 600 333 444</field>
+    </record>
+    <record id="member_demo_3" model="library.member">
+        <field name="name">Carmen Ruiz</field>
+        <field name="email">carmen.ruiz@example.com</field>
+        <field name="state">suspended</field>
+        <field name="notes">Suspended for late returns (demo).</field>
+    </record>
+</odoo>

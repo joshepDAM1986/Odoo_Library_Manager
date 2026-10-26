@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lista -->
+    <record id="view_library_member_tree" model="ir.ui.view">
+        <field name="name">library.member.tree</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <tree string="Members"
+                  decoration-muted="state == 'suspended'">
+                <field name="member_number"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="join_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-danger="state == 'suspended'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Formulario -->
+    <record id="view_library_member_form" model="ir.ui.view">
+        <field name="name">library.member.form</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <form string="Member">
+                <header>
+                    <button name="action_suspend" string="Suspend" type="object"
+                            invisible="state != 'active'"
+                            groups="library_manager.group_library_manager"/>
+                    <button name="action_activate" string="Activate" type="object"
+                            class="btn-primary"
+                            invisible="state != 'suspended'"
+                            groups="library_manager.group_library_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Member name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="member_number"/>
+                            <field name="join_date"/>
+                        </group>
+                        <group>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Búsqueda -->
+    <record id="view_library_member_search" model="ir.ui.view">
+        <field name="name">library.member.search</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <search string="Members">
+                <field name="name" string="Name or Number"
+                       filter_domain="['|', ('name', 'ilike', self), ('member_number', 'ilike', self)]"/>
+                <field name="email"/>
+                <separator/>
+                <filter name="filter_active" string="Active" domain="[('state', '=', 'active')]"/>
+                <filter name="filter_suspended" string="Suspended" domain="[('state', '=', 'suspended')]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_library_member" model="ir.actions.act_window">
+        <field name="name">Members</field>
+        <field name="res_model">library.member</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
