@@ -10,13 +10,21 @@
         'security/library_security.xml',
         'security/ir.model.access.csv',
         'data/library_sequence.xml',
+        'data/library_loan_sequence.xml',
         'views/library_author_views.xml',
         'views/library_book_views.xml',
         'views/library_category_views.xml',
         'views/library_member_views.xml',
         'views/library_loan_view.xml',
+        'views/library_dashboard_views.xml',
         'views/library_menus.xml',
     ],
+    'assets': {                                # <- clave nueva
+    'web.assets_backend': [
+        'library_manager/static/src/dashboard/dashboard.js',
+        'library_manager/static/src/dashboard/dashboard.xml',
+    ],
+    },
     'demo': [
         'data/library_demo_data.xml',
         'data/library_member_demo.xml',

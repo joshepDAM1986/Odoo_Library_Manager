@@ -1,12 +1,9 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class LibraryMember(models.Model):
     _name = 'library.member'
     _description = 'Library Member'
-    # _inherits = herencia por delegacion: cada socio tiene un res.partner
-    # asociado y los campos del partner (name, email, phone...) se pueden
-    # usar directamente en el socio, aunque se guardan en la tabla res_partner.
     _inherits = {'res.partner': 'partner_id'}
     _inherit = ['mail.thread']
     _order = 'member_number desc'
@@ -40,6 +37,14 @@ class LibraryMember(models.Model):
          'The member number must be unique.'),
     ]
 
+    @api.depends('name', 'state')
+    def _compute_display_name(self):
+        for member in self:
+            name = member.name or ''
+            if member.state == 'suspended':
+                name = _("%s (Suspended)", name)
+            member.display_name = name
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -52,3 +57,4 @@ class LibraryMember(models.Model):
 
     def action_activate(self):
         self.write({'state': 'active'})
+
