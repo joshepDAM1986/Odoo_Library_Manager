@@ -28,26 +28,29 @@ export class LibraryDashboard extends Component {
         return [
             {
                 title: "Books",
+                icon: "fa-book",
                 cards: [
-                    { label: "Total books", model: "library.book", domain: [], color: "primary" },
-                    { label: "Available", model: "library.book", domain: [["state", "=", "available"]], color: "success" },
-                    { label: "Borrowed", model: "library.book", domain: [["state", "=", "borrowed"]], color: "warning" },
-                    { label: "Lost", model: "library.book", domain: [["state", "=", "lost"]], color: "danger" },
+                    { label: "Total books", model: "library.book", domain: [], color: "primary", icon: "fa-book" },
+                    { label: "Available", model: "library.book", domain: [["state", "=", "available"]], color: "success", icon: "fa-check-circle" },
+                    { label: "Borrowed", model: "library.book", domain: [["state", "=", "borrowed"]], color: "warning", icon: "fa-hand-paper-o" },
+                    { label: "Lost", model: "library.book", domain: [["state", "=", "lost"]], color: "danger", icon: "fa-question-circle" },
                 ],
             },
             {
                 title: "Members",
+                icon: "fa-users",
                 cards: [
-                    { label: "Active members", model: "library.member", domain: [["state", "=", "active"]], color: "success" },
-                    { label: "Suspended", model: "library.member", domain: [["state", "=", "suspended"]], color: "danger" },
+                    { label: "Active members", model: "library.member", domain: [["state", "=", "active"]], color: "success", icon: "fa-user" },
+                    { label: "Suspended", model: "library.member", domain: [["state", "=", "suspended"]], color: "danger", icon: "fa-ban" },
                 ],
             },
             {
                 title: "Loans",
+                icon: "fa-exchange",
                 cards: [
-                    { label: "Ongoing", model: "library.loan", domain: [["state", "=", "ongoing"]], color: "primary" },
-                    { label: "Overdue", model: "library.loan", domain: [["state", "=", "ongoing"], ["due_date", "<", today]], color: "danger" },
-                    { label: "Returned", model: "library.loan", domain: [["state", "=", "returned"]], color: "secondary" },
+                    { label: "Ongoing", model: "library.loan", domain: [["state", "=", "ongoing"]], color: "primary", icon: "fa-exchange" },
+                    { label: "Overdue", model: "library.loan", domain: [["state", "=", "ongoing"], ["due_date", "<", today]], color: "danger", icon: "fa-clock-o" },
+                    { label: "Returned", model: "library.loan", domain: [["state", "=", "returned"]], color: "secondary", icon: "fa-undo" },
                 ],
             },
         ];

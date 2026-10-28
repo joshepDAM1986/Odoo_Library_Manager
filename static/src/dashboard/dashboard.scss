@@ -1,0 +1,45 @@
+.o_library_dashboard {
+    .o_library_section_title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #6c757d;
+    }
+
+    .o_library_card {
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+    }
+
+    .o_library_card_count {
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .o_library_card_icon {
+        font-size: 1.75rem;
+        opacity: 0.3;
+    }
+
+    // Franja de color a la izquierda de cada tarjeta
+    $o-library-colors: (
+        primary: #017e84,
+        success: #28a745,
+        warning: #ffac00,
+        danger: #dc3545,
+        secondary: #6c757d,
+    );
+
+    @each $name, $hex in $o-library-colors {
+        .o_library_card--#{$name} {
+            border-left: 4px solid var(--bs-#{$name}, #{$hex});
+        }
+    }
+}

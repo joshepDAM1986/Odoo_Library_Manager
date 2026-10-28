@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Herencia de vista con xpath: ampliamos el formulario estandar de contactos -->
+    <record id="view_partner_form_library" model="ir.ui.view">
+        <field name="name">res.partner.form.library</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- 1) Boton inteligente dentro del recuadro de botones -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_library_member" type="object"
+                        class="oe_stat_button" icon="fa-book"
+                        invisible="library_member_count == 0"
+                        groups="library_manager.group_library_user">
+                    <field name="library_member_count" widget="statinfo" string="Library"/>
+                </button>
+            </xpath>
+
+            <!-- 2) Pestaña nueva al final del notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Library" name="library"
+                      invisible="library_member_count == 0"
+                      groups="library_manager.group_library_user">
+                    <field name="member_ids" readonly="1">
+                        <tree>
+                            <field name="member_number"/>
+                            <field name="join_date"/>
+                            <field name="state" widget="badge"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

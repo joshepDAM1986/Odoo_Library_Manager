@@ -6,15 +6,21 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 
 ## Features
 
-- **Books**: title, ISBN, publication year, pages, author, categories and status (available / borrowed / lost). Status buttons (Borrow, Return, Mark as Lost, Recover) with validation, and chatter tracking.
+- **Books**: title, ISBN, publication year, pages, author, categories and status (available / borrowed / lost). Kanban view grouped by status, *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
+- **AI category suggestion**: a button asks an LLM (Anthropic API) to pick existing categories from the book title, author and description. The API key lives in a system parameter, never in the code (see below).
 - **Authors**: biography, birth date, book counter (smart button) and total pages written.
 - **Categories**: colour tags, many-to-many with books.
-- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, and archiving.
-- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates and status (draft / ongoing / returned).
+- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
+- **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
+- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to +14 days) and status (draft / ongoing / returned / cancelled).
   - *Confirm* checks that the member is active and borrows the book.
   - *Return* gives the book back and stores the return date.
+  - *Cancel* releases the book if the loan was ongoing.
   - Date constraints: the due date and the return date cannot be earlier than the loan date (the same date is allowed).
-- **Home dashboard** (OWL client action): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
+  - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
+  - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
+- **PDF report** (QWeb): author sheet with their books, available from the *Print* menu on an author.
+- **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans and a Configuration dropdown (Categories).
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
 - **Demo data**: categories, authors, books and members. It is only loaded in databases created with demo data.
@@ -25,10 +31,11 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 library_manager/
 ├── __manifest__.py
 ├── models/        author, book, category, member, loan
-├── views/         views, actions, dashboard action and menus
+├── views/         views (incl. kanban and res.partner inheritance), actions and menus
+├── report/        QWeb PDF report
 ├── security/      groups and access rules
 ├── data/          sequences and demo data
-├── static/src/dashboard/   OWL component and template
+├── static/src/dashboard/   OWL component, template and styles
 └── tests/         automated tests
 ```
 
@@ -36,12 +43,13 @@ library_manager/
 
 - Relations: `Many2one`, `One2many`, `Many2many`.
 - Computed and related fields, `@api.depends`, `@api.constrains`, SQL constraints.
-- Inheritance: `_inherit` (mixins such as `mail.thread`) and `_inherits` (delegation to `res.partner`).
+- Inheritance: `_inherit` (mixins such as `mail.thread`, and extending `res.partner`), `_inherits` (delegation to `res.partner`) and view inheritance with XPath.
 - `ir.sequence`, `@api.model_create_multi`, status workflows with buttons.
 - Views for Odoo 17 syntax (`<tree>`, `invisible="state != 'draft'"`, no `attrs`), search views and chatter.
 - Security groups and `ir.model.access.csv`.
 - OWL 2 client action with the `orm` and `action` services.
-- `TransactionCase` tests.
+- `TransactionCase` tests, including mocking an external API.
+- Kanban views, QWeb reports, calling an external API with the key in `ir.config_parameter`.
 
 ## Install (Docker)
 
@@ -75,15 +83,20 @@ docker compose run --rm web odoo -d test_library -i library_manager \
 
 Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`.
 
+## Enable the AI suggestion
+
+1. Settings > Technical > System Parameters (developer mode).
+2. Create `library_manager.anthropic_api_key` with your API key.
+3. Optional: `library_manager.ai_model` to choose the model (default `claude-haiku-5-5`).
+
+The book title, author and description are sent to the external API when the button is pressed.
+
 ## Roadmap
 
-- Block deleting loans that are no longer in draft (`@api.ondelete`).
-- *Cancelled* loan status that releases the book.
-- More tests: loan flow, suspended members, date constraints, member numbering.
-- Late-return penalties based on the difference between the due date and the return date.
-- QWeb PDF report (author sheet with its books).
-- Cron job to flag overdue loans.
-- Visual improvements to the dashboard.
+- Late-return penalties (suspend members automatically).
+- Cron job to remind about overdue loans.
+- Record rules / multi-company support.
+- Translations (i18n).
 
 ## Notes
 

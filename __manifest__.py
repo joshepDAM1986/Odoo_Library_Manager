@@ -1,8 +1,8 @@
 {
     'name': 'Library Manager',
-    'version': '17.0.1.3.0',
+    'version': '17.0.2.0.0',
     'category': 'Services/Library',
-    'summary': 'Module for managing books, authors, categories, and members',
+    'summary': 'Books, authors, categories, members and loans',
     'author': 'Jose Miguel',
     'sequence': -100,
     'depends': ['base', 'mail'],
@@ -16,19 +16,22 @@
         'views/library_category_views.xml',
         'views/library_member_views.xml',
         'views/library_loan_view.xml',
+        'views/library_partner_views.xml',
         'views/library_dashboard_views.xml',
+        'report/library_author_report.xml',
         'views/library_menus.xml',
     ],
-    'assets': {                                # <- clave nueva
-    'web.assets_backend': [
-        'library_manager/static/src/dashboard/dashboard.js',
-        'library_manager/static/src/dashboard/dashboard.xml',
-    ],
-    },
     'demo': [
         'data/library_demo_data.xml',
         'data/library_member_demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'library_manager/static/src/dashboard/dashboard.js',
+            'library_manager/static/src/dashboard/dashboard.xml',
+            'library_manager/static/src/dashboard/dashboard.scss',
+        ],
+    },
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

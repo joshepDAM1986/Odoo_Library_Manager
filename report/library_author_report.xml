@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_library_author" model="ir.actions.report">
+        <field name="name">Author Sheet</field>
+        <field name="model">library.author</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">library_manager.report_library_author_document</field>
+        <field name="report_file">library_manager.report_library_author_document</field>
+        <field name="print_report_name">'Author - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_library_author"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_library_author_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-esc="o.name"/>
+                        <p t-if="o.birth_date">
+                            Born: <span t-field="o.birth_date"/>
+                        </p>
+                        <p t-if="o.bio" t-field="o.bio"/>
+
+                        <h4 class="mt-4">Books</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>ISBN</th>
+                                    <th>Year</th>
+                                    <th class="text-end">Pages</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.book_ids" t-as="book">
+                                    <td><span t-esc="book.name"/></td>
+                                    <td><span t-esc="book.isbn or ''"/></td>
+                                    <td><span t-esc="book.publication_year or ''"/></td>
+                                    <td class="text-end"><span t-esc="book.pages"/></td>
+                                    <td><span t-field="book.state"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <strong>Total:</strong>
+                            <span t-esc="o.book_count"/> books,
+                            <span t-esc="o.total_pages"/> pages
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

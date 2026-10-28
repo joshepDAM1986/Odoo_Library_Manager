@@ -2,32 +2,39 @@
 <templates xml:space="preserve">
     <t t-name="library_manager.Dashboard">
         <div class="o_library_dashboard container-fluid p-4 overflow-auto">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <div>
                     <h1 class="mb-1">Library Manager</h1>
                     <p class="text-muted mb-0">Overview of your library</p>
                 </div>
-                <div>
+                <div class="mt-2 mt-md-0">
                     <button class="btn btn-primary me-2" t-on-click="() => this.newRecord('library.loan', 'New Loan')">
-                        New loan
+                        <i class="fa fa-plus me-1"/>New loan
                     </button>
                     <button class="btn btn-secondary me-2" t-on-click="() => this.newRecord('library.book', 'New Book')">
-                        New book
+                        <i class="fa fa-plus me-1"/>New book
                     </button>
-                    <button class="btn btn-light" t-on-click="loadStats">Refresh</button>
+                    <button class="btn btn-light" t-on-click="loadStats">
+                        <i class="fa fa-refresh"/>
+                    </button>
                 </div>
             </div>
 
             <t t-foreach="state.sections" t-as="section" t-key="section.title">
-                <h3 class="mt-4 mb-3" t-esc="section.title"/>
+                <div class="o_library_section_title mt-4 mb-3">
+                    <i t-attf-class="fa {{section.icon}} me-2"/><t t-esc="section.title"/>
+                </div>
                 <div class="row">
                     <t t-foreach="section.cards" t-as="card" t-key="card.label">
-                        <div class="col-6 col-md-3 mb-3">
-                            <div t-attf-class="card h-100 border-{{card.color}} cursor-pointer"
+                        <div class="col-6 col-md-4 col-xl-3 mb-3">
+                            <div t-attf-class="card o_library_card o_library_card--{{card.color}} shadow-sm h-100"
                                  t-on-click="() => this.openCard(card)">
-                                <div class="card-body text-center">
-                                    <div t-attf-class="display-4 fw-bold text-{{card.color}}" t-esc="card.count"/>
-                                    <div class="text-muted" t-esc="card.label"/>
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div t-attf-class="o_library_card_count text-{{card.color}}" t-esc="card.count"/>
+                                        <div class="text-muted mt-1" t-esc="card.label"/>
+                                    </div>
+                                    <i t-attf-class="fa {{card.icon}} o_library_card_icon"/>
                                 </div>
                             </div>
                         </div>

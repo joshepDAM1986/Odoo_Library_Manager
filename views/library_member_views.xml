@@ -36,6 +36,12 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_loans" type="object"
+                                class="oe_stat_button" icon="fa-exchange">
+                            <field name="loan_count" widget="statinfo" string="Loans"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name" placeholder="Member name"/></h1>
