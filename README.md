@@ -7,7 +7,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 ## Features
 
 - **Books**: title, ISBN, publication year, pages, author, categories and status (available / borrowed / lost). Kanban view grouped by status, *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
-- **AI category suggestion**: a button asks an LLM (Anthropic API) to pick existing categories from the book title, author and description. The API key lives in a system parameter, never in the code (see below).
+- **AI category suggestion**: a button uses the Google Gemini API to suggest up to three existing categories based on the book title, author and description. The API key is stored in an Odoo system parameter, not in source code.
 - **Authors**: biography, birth date, book counter (smart button) and total pages written.
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
@@ -85,11 +85,19 @@ Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with
 
 ## Enable the AI suggestion
 
-1. Settings > Technical > System Parameters (developer mode).
-2. Create `library_manager.anthropic_api_key` with your API key.
-3. Optional: `library_manager.ai_model` to choose the model (default `claude-haiku-5-5`).
+The original integration used Anthropic (Claude). It was replaced with **Google Gemini** so the feature can work with models offered under the **Gemini API free tier**, without requiring a paid Anthropic API account. Free-tier availability and request limits depend on Google's current pricing, the selected model and the API project; free usage is **not unlimited**.
 
-The book title, author and description are sent to the external API when the button is pressed.
+1. Create a Gemini API key in [Google AI Studio](https://aistudio.google.com/apikey).
+2. In Odoo, enable developer mode and open **Settings > Technical > System Parameters**.
+3. Create `library_manager.gemini_api_key` and set its value to your API key.
+4. Optionally create `library_manager.gemini_model` to select a model supported by your key. The example Python implementation defaults to `gemini-3.5-flash-lite`; **verify that this model is available and has a free tier for your project** before using it. Check [Google's pricing](https://ai.google.dev/gemini-api/docs/pricing) and [available models](https://ai.google.dev/gemini-api/docs/models).
+5. Restart Odoo after updating the Python code, then open a book and click the AI category suggestion button.
+
+The book title, author and description (and, in the updated implementation, publication year) are sent to Google's Gemini API only when the button is pressed. Gemini is asked to return up to three names from categories already created in Odoo. Matching categories are added without removing existing ones.
+
+The integration uses the REST `generateContent` endpoint and passes the API key in the `x-goog-api-key` header. Do not commit API keys to Git. If a configured model returns HTTP 404, check the models accessible to your API key and update `library_manager.gemini_model`. HTTP 429 can indicate quota or rate limits.
+
+**Migration from Anthropic:** `library_manager.anthropic_api_key` and `library_manager.ai_model` are no longer read by the updated integration. After confirming Gemini works, remove the obsolete parameters if they are not used elsewhere. If your existing automated tests mock Anthropic requests, update them to mock Gemini's REST response instead.
 
 ## Roadmap
 
