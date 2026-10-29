@@ -1,3 +1,4 @@
+from . import test_author
 from . import test_book
 from . import test_member
 from . import test_loan

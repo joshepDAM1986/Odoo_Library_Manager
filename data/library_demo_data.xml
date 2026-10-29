@@ -106,6 +106,406 @@
             <field name="birth_date">1809-01-19</field>
             <field name="bio">Escritor, poeta y crítico estadounidense, considerado uno de los maestros universales del relato corto y creador del género policial.</field>
         </record>
+        <record id="category_thriller" model="library.category">
+            <field name="name">Thriller / Intriga</field>
+            <field name="description">Historias de ritmo rápido centradas en crímenes o conspiraciones.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_romance" model="library.category">
+            <field name="name">Romance</field>
+            <field name="description">Obras enfocadas en las relaciones amorosas y afectivas.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_mystery" model="library.category">
+            <field name="name">Misterio / Policial</field>
+            <field name="description">Relatos dedicados a resolver crímenes, enigmas o acertijos.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_drama" model="library.category">
+            <field name="name">Drama</field>
+            <field name="description">Obras centradas en conflictos emocionales y situaciones realistas complejas.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_comedy" model="library.category">
+            <field name="name">Comedia / Humor</field>
+            <field name="description">Textos creados para entretener, divertir o satirizar situaciones cotidianas.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_dystopia" model="library.category">
+            <field name="name">Distopía</field>
+            <field name="description">Sociedades futuristas opresivas, totalitarias o postapocalípticas.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_juvenile" model="library.category">
+            <field name="name">Infantil / Juvenil</field>
+            <field name="description">Lecturas adaptadas para el desarrollo y entretenimiento de niños y jóvenes.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_comic" model="library.category">
+            <field name="name">Cómic / Novela Gráfica</field>
+            <field name="description">Narrativas visuales que combinan ilustraciones y texto literario.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_theater" model="library.category">
+            <field name="name">Teatro / Dramaturgia</field>
+            <field name="description">Libretos y textos destinados a la representación escénica.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_philosophy" model="library.category">
+            <field name="name">Filosofía</field>
+            <field name="description">Tratados y reflexiones sobre la existencia, la moral y el conocimiento.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="category_self_help" model="library.category">
+            <field name="name">Desarrollo Personal / Autoayuda</field>
+            <field name="description">Guías orientadas al crecimiento personal, bienestar y motivación.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_science" model="library.category">
+            <field name="name">Ciencia / Divulgación</field>
+            <field name="description">Textos que explican conceptos científicos e investigaciones de forma accesible.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_art" model="library.category">
+            <field name="name">Arte / Fotografía</field>
+            <field name="description">Estudios sobre disciplinas artísticas, técnicas visuales y monografías de autores.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_politics" model="library.category">
+            <field name="name">Política / Sociología</field>
+            <field name="description">Análisis sobre sistemas de gobierno, dinámicas sociales y actualidad civil.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_economy" model="library.category">
+            <field name="name">Economía / Negocios</field>
+            <field name="description">Libros sobre finanzas, administración de empresas, emprendimiento y mercados.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_religion" model="library.category">
+            <field name="name">Religión / Espiritualidad</field>
+            <field name="description">Textos sagrados, estudios teológicos y guías de prácticas espirituales.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_travel" model="library.category">
+            <field name="name">Viajes / Guías</field>
+            <field name="description">Crónicas de exploradores, diarios de viaje e indicaciones turísticas.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_cooking" model="library.category">
+            <field name="name">Cocina / Gastronomía</field>
+            <field name="description">Recetarios, manuales de técnicas culinarias e historia de la alimentación.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_sports" model="library.category">
+            <field name="name">Deportes / Salud</field>
+            <field name="description">Manuales de actividad física, nutrición y crónicas del mundo deportivo.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_technology" model="library.category">
+            <field name="name">Tecnología / Informática</field>
+            <field name="description">Estudios y manuales prácticos sobre software, hardware e innovación digital.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="category_mythology" model="library.category">
+            <field name="name">Mitología / Leyendas</field>
+            <field name="description">Relatos tradicionales e historias de deidades de diferentes culturas antiguas.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_true_crime" model="library.category">
+            <field name="name">True Crime / Crónica Negra</field>
+            <field name="description">Investigaciones periodísticas y relatos documentados sobre crímenes reales.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_nature" model="library.category">
+            <field name="name">Naturaleza / Ecología</field>
+            <field name="description">Libros dedicados al medio ambiente, la fauna, la flora y el cambio climático.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_psychology" model="library.category">
+            <field name="name">Psicología</field>
+            <field name="description">Estudios sobre el comportamiento humano, la mente y los procesos mentales.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_education" model="library.category">
+            <field name="name">Educación / Pedagogía</field>
+            <field name="description">Métodos de enseñanza, manuales de aprendizaje y teoría académica.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_epistolary" model="library.category">
+            <field name="name">Novela Epistolar / Correspondencia</field>
+            <field name="description">Obras e intercambios de cartas personales que construyen una narrativa.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_satire" model="library.category">
+            <field name="name">Sátira / Crítica Social</field>
+            <field name="description">Obras que utilizan el humor ácido o la burla para denunciar vicios sociales.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_magical_realism" model="library.category">
+            <field name="name">Realismo Mágico</field>
+            <field name="description">Historias de base realista donde lo fantástico se integra de manera cotidiana.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_short_stories" model="library.category">
+            <field name="name">Antología / Relato Corto</field>
+            <field name="description">Recopilaciones de cuentos, fábulas o narraciones de breve extensión.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_parenting" model="library.category">
+            <field name="name">Crianza / Maternidad</field>
+            <field name="description">Guías orientativas y experiencias sobre el cuidado y educación de los hijos.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="category_cyberpunk" model="library.category">
+            <field name="name">Cyberpunk</field>
+            <field name="description">Historias futuristas de alta tecnología y bajo nivel de vida en sociedades distópicas.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_steampunk" model="library.category">
+            <field name="name">Steampunk</field>
+            <field name="description">Fantasía e historia alternativa basada en la tecnología de vapor del siglo XIX.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_space_opera" model="library.category">
+            <field name="name">Space Opera / Épica Espacial</field>
+            <field name="description">Aventuras de ciencia ficción a gran escala que transcurren en el espacio exterior.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_high_fantasy" model="library.category">
+            <field name="name">Fantasía Épica / Alta Fantasía</field>
+            <field name="description">Relatos ambientados en mundos mágicos alternativos con grandes mitologías propias.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_historical_fiction" model="library.category">
+            <field name="name">Novela Histórica</field>
+            <field name="description">Narraciones de ficción ambientadas fielmente en una época pasada real.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_paranormal" model="library.category">
+            <field name="name">Romance Paranormal / Fantasía Urbana</field>
+            <field name="description">Historias de amor y mitología que involucran vampiros, hombres lobo o magia moderna.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_medical_thriller" model="library.category">
+            <field name="name">Thriller Médico / Científico</field>
+            <field name="description">Intrigas y conspiraciones que giran en torno a virus, hospitales o experimentos biológicos.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_legal_thriller" model="library.category">
+            <field name="name">Thriller Legal / Judicial</field>
+            <field name="description">Tramas de suspense desarrolladas en juicios, bufetes de abogados y sistemas legales.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_espionage" model="library.category">
+            <field name="name">Espionaje / Espías</field>
+            <field name="description">Tramas de operaciones secretas, agencias de inteligencia y geopolítica.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_war_fiction" model="library.category">
+            <field name="name">Bélico / Novela de Guerra</field>
+            <field name="description">Relatos enfocados en soldados, batallas y el impacto de los conflictos militares.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="category_western" model="library.category">
+            <field name="name">Western / Novela del Oeste</field>
+            <field name="description">Historias ambientadas en la frontera estadounidense durante el siglo XIX.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_gothic" model="library.category">
+            <field name="name">Novela Gótica</field>
+            <field name="description">Narrativas oscuras con atmósferas de misterio, castillos antiguos, decadencia y terror.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_coming_of_age" model="library.category">
+            <field name="name">Coming-of-Age / Novela de Aprendizaje</field>
+            <field name="description">Historias centradas en la transición de la juventud a la madurez de un personaje.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_travelogue" model="library.category">
+            <field name="name">Literatura de Viajes</field>
+            <field name="description">Crónicas personales y reflexiones de autores explorando nuevos rincones del mundo.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_linguistics" model="library.category">
+            <field name="name">Idiomas / Lingüística</field>
+            <field name="description">Libros para el aprendizaje de lenguas, gramática y el estudio evolutivo del lenguaje.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_anthropology" model="library.category">
+            <field name="name">Antropología / Arqueología</field>
+            <field name="description">Estudios sobre la evolución de la cultura humana, sociedades antiguas y excavaciones.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_astronomy" model="library.category">
+            <field name="name">Astronomía / Cosmología</field>
+            <field name="description">Libros de divulgación sobre el universo, las estrellas, los planetas y la astrofísica.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_gardening" model="library.category">
+            <field name="name">Jardinería / Botánica Práctica</field>
+            <field name="description">Guías para el cultivo de plantas, cuidado del huerto urbano y diseño de paisajes.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_crafts" model="library.category">
+            <field name="name">Manualidades / Bricolaje</field>
+            <field name="description">Libros de "hazlo tú mismo", costura, carpintería, cerámica y técnicas artesanales.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_music_books" model="library.category">
+            <field name="name">Música / Musicología</field>
+            <field name="description">Biografías de músicos, historia de géneros musicales, teoría de la música y partituras.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="category_cinema" model="library.category">
+            <field name="name">Cine / Medios Audiovisuales</field>
+            <field name="description">Análisis cinematográfico, guiones comentados, historia de la televisión y realización.</field>
+            <field name="color">1</field>
+        </record>
+        <record id="category_architecture" model="library.category">
+            <field name="name">Arquitectura / Diseño</field>
+            <field name="description">Monografías de edificios, historia del diseño, urbanismo y estructuras habitacionales.</field>
+            <field name="color">2</field>
+        </record>
+        <record id="category_memoirs" model="library.category">
+            <field name="name">Diarios / Correspondencia Histórica</field>
+            <field name="description">Documentos reales y reflexiones cotidianas publicadas de figuras del arte o la historia.</field>
+            <field name="color">3</field>
+        </record>
+        <record id="category_folklore" model="library.category">
+            <field name="name">Folclore / Tradiciones Populares</field>
+            <field name="description">Compendios de costumbres, fiestas tradicionales y saberes de la cultura popular.</field>
+            <field name="color">4</field>
+        </record>
+        <record id="category_microfiction" model="library.category">
+            <field name="name">Microrrelato / Minificción</field>
+            <field name="description">Historias extremadamente breves que condensan un gran impacto literario en pocas líneas.</field>
+            <field name="color">5</field>
+        </record>
+        <record id="category_humorous_essay" model="library.category">
+            <field name="name">Ensayo Satírico / Crítica Humorística</field>
+            <field name="description">Textos de no ficción enfocados en analizar la realidad desde una perspectiva cómica.</field>
+            <field name="color">6</field>
+        </record>
+        <record id="category_cybersecurity" model="library.category">
+            <field name="name">Ciberseguridad / Hacking</field>
+            <field name="description">Manuales y ensayos sobre protección de datos, redes informáticas y riesgos digitales.</field>
+            <field name="color">7</field>
+        </record>
+        <record id="category_pet_care" model="library.category">
+            <field name="name">Mascotas / Veterinaria Básica</field>
+            <field name="description">Guías de adiestramiento, cuidados, alimentación y salud para animales domésticos.</field>
+            <field name="color">8</field>
+        </record>
+        <record id="category_climbing" model="library.category">
+            <field name="name">Montañismo / Senderismo</field>
+            <field name="description">Rutas, crónicas de expediciones, guías de escalada y supervivencia en la naturaleza.</field>
+            <field name="color">9</field>
+        </record>
+        <record id="category_interviews" model="library.category">
+            <field name="name">Entrevistas / Reportajes Periodísticos</field>
+            <field name="description">Grandes recopilaciones de periodismo de investigación e interacciones con personalidades.</field>
+            <field name="color">10</field>
+        </record>
+        <record id="author_christie" model="library.author">
+            <field name="name">Agatha Christie</field>
+            <field name="birth_date">1890-09-15</field>
+            <field name="bio">Escritora británica de novelas policiacas, creadora de personajes célebres como Hércules Poirot y Miss Marple.</field>
+        </record>
+        <record id="author_lovecraft" model="library.author">
+            <field name="name">H.P. Lovecraft</field>
+            <field name="birth_date">1890-08-20</field>
+            <field name="bio">Escritor estadounidense conocido por revolucionar el género de terror con su mitología cósmica.</field>
+        </record>
+        <record id="author_asimov" model="library.author">
+            <field name="name">Isaac Asimov</field>
+            <field name="birth_date">1920-01-02</field>
+            <field name="bio">Escritor y bioquímico estadounidense de origen ruso, famoso por sus obras de ciencia ficción y de divulgación científica.</field>
+        </record>
+        <record id="author_hemingway" model="library.author">
+            <field name="name">Ernest Hemingway</field>
+            <field name="birth_date">1899-07-21</field>
+            <field name="bio">Escritor y periodista estadounidense, uno de los principales novelistas del siglo XX y premio Nobel de Literatura.</field>
+        </record>
+        <record id="author_verne" model="library.author">
+            <field name="name">Julio Verne</field>
+            <field name="birth_date">1828-02-08</field>
+            <field name="bio">Escritor francés célebre por sus novelas de aventuras y su profunda influencia en el género de la ciencia ficción.</field>
+        </record>
+        <record id="author_dick" model="library.author">
+            <field name="name">Philip K. Dick</field>
+            <field name="birth_date">1928-12-16</field>
+            <field name="bio">Escritor estadounidense cuyas obras de ciencia ficción exploran temas filosóficos, sociológicos y realidades alteradas.</field>
+        </record>
+        <record id="author_stoker" model="library.author">
+            <field name="name">Bram Stoker</field>
+            <field name="birth_date">1847-11-08</field>
+            <field name="bio">Escritor irlandés, universalmente reconocido por su obra maestra de la literatura gótica, Drácula.</field>
+        </record>
+        <record id="author_shelley" model="library.author">
+            <field name="name">Mary Shelley</field>
+            <field name="birth_date">1797-08-30</field>
+            <field name="bio">Narradora, dramaturga y biógrafa británica, célebre por ser la autora de la novela gótica Frankenstein.</field>
+        </record>
+        <record id="author_woolf" model="library.author">
+            <field name="name">Virginia Woolf</field>
+            <field name="birth_date">1882-01-25</field>
+            <field name="bio">Escritora británica, considerada una de las más destacadas figuras del modernismo literario vanguardista del siglo XX.</field>
+        </record>
+        <record id="author_dostoievski" model="library.author">
+            <field name="name">Fiódor Dostoievski</field>
+            <field name="birth_date">1821-11-11</field>
+            <field name="bio">Uno de los principales escritores de la Rusia zarista, cuya literatura explora la psicología humana en contextos complejos.</field>
+        </record>
+        <record id="author_kafka" model="library.author">
+            <field name="name">Franz Kafka</field>
+            <field name="birth_date">1883-07-03</field>
+            <field name="bio">Escritor bohemio en lengua alemana, cuya obra es pionera en la fusión de elementos realistas con fantásticos.</field>
+        </record>
+        <record id="author_fitzgerald" model="library.author">
+            <field name="name">F. Scott Fitzgerald</field>
+            <field name="birth_date">1896-09-24</field>
+            <field name="bio">Novedoso escritor estadounidense, paradigma de la Era del Jazz y miembro de la llamada Generación Perdida.</field>
+        </record>
+        <record id="author_le_guin" model="library.author">
+            <field name="name">Ursula K. Le Guin</field>
+            <field name="birth_date">1929-10-21</field>
+            <field name="bio">Escritora estadounidense de gran prestigio por sus obras de alta fantasía y ciencia ficción con corte antropológico.</field>
+        </record>
+        <record id="author_murakami" model="library.author">
+            <field name="name">Haruki Murakami</field>
+            <field name="birth_date">1949-01-12</field>
+            <field name="bio">Escritor y traductor japonés contemporáneo, cuyas novelas han cosechado un enorme éxito internacional.</field>
+        </record>
+        <record id="author_neruda" model="library.author">
+            <field name="name">Pablo Neruda</field>
+            <field name="birth_date">1904-07-12</field>
+            <field name="bio">Poeta chileno considerado entre los más influyentes artistas de su siglo, ganador del premio Nobel de Literatura.</field>
+        </record>
+        <record id="author_eco" model="library.author">
+            <field name="name">Umberto Eco</field>
+            <field name="birth_date">1932-01-05</field>
+            <field name="bio">Escritor, filósofo y semiólogo italiano, autor de tratados académicos y novelas de gran misterio histórico.</field>
+        </record>
+        <record id="author_martin" model="library.author">
+            <field name="name">George R.R. Martin</field>
+            <field name="birth_date">1948-09-20</field>
+            <field name="bio">Escritor estadounidense de literatura fantástica, ciencia ficción y terror, creador de la saga Canción de Hielo y Fuego.</field>
+        </record>
+        <record id="author_brown" model="library.author">
+            <field name="name">Dan Brown</field>
+            <field name="birth_date">1964-06-22</field>
+            <field name="bio">Escritor estadounidense de novelas de suspense y thrillers de conspiración basados en la simbología secreta.</field>
+        </record>
+        <record id="author_nietzsche" model="library.author">
+            <field name="name">Friedrich Nietzsche</field>
+            <field name="birth_date">1844-10-15</field>
+            <field name="bio">Filósofo, poeta y filólogo alemán, considerado uno de los pensadores contemporáneos más influyentes de occidente.</field>
+        </record>
+        <record id="author_capote" model="library.author">
+            <field name="name">Truman Capote</field>
+            <field name="birth_date">1924-09-30</field>
+            <field name="bio">Escritor y periodista estadounidense, célebre por asentar los pilares literarios del género de no ficción o True Crime.</field>
+        </record>
 
 
         <!-- ==================== LIBROS ==================== -->
@@ -362,6 +762,402 @@
             <field name="author_id" ref="author_poe"/>
             <field name="publication_year">1841</field>
             <field name="category_ids" eval="[(4, ref('category_classic'))]"/>
+        </record>
+         <!-- Agatha Christie -->
+        <record id="book_christie_3" model="library.book">
+            <field name="name">Muerte en el Nilo</field>
+            <field name="isbn">978-84-9838-360-7</field>
+            <field name="pages">288</field>
+            <field name="description">Un idílico crucero por el río Nilo se convierte en el escenario de un retorcido crimen pasional investigado por Hércules Poirot.</field>
+            <field name="author_id" ref="author_christie"/>
+            <field name="publication_year">1937</field>
+            <field name="category_ids" eval="[(4, ref('category_mystery')), (4, ref('category_thriller'))]"/>
+        </record>
+        <record id="book_christie_4" model="library.book">
+            <field name="name">El asesinato de Roger Ackroyd</field>
+            <field name="isbn">978-84-272-8825-5</field>
+            <field name="pages">240</field>
+            <field name="description">Una de las obras más célebres de la autora, famosa por un audaz e inesperado giro narrativo en su resolución policial.</field>
+            <field name="author_id" ref="author_christie"/>
+            <field name="publication_year">1926</field>
+            <field name="category_ids" eval="[(4, ref('category_mystery')), (4, ref('category_classic'))]"/>
+        </record>
+
+        <!-- H.P. Lovecraft -->
+        <record id="book_lovecraft_3" model="library.book">
+            <field name="name">El horror de Dunwich</field>
+            <field name="isbn">978-84-15618-90-4</field>
+            <field name="pages">112</field>
+            <field name="description">Un perturbador nacimiento en un decadente pueblo rural desata fuerzas de dimensiones exteriores imposibles de contener por la ciencia humana.</field>
+            <field name="author_id" ref="author_lovecraft"/>
+            <field name="publication_year">1929</field>
+            <field name="category_ids" eval="[(4, ref('category_horror')), (4, ref('category_gothic'))]"/>
+        </record>
+        <record id="book_lovecraft_4" model="library.book">
+            <field name="name">La sombra sobre Innsmouth</field>
+            <field name="isbn">978-84-9104-200-6</field>
+            <field name="pages">144</field>
+            <field name="description">Un viajero descubre un aislado pueblo costero cuyos habitantes sufren mutaciones debido a pactos con criaturas marítimas.</field>
+            <field name="author_id" ref="author_lovecraft"/>
+            <field name="publication_year">1936</field>
+            <field name="category_ids" eval="[(4, ref('category_horror')), (4, ref('category_fantasy'))]"/>
+        </record>
+
+        <!-- Isaac Asimov -->
+        <record id="book_asimov_3" model="library.book">
+            <field name="name">Fundación e Imperio</field>
+            <field name="isbn">978-84-9759-436-3</field>
+            <field name="pages">288</field>
+            <field name="description">Segunda parte de la trilogía original donde las predicciones psicohistóricas se ven amenazadas por un mutante conocido como 'El Mulo'.</field>
+            <field name="author_id" ref="author_asimov"/>
+            <field name="publication_year">1952</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_space_opera'))]"/>
+        </record>
+        <record id="book_asimov_4" model="library.book">
+            <field name="name">El fin de la Eternidad</field>
+            <field name="isbn">978-84-350-1840-1</field>
+            <field name="pages">272</field>
+            <field name="description">Una organización que controla el tiempo altera la historia humana para evitar desastres, hasta que surge una paradoja imprevista.</field>
+            <field name="author_id" ref="author_asimov"/>
+            <field name="publication_year">1955</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi'))]"/>
+        </record>
+
+        <!-- Ernest Hemingway -->
+        <record id="book_hemingway_3" model="library.book">
+            <field name="name">Fiesta</field>
+            <field name="isbn">978-84-9759-890-3</field>
+            <field name="pages">256</field>
+            <field name="description">Novela que retrata los excesos de la generación perdida angloamericana viajando hacia los Sanfermines de Pamplona.</field>
+            <field name="author_id" ref="author_hemingway"/>
+            <field name="publication_year">1926</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_drama'))]"/>
+        </record>
+        <record id="book_hemingway_4" model="library.book">
+            <field name="name">Adiós a las armas</field>
+            <field name="isbn">978-84-226-3415-7</field>
+            <field name="pages">336</field>
+            <field name="description">Historia de amor trágica e intensa entre un conductor de ambulancias estadounidense y una enfermera durante la Primera Guerra Mundial.</field>
+            <field name="author_id" ref="author_hemingway"/>
+            <field name="publication_year">1929</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_war_fiction'))]"/>
+        </record>
+
+        <!-- Julio Verne -->
+        <record id="book_verne_3" model="library.book">
+            <field name="name">Viaje al centro de la Tierra</field>
+            <field name="isbn">978-84-670-3640-4</field>
+            <field name="pages">272</field>
+            <field name="description">Un profesor de mineralogía, su sobrino y un guía descienden por un volcán islandés descubriendo un mundo prehistórico subterráneo.</field>
+            <field name="author_id" ref="author_verne"/>
+            <field name="publication_year">1864</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_adventure')), (4, ref('category_scifi'))]"/>
+        </record>
+        <record id="book_verne_4" model="library.book">
+            <field name="name">De la Tierra a la Luna</field>
+            <field name="isbn">978-84-206-6930-4</field>
+            <field name="pages">224</field>
+            <field name="description">Una detallada obra de anticipación científica que relata los minuciosos preparativos de tres hombres para ser lanzados al espacio.</field>
+            <field name="author_id" ref="author_verne"/>
+            <field name="publication_year">1865</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_adventure'))]"/>
+        </record>
+        <!-- Philip K. Dick -->
+        <record id="book_dick_3" model="library.book">
+            <field name="name">El hombre en el castillo</field>
+            <field name="isbn">978-84-450-7390-9</field>
+            <field name="pages">288</field>
+            <field name="description">Ucronía ambientada en un mundo alternativo donde las potencias del Eje ganaron la Segunda Guerra Mundial y se repartieron Estados Unidos.</field>
+            <field name="author_id" ref="author_dick"/>
+            <field name="publication_year">1962</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_dystopia'))]"/>
+        </record>
+        <record id="book_dick_4" model="library.book">
+            <field name="name">Minority Report (El informe de la minoría)</field>
+            <field name="isbn">978-84-450-7550-7</field>
+            <field name="pages">312</field>
+            <field name="description">Recopilación de relatos de ciencia ficción de corte tecnológico que incluye el sistema de previsión de crímenes futuros.</field>
+            <field name="author_id" ref="author_dick"/>
+            <field name="publication_year">1956</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_short_stories'))]"/>
+        </record>
+
+        <!-- Bram Stoker -->
+        <record id="book_stoker_2" model="library.book">
+            <field name="name">La joya de las siete estrellas</field>
+            <field name="isbn">978-84-376-1150-1</field>
+            <field name="pages">256</field>
+            <field name="description">Un egiptólogo intenta revivir a una antigua reina momia mediante extraños rituales arqueológicos en una mansión inglesa.</field>
+            <field name="author_id" ref="author_stoker"/>
+            <field name="publication_year">1903</field>
+            <field name="category_ids" eval="[(4, ref('category_horror')), (4, ref('category_gothic'))]"/>
+        </record>
+        <record id="book_stoker_3" model="library.book">
+            <field name="name">La madriguera del Gusano Blanco</field>
+            <field name="isbn">978-84-376-1200-8</field>
+            <field name="pages">224</field>
+            <field name="description">Última e inquietante obra del autor basada en antiguas leyendas británicas sobre monstruos serpentinos subterráneos.</field>
+            <field name="author_id" ref="author_stoker"/>
+            <field name="publication_year">1911</field>
+            <field name="category_ids" eval="[(4, ref('category_horror'))]"/>
+        </record>
+
+        <!-- Mary Shelley -->
+        <record id="book_shelley_2" model="library.book">
+            <field name="name">El último hombre</field>
+            <field name="isbn">978-84-376-1460-1</field>
+            <field name="pages">480</field>
+            <field name="description">Novela apocalíptica pionera que narra la paulatina destrucción de la humanidad a finales del siglo XXI debido a una plaga global.</field>
+            <field name="author_id" ref="author_shelley"/>
+            <field name="publication_year">1826</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_dystopia'))]"/>
+        </record>
+        <record id="book_shelley_3" model="library.book">
+            <field name="name">Lodore</field>
+            <field name="isbn">978-84-376-1500-4</field>
+            <field name="pages">352</field>
+            <field name="description">Oda de corte social e íntimo enfocada en las dificultades financieras y de autonomía que sufrían las mujeres de su época.</field>
+            <field name="author_id" ref="author_shelley"/>
+            <field name="publication_year">1835</field>
+            <field name="category_ids" eval="[(4, ref('category_drama'))]"/>
+        </record>
+
+        <!-- Virginia Woolf -->
+        <record id="book_woolf_3" model="library.book">
+            <field name="name">Orlando</field>
+            <field name="isbn">978-84-206-5520-8</field>
+            <field name="pages">288</field>
+            <field name="description">Una transgresora biografía ficticia de un aristócrata que vive durante tres siglos cambiando misteriosamente de género.</field>
+            <field name="author_id" ref="author_woolf"/>
+            <field name="publication_year">1928</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fantasy'))]"/>
+        </record>
+        <record id="book_woolf_4" model="library.book">
+            <field name="name">Las olas</field>
+            <field name="isbn">978-84-206-7450-6</field>
+            <field name="pages">240</field>
+            <field name="description">Obra vanguardista compuesta por soliloquios entrelazados que exploran la conciencia y la identidad de seis amigos.</field>
+            <field name="author_id" ref="author_woolf"/>
+            <field name="publication_year">1931</field>
+            <field name="category_ids" eval="[(4, ref('category_poetry'))]"/>
+        </record>
+
+        <!-- Fiódor Dostoievski -->
+        <record id="book_dostoievski_3" model="library.book">
+            <field name="name">El idiota</field>
+            <field name="isbn">978-84-376-0420-6</field>
+            <field name="pages">640</field>
+            <field name="description">El viaje de un príncipe bondadoso y honesto cuya inocencia es confundida con debilidad mental por la sociedad rusa.</field>
+            <field name="author_id" ref="author_dostoievski"/>
+            <field name="publication_year">1869</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_drama')), (4, ref('category_psychology'))]"/>
+        </record>
+        <record id="book_dostoievski_4" model="library.book">
+            <field name="name">El jugador</field>
+            <field name="isbn">978-84-376-0500-5</field>
+            <field name="pages">192</field>
+            <field name="description">Reflejo psicológico sobre la destructiva obsesión por la ruleta y las dinámicas emocionales dependientes de un tutor.</field>
+            <field name="author_id" ref="author_dostoievski"/>
+            <field name="publication_year">1867</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_psychology'))]"/>
+        </record>
+        <!-- Franz Kafka -->
+        <record id="book_kafka_3" model="library.book">
+            <field name="name">El castillo</field>
+            <field name="isbn">978-84-206-3320-6</field>
+            <field name="pages">352</field>
+            <field name="description">Un agrimensor lucha desesperadamente por acceder a las inalcanzables autoridades burocráticas que gobiernan un pueblo.</field>
+            <field name="author_id" ref="author_kafka"/>
+            <field name="publication_year">1926</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_dystopia'))]"/>
+        </record>
+        <record id="book_kafka_4" model="library.book">
+            <field name="name">Carta al padre</field>
+            <field name="isbn">978-84-206-5150-7</field>
+            <field name="pages">96</field>
+            <field name="description">Íntima correspondencia real jamás enviada que expone el terror psicológico derivado de la autoridad paterna.</field>
+            <field name="author_id" ref="author_kafka"/>
+            <field name="publication_year">1952</field>
+            <field name="category_ids" eval="[(4, ref('category_biography')), (4, ref('category_epistolary'))]"/>
+        </record>
+
+        <!-- F. Scott Fitzgerald -->
+        <record id="book_fitzgerald_2" model="library.book">
+            <field name="name">Suave es la noche</field>
+            <field name="isbn">978-84-376-0680-4</field>
+            <field name="pages">416</field>
+            <field name="description">La trágica decadencia mental y económica de un prometedor psiquiatra casado con una rica paciente en la Riviera Francesa.</field>
+            <field name="author_id" ref="author_fitzgerald"/>
+            <field name="publication_year">1934</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_drama'))]"/>
+        </record>
+        <record id="book_fitzgerald_3" model="library.book">
+            <field name="name">A este lado del paraíso</field>
+            <field name="isbn">978-84-376-0700-9</field>
+            <field name="pages">320</field>
+            <field name="description">Primera e influyente novela del autor que relata la pérdida de la inocencia juvenil tras la Gran Guerra en las universidades de élite.</field>
+            <field name="author_id" ref="author_fitzgerald"/>
+            <field name="publication_year">1920</field>
+            <field name="category_ids" eval="[(4, ref('category_coming_of_age'))]"/>
+        </record>
+
+        <!-- Ursula K. Le Guin -->
+        <record id="book_leguin_3" model="library.book">
+            <field name="name">Los desposeídos</field>
+            <field name="isbn">978-84-450-7190-8</field>
+            <field name="pages">384</field>
+            <field name="description">Utopía ambigua que contrasta un planeta de corte capitalista con su luna organizada bajo un régimen anarquista.</field>
+            <field name="author_id" ref="author_le_guin"/>
+            <field name="publication_year">1974</field>
+            <field name="category_ids" eval="[(4, ref('category_scifi')), (4, ref('category_dystopia')), (4, ref('category_philosophy'))]"/>
+        </record>
+        <record id="book_leguin_4" model="library.book">
+            <field name="name">Las tumbas de Atuan</field>
+            <field name="isbn">978-84-450-7460-2</field>
+            <field name="pages">208</field>
+            <field name="description">Segundo volumen de Terramar centrado en una joven sacerdotisa atrapada en unos laberintos sagrados subterráneos.</field>
+            <field name="author_id" ref="author_le_guin"/>
+            <field name="publication_year">1971</field>
+            <field name="category_ids" eval="[(4, ref('category_fantasy')), (4, ref('category_high_fantasy'))]"/>
+        </record>
+
+        <!-- Haruki Murakami -->
+        <record id="book_murakami_3" model="library.book">
+            <field name="name">Kafka en la orilla</field>
+            <field name="isbn">978-84-8310-390-6</field>
+            <field name="pages">512</field>
+            <field name="description">Narrativas paralelas de un joven fugitivo y un anciano con la capacidad de comunicarse con los gatos.</field>
+            <field name="author_id" ref="author_murakami"/>
+            <field name="publication_year">2002</field>
+            <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_magical_realism'))]"/>
+        </record>
+        <record id="book_murakami_4" model="library.book">
+            <field name="name">1Q84</field>
+            <field name="isbn">978-84-8383-300-1</field>
+            <field name="pages">1024</field>
+            <field name="description">Una colosal distopía realista ambientada en un Tokio alterado con dos lunas en el firmamento.</field>
+            <field name="author_id" ref="author_murakami"/>
+            <field name="publication_year">2009</field>
+            <field name="category_ids" eval="[(4, ref('category_fiction')), (4, ref('category_dystopia'))]"/>
+        </record>
+
+        <!-- Pablo Neruda -->
+        <record id="book_neruda_2" model="library.book">
+            <field name="name">Canto General</field>
+            <field name="isbn">978-84-376-0425-0</field>
+            <field name="pages">528</field>
+            <field name="description">Monumental poema épico que narra la historia, naturaleza y luchas sociales del continente americano.</field>
+            <field name="author_id" ref="author_neruda"/>
+            <field name="publication_year">1950</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_poetry')), (4, ref('category_history'))]"/>
+        </record>
+        <record id="book_neruda_3" model="library.book">
+            <field name="name">Estravagario</field>
+            <field name="isbn">978-84-376-0510-4</field>
+            <field name="pages">160</field>
+            <field name="description">Un poemario marcado por un cambio de estilo más lúdico, humorístico e irreverente del autor chileno.</field>
+            <field name="author_id" ref="author_neruda"/>
+            <field name="publication_year">1958</field>
+            <field name="category_ids" eval="[(4, ref('category_poetry'))]"/>
+        </record>
+        <!-- Umberto Eco -->
+        <record id="book_eco_2" model="library.book">
+            <field name="name">El péndulo de Foucault</field>
+            <field name="isbn">978-84-226-2900-9</field>
+            <field name="pages">688</field>
+            <field name="description">Tres editores inventan una conspiración esotérica que termina cobrando una peligrosa realidad.</field>
+            <field name="author_id" ref="author_eco"/>
+            <field name="publication_year">1988</field>
+            <field name="category_ids" eval="[(4, ref('category_mystery')), (4, ref('category_thriller'))]"/>
+        </record>
+        <record id="book_eco_3" model="library.book">
+            <field name="name">Baudolino</field>
+            <field name="isbn">978-84-226-4000-8</field>
+            <field name="pages">512</field>
+            <field name="description">Las fantásticas aventuras, mentiras y viajes de un pícaro campesino adoptado por el emperador Federico Barbarroja.</field>
+            <field name="author_id" ref="author_eco"/>
+            <field name="publication_year">2000</field>
+            <field name="category_ids" eval="[(4, ref('category_historical_fiction')), (4, ref('category_adventure'))]"/>
+        </record>
+
+        <!-- George R.R. Martin -->
+        <record id="book_martin_3" model="library.book">
+            <field name="name">Tormenta de espadas</field>
+            <field name="isbn">978-84-96208-98-8</field>
+            <field name="pages">1120</field>
+            <field name="description">Punto álgido de la guerra civil en Poniente marcado por eventos drásticos, nupcias sangrientas y batallas en el Muro.</field>
+            <field name="author_id" ref="author_martin"/>
+            <field name="publication_year">2000</field>
+            <field name="category_ids" eval="[(4, ref('category_fantasy')), (4, ref('category_high_fantasy')), (4, ref('category_adventure'))]"/>
+        </record>
+        <record id="book_martin_4" model="library.book">
+            <field name="name">Festín de cuervos</field>
+            <field name="isbn">978-84-96208-99-5</field>
+            <field name="pages">864</field>
+            <field name="description">Las consecuencias inmediatas y la reconstrucción de los reinos devastados tras los peores años del conflicto dinástico.</field>
+            <field name="author_id" ref="author_martin"/>
+            <field name="publication_year">2005</field>
+            <field name="category_ids" eval="[(4, ref('category_fantasy')), (4, ref('category_high_fantasy'))]"/>
+        </record>
+
+        <!-- Dan Brown -->
+        <record id="book_brown_3" model="library.book">
+            <field name="name">El símbolo perdido</field>
+            <field name="isbn">978-84-95618-80-1</field>
+            <field name="pages">624</field>
+            <field name="description">Robert Langdon desentraña secretos ocultos y simbología masónica en los edificios institucionales de Washington D.C.</field>
+            <field name="author_id" ref="author_brown"/>
+            <field name="publication_year">2009</field>
+            <field name="category_ids" eval="[(4, ref('category_thriller')), (4, ref('category_mystery'))]"/>
+        </record>
+        <record id="book_brown_4" model="library.book">
+            <field name="name">Inferno</field>
+            <field name="isbn">978-84-95618-95-5</field>
+            <field name="pages">528</field>
+            <field name="description">Una vertiginosa carrera basada en los códigos ocultos de la Divina Comedia de Dante para detener una amenaza biológica mundial.</field>
+            <field name="author_id" ref="author_brown"/>
+            <field name="publication_year">2013</field>
+            <field name="category_ids" eval="[(4, ref('category_thriller')), (4, ref('category_medical_thriller'))]"/>
+        </record>
+
+        <!-- Friedrich Nietzsche -->
+        <record id="book_nietzsche_2" model="library.book">
+            <field name="name">Más allá del bien y del mal</field>
+            <field name="isbn">978-84-206-3330-5</field>
+            <field name="pages">288</field>
+            <field name="description">Texto crítico que analiza con crudeza los dogmas de los filósofos tradicionales y las bases de la moralidad occidental.</field>
+            <field name="author_id" ref="author_nietzsche"/>
+            <field name="publication_year">1886</field>
+            <field name="category_ids" eval="[(4, ref('category_philosophy')), (4, ref('category_essay'))]"/>
+        </record>
+        <record id="book_nietzsche_3" model="library.book">
+            <field name="name">El nacimiento de la tragedia</field>
+            <field name="isbn">978-84-206-3345-9</field>
+            <field name="pages">224</field>
+            <field name="description">Primera obra del autor que expone la célebre contraposición entre el espíritu apolíneo y el dionisiaco en el arte griego.</field>
+            <field name="author_id" ref="author_nietzsche"/>
+            <field name="publication_year">1872</field>
+            <field name="category_ids" eval="[(4, ref('category_philosophy')), (4, ref('category_art'))]"/>
+        </record>
+
+        <!-- Truman Capote -->
+        <record id="book_capote_2" model="library.book">
+            <field name="name">Desayuno en Tiffany's (Breakfast at Tiffany's)</field>
+            <field name="isbn">978-84-339-2020-1</field>
+            <field name="pages">160</field>
+            <field name="description">La mítica e irreverente rutina neoyorquina de Holly Golightly contada a través de los ojos de un joven escritor vecino.</field>
+            <field name="author_id" ref="author_capote"/>
+            <field name="publication_year">1958</field>
+            <field name="category_ids" eval="[(4, ref('category_classic')), (4, ref('category_fiction'))]"/>
+        </record>
+        <record id="book_capote_3" model="library.book">
+            <field name="name">Música para camaleones</field>
+            <field name="isbn">978-84-339-2035-5</field>
+            <field name="pages">288</field>
+            <field name="description">Espectacular compendio de relatos cortos, crónicas periodísticas y conversaciones reales que demuestran el estilo poético del autor.</field>
+            <field name="author_id" ref="author_capote"/>
+            <field name="publication_year">1980</field>
+            <field name="category_ids" eval="[(4, ref('category_short_stories')), (4, ref('category_true_crime'))]"/>
         </record>
 
     </data>

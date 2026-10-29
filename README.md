@@ -1,14 +1,17 @@
 # Odoo Library Manager
 
-Odoo 17 module to manage a small library: books, authors, categories, members and loans, with a home dashboard built with OWL.
+Odoo 17 module to manage a small library: books, authors, categories, members and loans, with an OWL home dashboard, a PDF report and an optional AI category suggestion.
 
-Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, testing).
+Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, QWeb and testing).
 
 ## Features
 
-- **Books**: title, ISBN, publication year, pages, author, categories and status (available / borrowed / lost). Kanban view grouped by status, *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
-- **AI category suggestion**: a button uses the Google Gemini API to suggest up to three existing categories based on the book title, author and description. The API key is stored in an Odoo system parameter, not in source code.
-- **Authors**: biography, birth date, book counter (smart button) and total pages written.
+- **Books**: title, ISBN, publication year, pages, author, categories, cover image and status (available / borrowed / lost).
+  - Catalog-style kanban view (cards with cover thumbnails and a colour status label), plus list and form views.
+  - Side filter panel (status and categories, with counters) to browse large catalogs.
+  - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
+- **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
+- **Authors**: biography, birth date, book counter (smart button), total pages written and a **Print PDF** button for the author sheet.
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
@@ -19,7 +22,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Date constraints: the due date and the return date cannot be earlier than the loan date (the same date is allowed).
   - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
   - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
-- **PDF report** (QWeb): author sheet with their books, available from the *Print* menu on an author.
+- **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans and a Configuration dropdown (Categories).
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
@@ -30,13 +33,13 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 ```
 library_manager/
 ├── __manifest__.py
-├── models/        author, book, category, member, loan
+├── models/        author, book, category, member, loan, res_partner
 ├── views/         views (incl. kanban and res.partner inheritance), actions and menus
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
 ├── data/          sequences and demo data
 ├── static/src/dashboard/   OWL component, template and styles
-└── tests/         automated tests
+└── tests/         automated tests (52)
 ```
 
 ## Concepts practised
@@ -44,12 +47,13 @@ library_manager/
 - Relations: `Many2one`, `One2many`, `Many2many`.
 - Computed and related fields, `@api.depends`, `@api.constrains`, SQL constraints.
 - Inheritance: `_inherit` (mixins such as `mail.thread`, and extending `res.partner`), `_inherits` (delegation to `res.partner`) and view inheritance with XPath.
-- `ir.sequence`, `@api.model_create_multi`, status workflows with buttons.
-- Views for Odoo 17 syntax (`<tree>`, `invisible="state != 'draft'"`, no `attrs`), search views and chatter.
+- `ir.sequence`, `@api.model_create_multi`, `@api.ondelete`, status workflows with buttons.
+- Odoo 17 view syntax (`<tree>`, `invisible="state != 'draft'"`, no `attrs`), kanban, search views, search panel and chatter.
 - Security groups and `ir.model.access.csv`.
-- OWL 2 client action with the `orm` and `action` services.
+- OWL 2 client action with the `orm` and `action` services, and SCSS.
+- QWeb PDF reports.
 - `TransactionCase` tests, including mocking an external API.
-- Kanban views, QWeb reports, calling an external API with the key in `ir.config_parameter`.
+- Calling an external API with the key stored in `ir.config_parameter`.
 
 ## Install (Docker)
 
@@ -70,7 +74,7 @@ docker compose exec web odoo -d YOUR_DB -u library_manager --stop-after-init \
 docker compose restart web
 ```
 
-Python changes need the restart; XML and manifest changes need the update (`-u`). After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
+Python changes need the restart **before** the update; XML and manifest changes need the update (`-u`). After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
 
 ## Run the tests
 
@@ -81,23 +85,24 @@ docker compose run --rm web odoo -d test_library -i library_manager \
     --test-enable --test-tags /library_manager --stop-after-init --no-http
 ```
 
-Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`.
+Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`. Some `ERROR` log lines are expected: they come from tests that simulate API failures on purpose.
 
 ## Enable the AI suggestion
 
-The original integration used Anthropic (Claude). It was replaced with **Google Gemini** so the feature can work with models offered under the **Gemini API free tier**, without requiring a paid Anthropic API account. Free-tier availability and request limits depend on Google's current pricing, the selected model and the API project; free usage is **not unlimited**.
+The feature uses the **Google Gemini API** (REST `generateContent`). It is optional: without a key the button shows a clear message and nothing else is affected.
 
 1. Create a Gemini API key in [Google AI Studio](https://aistudio.google.com/apikey).
 2. In Odoo, enable developer mode and open **Settings > Technical > System Parameters**.
-3. Create `library_manager.gemini_api_key` and set its value to your API key.
-4. Optionally create `library_manager.gemini_model` to select a model supported by your key. The example Python implementation defaults to `gemini-3.5-flash-lite`; **verify that this model is available and has a free tier for your project** before using it. Check [Google's pricing](https://ai.google.dev/gemini-api/docs/pricing) and [available models](https://ai.google.dev/gemini-api/docs/models).
-5. Restart Odoo after updating the Python code, then open a book and click the AI category suggestion button.
+3. Create `library_manager.gemini_api_key` with your key as the value.
+4. Optional: create `library_manager.gemini_model` to choose the model. The default is `gemini-3.5-flash-lite`; check in [Google's model list](https://ai.google.dev/gemini-api/docs/models) and [pricing](https://ai.google.dev/gemini-api/docs/pricing) that it is available for your project.
+5. Restart Odoo after changing Python code, open a book and press **Suggest Categories (AI)**.
 
-The book title, author and description (and, in the updated implementation, publication year) are sent to Google's Gemini API only when the button is pressed. Gemini is asked to return up to three names from categories already created in Odoo. Matching categories are added without removing existing ones.
+Notes:
 
-The integration uses the REST `generateContent` endpoint and passes the API key in the `x-goog-api-key` header. Do not commit API keys to Git. If a configured model returns HTTP 404, check the models accessible to your API key and update `library_manager.gemini_model`. HTTP 429 can indicate quota or rate limits.
-
-**Migration from Anthropic:** `library_manager.anthropic_api_key` and `library_manager.ai_model` are no longer read by the updated integration. After confirming Gemini works, remove the obsolete parameters if they are not used elsewhere. If your existing automated tests mock Anthropic requests, update them to mock Gemini's REST response instead.
+- The book title, author, year and description are sent to Google when the button is pressed. The model can only choose among the categories that already exist in Odoo, and matches are **added** without removing the book's current categories.
+- The key is sent in the `x-goog-api-key` header (never in the URL) and must never be committed to Git.
+- Free-tier usage is limited, and Google's terms for unpaid usage allow submitted content to be used to improve its products. Do not use it with real customer data.
+- HTTP 404 usually means the model is not available for your key (change `library_manager.gemini_model`); HTTP 429 means a quota or rate limit was reached.
 
 ## Roadmap
 

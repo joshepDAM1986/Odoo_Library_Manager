@@ -52,6 +52,10 @@ class LibraryAuthor(models.Model):
             'context': {'default_author_id': self.id},
         }
 
+    def action_print_report(self):
+        self.ensure_one()
+        return self.env.ref('library_manager.action_report_library_author').report_action(self)
+
     @api.constrains('birth_date')
     def _check_birth_date(self):
         today = fields.Date.today()

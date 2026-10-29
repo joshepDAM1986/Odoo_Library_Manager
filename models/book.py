@@ -26,10 +26,8 @@ class LibraryBook(models.Model):
     _inherit = ["mail.thread"]
     _order = "name"
 
-    # ---------------------------------------
-    # CAMPOS DEL LIBRO
-    # ---------------------------------------
 
+    # Campos básicos del libro
     name = fields.Char(
         string="Book Title",
         required=True,
@@ -56,6 +54,14 @@ class LibraryBook(models.Model):
         string="Cover Image",
         max_width=1024,
         max_height=1024,
+    )
+
+    cover_image_128 = fields.Image(
+        string="Cover Thumbnail",
+        related="cover_image",
+        max_width=128,
+        max_height=128,
+        store=True,
     )
 
     author_id = fields.Many2one(
@@ -96,10 +102,7 @@ class LibraryBook(models.Model):
         compute="_compute_loan_count",
     )
 
-    # ---------------------------------------
-    # RESTRICCIONES SQL
-    # ---------------------------------------
-
+    # Restricciones SQL para garantizar la unicidad y validez de los datos
     _sql_constraints = [
         (
             "isbn_unique",
@@ -118,19 +121,13 @@ class LibraryBook(models.Model):
         ),
     ]
 
-    # ---------------------------------------
-    # CAMPOS CALCULADOS
-    # ---------------------------------------
-
+    # Campos calculados y dependientes de otros campos
     @api.depends("loan_ids")
     def _compute_loan_count(self):
         for book in self:
             book.loan_count = len(book.loan_ids)
 
-    # ---------------------------------------
-    # VALIDACIONES
-    # ---------------------------------------
-
+    # Restricciones de validación para garantizar la coherencia de los datos
     @api.constrains("publication_year")
     def _check_publication_year(self):
         current_year = date.today().year
@@ -146,10 +143,7 @@ class LibraryBook(models.Model):
                     ) % current_year
                 )
 
-    # ---------------------------------------
-    # ACCIONES DE ESTADO
-    # ---------------------------------------
-
+    # Acciones para cambiar el estado del libro y gestionar préstamos
     def action_borrow(self):
         if any(
             book.state != "available"
@@ -194,10 +188,7 @@ class LibraryBook(models.Model):
 
         self.write({"state": "available"})
 
-    # ---------------------------------------
-    # VER PRÉSTAMOS
-    # ---------------------------------------
-
+    # Acción para ver los préstamos asociados a un libro
     def action_view_loans(self):
         self.ensure_one()
 
@@ -214,10 +205,7 @@ class LibraryBook(models.Model):
             },
         }
 
-    # ---------------------------------------
-    # INTEGRACIÓN CON GOOGLE GEMINI
-    # ---------------------------------------
-
+    # Acción para sugerir categorías usando la API de Gemini
     def action_suggest_categories(self):
         self.ensure_one()
 
@@ -343,10 +331,7 @@ class LibraryBook(models.Model):
             },
         }
 
-        # ---------------------------------------
-        # LLAMADA A GEMINI
-        # ---------------------------------------
-
+        # Llamada a la API de Gemini con manejo de errores y registro
         try:
             _logger.info(
                 "Requesting Gemini category suggestions "
@@ -381,10 +366,7 @@ class LibraryBook(models.Model):
                 )
             )
 
-        # ---------------------------------------
-        # COMPROBAR ERRORES HTTP
-        # ---------------------------------------
-
+        # Manejo de errores HTTP y registro de respuestas de Gemini
         if not response.ok:
             try:
                 error_data = response.json()
@@ -449,10 +431,7 @@ class LibraryBook(models.Model):
                 )
             )
 
-        # ---------------------------------------
-        # PROCESAR RESPUESTA JSON
-        # ---------------------------------------
-
+        # Procesar la respuesta de Gemini y extraer categorías sugeridas
         try:
             result = response.json()
 
@@ -520,10 +499,7 @@ class LibraryBook(models.Model):
                 ) % str(err)
             )
 
-        # ---------------------------------------
-        # RELACIONAR CATEGORÍAS EXISTENTES
-        # ---------------------------------------
-
+        # Filtrar categorías sugeridas que coincidan con las existentes y añadirlas al libro
         wanted = {
             name.strip().casefold()
             for name in names[:3]
@@ -571,10 +547,7 @@ class LibraryBook(models.Model):
             matched.mapped("name"),
         )
 
-        # ---------------------------------------
-        # NOTIFICACIÓN EN ODOO
-        # ---------------------------------------
-
+        # Devolver notificación al usuario con el resultado de la acción
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",

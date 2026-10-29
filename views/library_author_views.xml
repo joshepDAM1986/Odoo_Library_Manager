@@ -20,6 +20,10 @@
         <field name="model">library.author</field>
         <field name="arch" type="xml">
             <form string="Author">
+            <header>
+                <button name="action_print_report" string="Print PDF" type="object"
+                        class="btn-primary" icon="fa-print"/>
+            </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_author_books" 

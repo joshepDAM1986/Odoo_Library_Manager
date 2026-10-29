@@ -83,9 +83,7 @@ class LibraryLoan(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('library.loan')
         return super().create(vals_list)
 
-    # ------------------------------------------------------------------
     # Flujo: draft -> ongoing -> returned  (o cancelled)
-    # ------------------------------------------------------------------
     def action_confirm(self):
         for loan in self:
             if loan.state != 'draft':
