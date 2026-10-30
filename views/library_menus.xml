@@ -38,6 +38,57 @@
               action="action_library_loan"
               sequence="40"/>
 
+    <!-- ===== Estadisticas ===== -->
+    <menuitem id="menu_library_reports"
+              name="Statistics"
+              parent="menu_library_root"
+              sequence="50"/>
+
+    <menuitem id="menu_library_reports_popularity"
+              name="Popularity"
+              parent="menu_library_reports"
+              sequence="10"/>
+    <menuitem id="menu_library_report_top_books"
+              name="Most Borrowed Books"
+              parent="menu_library_reports_popularity"
+              action="action_library_report_top_books"
+              sequence="10"/>
+    <menuitem id="menu_library_report_least_books"
+              name="Least Borrowed Books"
+              parent="menu_library_reports_popularity"
+              action="action_library_report_least_books"
+              sequence="20"/>
+    <menuitem id="menu_library_report_top_authors"
+              name="Most Read Authors"
+              parent="menu_library_reports_popularity"
+              action="action_library_report_top_authors"
+              sequence="30"/>
+    <menuitem id="menu_library_report_top_readers"
+              name="Most Active Readers"
+              parent="menu_library_reports_popularity"
+              action="action_library_report_top_readers"
+              sequence="40"/>
+
+    <menuitem id="menu_library_reports_activity"
+              name="Activity"
+              parent="menu_library_reports"
+              sequence="20"/>
+    <menuitem id="menu_library_report_months"
+              name="Loans per Month"
+              parent="menu_library_reports_activity"
+              action="action_library_report_months"
+              sequence="10"/>
+    <menuitem id="menu_library_report_status"
+              name="Loans by Status"
+              parent="menu_library_reports_activity"
+              action="action_library_report_status"
+              sequence="20"/>
+    <menuitem id="menu_library_report_analysis"
+              name="Loan Analysis"
+              parent="menu_library_reports_activity"
+              action="action_library_report_analysis"
+              sequence="30"/>
+
     <!-- Desplegable para datos maestros que se tocan poco -->
     <menuitem id="menu_library_config"
               name="Configuration"

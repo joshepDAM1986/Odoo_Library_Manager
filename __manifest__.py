@@ -19,11 +19,13 @@
         'views/library_partner_views.xml',
         'views/library_dashboard_views.xml',
         'report/library_author_report.xml',
+        'views/library_report_views.xml',
         'views/library_menus.xml',
     ],
     'demo': [
         'data/library_demo_data.xml',
         'data/library_member_demo.xml',
+        'data/library_loan_demo.xml',
     ],
     'assets': {
         'web.assets_backend': [

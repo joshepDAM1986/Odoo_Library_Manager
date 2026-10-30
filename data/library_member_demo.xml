@@ -13,6 +13,263 @@
     <record id="member_demo_3" model="library.member">
         <field name="name">Carmen Ruiz</field>
         <field name="email">carmen.ruiz@example.com</field>
+        <field name="phone">+34 600 555 666</field>
+        <field name="state">suspended</field>
+        <field name="notes">Suspended for late returns (demo).</field>
+    </record>
+    <record id="member_demo_4" model="library.member">
+        <field name="name">Juan García</field>
+        <field name="email">juan.garcia@mail.com</field>
+        <field name="phone">+34 658 280 388</field>
+    </record>
+    <record id="member_demo_5" model="library.member">
+        <field name="name">María Rodríguez</field>
+        <field name="email">maria.rodriguez@example.com</field>
+        <field name="phone">+34 684 264 816</field>
+    </record>
+    <record id="member_demo_6" model="library.member">
+        <field name="name">José Martínez</field>
+        <field name="email">jose.martinez@mail.com</field>
+        <field name="phone">+34 692 100 595</field>
+    </record>
+    <record id="member_demo_7" model="library.member">
+        <field name="name">Dolores Sánchez</field>
+        <field name="email">dolores.sanchez@mail.com</field>
+        <field name="phone">+34 617 562 478</field>
+    </record>
+    <record id="member_demo_8" model="library.member">
+        <field name="name">Francisco Pérez</field>
+        <field name="email">francisco.perez@example.com</field>
+        <field name="phone">+34 694 411 827</field>
+    </record>
+    <record id="member_demo_9" model="library.member">
+        <field name="name">Antonio Gómez</field>
+        <field name="email">antonio.gomez@mail.com</field>
+        <field name="phone">+34 639 606 398</field>
+    </record>
+    <record id="member_demo_10" model="library.member">
+        <field name="name">Pilar Martín</field>
+        <field name="email">pilar.martin@library-demo.es</field>
+        <field name="phone">+34 615 519 991</field>
+    </record>
+    <record id="member_demo_11" model="library.member">
+        <field name="name">Manuel Jiménez</field>
+        <field name="email">manuel.jimenez@mail.com</field>
+        <field name="phone">+34 601 903 561</field>
+    </record>
+    <record id="member_demo_12" model="library.member">
+        <field name="name">Concepción Ruiz</field>
+        <field name="email">concepcion.ruiz@example.com</field>
+        <field name="phone">+34 614 343 918</field>
+    </record>
+    <record id="member_demo_13" model="library.member">
+        <field name="name">Pedro Hernández</field>
+        <field name="email">pedro.hernandez@mail.com</field>
+        <field name="phone">+34 622 415 933</field>
+        <field name="state">suspended</field>
+        <field name="notes">Suspended for late returns (demo).</field>
+    </record>
+    <record id="member_demo_14" model="library.member">
+        <field name="name">José Luis Diaz</field>
+        <field name="email">jose.luis.diaz@example.com</field>
+        <field name="phone">+34 637 185 634</field>
+    </record>
+    <record id="member_demo_15" model="library.member">
+        <field name="name">Isabel Moreno</field>
+        <field name="email">isabel.moreno@example.com</field>
+        <field name="phone">+34 653 984 307</field>
+    </record>
+    <record id="member_demo_16" model="library.member">
+        <field name="name">Javier Muñoz</field>
+        <field name="email">javier.munoz@library-demo.es</field>
+        <field name="phone">+34 647 203 240</field>
+    </record>
+    <record id="member_demo_17" model="library.member">
+        <field name="name">Ángeles Álvarez</field>
+        <field name="email">angeles.alvarez@library-demo.es</field>
+        <field name="phone">+34 657 237 706</field>
+    </record>
+    <record id="member_demo_18" model="library.member">
+        <field name="name">Miguel Romero</field>
+        <field name="email">miguel.romero@mail.com</field>
+        <field name="phone">+34 619 822 141</field>
+    </record>
+    <record id="member_demo_19" model="library.member">
+        <field name="name">Alonso Alonso</field>
+        <field name="email">alonso.alonso@library-demo.es</field>
+        <field name="phone">+34 613 608 111</field>
+    </record>
+    <record id="member_demo_20" model="library.member">
+        <field name="name">Laura Gutiérrez</field>
+        <field name="email">laura.gutierrez@example.com</field>
+        <field name="phone">+34 639 826 492</field>
+    </record>
+    <record id="member_demo_21" model="library.member">
+        <field name="name">Santiago Navarro</field>
+        <field name="email">santiago.navarro@library-demo.es</field>
+        <field name="phone">+34 669 689 650</field>
+    </record>
+    <record id="member_demo_22" model="library.member">
+        <field name="name">Cristina Torres</field>
+        <field name="email">cristina.torres@library-demo.es</field>
+        <field name="phone">+34 630 723 476</field>
+    </record>
+    <record id="member_demo_23" model="library.member">
+        <field name="name">Diego Domínguez</field>
+        <field name="email">diego.dominguez@library-demo.es</field>
+        <field name="phone">+34 660 544 525</field>
+    </record>
+    <record id="member_demo_24" model="library.member">
+        <field name="name">Elena Ramos</field>
+        <field name="email">elena.ramos@library-demo.es</field>
+        <field name="phone">+34 608 837 226</field>
+    </record>
+    <record id="member_demo_25" model="library.member">
+        <field name="name">Carlos Vázquez</field>
+        <field name="email">carlos.vazquez@mail.com</field>
+        <field name="phone">+34 629 565 295</field>
+    </record>
+    <record id="member_demo_26" model="library.member">
+        <field name="name">Marta Ramírez</field>
+        <field name="email">marta.ramirez@example.com</field>
+        <field name="phone">+34 613 368 287</field>
+    </record>
+    <record id="member_demo_27" model="library.member">
+        <field name="name">Ignacio Serrano</field>
+        <field name="email">ignacio.serrano@example.com</field>
+        <field name="phone">+34 625 150 773</field>
+    </record>
+    <record id="member_demo_28" model="library.member">
+        <field name="name">Ana Belén Blanco</field>
+        <field name="email">ana.belen.blanco@example.com</field>
+        <field name="phone">+34 678 455 987</field>
+    </record>
+    <record id="member_demo_29" model="library.member">
+        <field name="name">Ramón Molina</field>
+        <field name="email">ramon.molina@library-demo.es</field>
+        <field name="phone">+34 651 506 618</field>
+    </record>
+    <record id="member_demo_30" model="library.member">
+        <field name="name">Beatriz Morales</field>
+        <field name="email">beatriz.morales@example.com</field>
+        <field name="phone">+34 627 481 308</field>
+    </record>
+    <record id="member_demo_31" model="library.member">
+        <field name="name">Alberto Ortega</field>
+        <field name="email">alberto.ortega@mail.com</field>
+        <field name="phone">+34 689 763 685</field>
+    </record>
+    <record id="member_demo_32" model="library.member">
+        <field name="name">Julia Delgado</field>
+        <field name="email">julia.delgado@library-demo.es</field>
+        <field name="phone">+34 643 573 553</field>
+    </record>
+    <record id="member_demo_33" model="library.member">
+        <field name="name">Fernando Castro</field>
+        <field name="email">fernando.castro@mail.com</field>
+        <field name="phone">+34 602 248 421</field>
+    </record>
+    <record id="member_demo_34" model="library.member">
+        <field name="name">Rosa Ortiz</field>
+        <field name="email">rosa.ortiz@library-demo.es</field>
+        <field name="phone">+34 616 482 919</field>
+    </record>
+    <record id="member_demo_35" model="library.member">
+        <field name="name">Jorge Rubí</field>
+        <field name="email">jorge.rubi@example.com</field>
+        <field name="phone">+34 620 838 767</field>
+    </record>
+    <record id="member_demo_36" model="library.member">
+        <field name="name">Sara Marín</field>
+        <field name="email">sara.marin@example.com</field>
+        <field name="phone">+34 675 817 208</field>
+    </record>
+    <record id="member_demo_37" model="library.member">
+        <field name="name">Raúl Sanz</field>
+        <field name="email">raul.sanz@example.com</field>
+        <field name="phone">+34 627 629 945</field>
+    </record>
+    <record id="member_demo_38" model="library.member">
+        <field name="name">Patricia Núñez</field>
+        <field name="email">patricia.nunez@mail.com</field>
+        <field name="phone">+34 639 933 720</field>
+    </record>
+    <record id="member_demo_39" model="library.member">
+        <field name="name">Enrique Iglesias</field>
+        <field name="email">enrique.iglesias@example.com</field>
+        <field name="phone">+34 618 194 659</field>
+    </record>
+    <record id="member_demo_40" model="library.member">
+        <field name="name">Silvia Medrano</field>
+        <field name="email">silvia.medrano@example.com</field>
+        <field name="phone">+34 637 104 630</field>
+    </record>
+    <record id="member_demo_41" model="library.member">
+        <field name="name">Sergio Garrido</field>
+        <field name="email">sergio.garrido@mail.com</field>
+        <field name="phone">+34 617 227 132</field>
+    </record>
+    <record id="member_demo_42" model="library.member">
+        <field name="name">Teresa Cortes</field>
+        <field name="email">teresa.cortes@mail.com</field>
+        <field name="phone">+34 686 342 978</field>
+    </record>
+    <record id="member_demo_43" model="library.member">
+        <field name="name">Andrés Castillo</field>
+        <field name="email">andres.castillo@example.com</field>
+        <field name="phone">+34 677 656 712</field>
+    </record>
+    <record id="member_demo_44" model="library.member">
+        <field name="name">Verónica Santos</field>
+        <field name="email">veronica.santos@mail.com</field>
+        <field name="phone">+34 695 575 965</field>
+    </record>
+    <record id="member_demo_45" model="library.member">
+        <field name="name">Pablo Lozano</field>
+        <field name="email">pablo.lozano@mail.com</field>
+        <field name="phone">+34 645 119 328</field>
+        <field name="state">suspended</field>
+        <field name="notes">Suspended for late returns (demo).</field>
+    </record>
+    <record id="member_demo_46" model="library.member">
+        <field name="name">Lucía Guerrero</field>
+        <field name="email">lucia.guerrero@library-demo.es</field>
+        <field name="phone">+34 630 882 747</field>
+    </record>
+    <record id="member_demo_47" model="library.member">
+        <field name="name">Iván Cano</field>
+        <field name="email">ivan.cano@mail.com</field>
+        <field name="phone">+34 680 183 758</field>
+    </record>
+    <record id="member_demo_48" model="library.member">
+        <field name="name">Irene Prieto</field>
+        <field name="email">irene.prieto@example.com</field>
+        <field name="phone">+34 699 438 926</field>
+    </record>
+    <record id="member_demo_49" model="library.member">
+        <field name="name">Guillermo Méndez</field>
+        <field name="email">guillermo.mendez@library-demo.es</field>
+        <field name="phone">+34 647 428 865</field>
+    </record>
+    <record id="member_demo_50" model="library.member">
+        <field name="name">Álvaro Cruz</field>
+        <field name="email">alvaro.cruz@library-demo.es</field>
+        <field name="phone">+34 687 311 525</field>
+    </record>
+    <record id="member_demo_51" model="library.member">
+        <field name="name">Mónica Gallego</field>
+        <field name="email">monica.gallego@mail.com</field>
+        <field name="phone">+34 647 923 175</field>
+    </record>
+    <record id="member_demo_52" model="library.member">
+        <field name="name">Tomás Vidal</field>
+        <field name="email">tomas.vidal@example.com</field>
+        <field name="phone">+34 667 662 782</field>
+    </record>
+    <record id="member_demo_53" model="library.member">
+        <field name="name">Natalia Pascual</field>
+        <field name="email">natalia.pascual@example.com</field>
+        <field name="phone">+34 611 294 883</field>
         <field name="state">suspended</field>
         <field name="notes">Suspended for late returns (demo).</field>
     </record>

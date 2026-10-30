@@ -4,17 +4,6 @@ Odoo 17 module to manage a small library: books, authors, categories, members an
 
 Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, QWeb and testing).
 
-## Screenshots
-
-| Home dashboard | Book catalog |
-|---|---|
-<img src="docs/screenshots/dashboard.png" alt="Home dashboard" width="300"> |<img src="docs/screenshots/books-kanban.png" alt="Book Kanban" width="300"> |
-
-| Loan workflow | Contact with Library tab |
-|---|---|
-<img src="docs/screenshots/loan-form.png" alt="Loan List" width="300"> |<img src="docs/screenshots/partner-library.png" alt="Contact Partners" width="300"> |
-
-
 ## Features
 
 - **Books**: title, ISBN, publication year, pages, author, categories, cover image and status (available / borrowed / lost).
@@ -35,23 +24,23 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
-- **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans and a Configuration dropdown (Categories).
+- **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most and least borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
+- **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
-- **Demo data**: categories, authors, books and members. It is only loaded in databases created with demo data.
+- **Demo data**: categories, authors, books, members and ~60 historical loans spread over the last months (so the statistics have something to show). It is only loaded in databases created with demo data.
 
 ## Structure
 
 ```
 library_manager/
 ├── __manifest__.py
-├── models/        author, book, category, member, loan, res_partner
+├── models/        author, book, category, member, loan, res_partner, loan_report (SQL view)
 ├── views/         views (incl. kanban and res.partner inheritance), actions and menus
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
 ├── data/          sequences and demo data
-├── docs/screenshots/   images for readme
 ├── static/src/dashboard/   OWL component, template and styles
-└── tests/         automated tests (52)
+└── tests/         automated tests
 ```
 
 ## Concepts practised
@@ -64,6 +53,7 @@ library_manager/
 - Security groups and `ir.model.access.csv`.
 - OWL 2 client action with the `orm` and `action` services, and SCSS.
 - QWeb PDF reports.
+- Reporting with a SQL-view model (`_auto = False`), graph and pivot views, window functions (`RANK`) for top-N rankings.
 - `TransactionCase` tests, including mocking an external API.
 - Calling an external API with the key stored in `ir.config_parameter`.
 
