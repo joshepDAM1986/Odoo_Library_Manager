@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_library_loan_overdue" model="mail.template">
+        <field name="name">Library: Overdue loan notice</field>
+        <field name="model_id" ref="model_library_loan"/>
+        <field name="subject">Aviso: préstamo vencido - {{ object.book_id.name }}</field>
+        <field name="email_to">{{ object.member_id.email }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hola <t t-out="object.member_id.name or ''"/>,</p>
+                <p>Te avisamos de que ha vencido el plazo de devolución de este libro:</p>
+                <ul>
+                    <li><strong>Libro:</strong> <t t-out="object.book_id.name"/></li>
+                    <li><strong>Préstamo:</strong> <t t-out="object.name"/></li>
+                    <li><strong>Fecha de devolución:</strong> <t t-out="object.due_date"/></li>
+                </ul>
+                <p>Por favor, devuelve el libro o ponte en contacto con la biblioteca si ya lo has devuelto.</p>
+                <p>Gracias,<br/>Biblioteca</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+</odoo>

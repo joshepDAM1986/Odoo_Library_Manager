@@ -22,12 +22,19 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Date constraints: the due date and the return date cannot be earlier than the loan date (the same date is allowed).
   - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
   - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
+  - A daily scheduled job queues one overdue email per loan for members with an email address.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most and least borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
 - **Demo data**: categories, authors, books, members and ~60 historical loans spread over the last months (so the statistics have something to show). It is only loaded in databases created with demo data.
+
+## Overdue email notifications
+
+Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates.
+
+Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail Servers) and make sure the mail queue is running. Loans without a member email are skipped and can be notified later if an address is added.
 
 ## Structure
 
@@ -109,7 +116,6 @@ Notes:
 ## Roadmap
 
 - Late-return penalties (suspend members automatically).
-- Cron job to remind about overdue loans.
 - Record rules / multi-company support.
 - Translations (i18n).
 

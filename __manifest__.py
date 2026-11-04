@@ -11,6 +11,8 @@
         'security/library_security.xml',
         'security/ir.model.access.csv',
         'data/library_sequence.xml',
+        'data/library_mail_template.xml',
+        'data/library_cron.xml',
         'data/library_loan_sequence.xml',
         'views/library_author_views.xml',
         'views/library_book_views.xml',

@@ -33,6 +33,12 @@ class LibraryLoan(models.Model):
 
     return_date = fields.Date(string='Return Date', readonly=True, tracking=True)
 
+    overdue_email_sent_at = fields.Datetime(
+            string='Overdue Email Sent At',
+            readonly=True,
+            copy=False,
+        )
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('ongoing', 'Ongoing'),
@@ -112,3 +118,30 @@ class LibraryLoan(models.Model):
             if loan.state == 'ongoing' and loan.book_id.state == 'borrowed':
                 loan.book_id.action_return()
             loan.state = 'cancelled'
+
+    @api.model
+    def _cron_send_overdue_emails(self):
+        """Queue one overdue notice for each overdue loan with a member email."""
+        today = fields.Date.context_today(self)
+        loans = self.search([
+            ('state', '=', 'ongoing'),
+            ('due_date', '<', today),
+            ('overdue_email_sent_at', '=', False),
+        ])
+        template = self.env.ref(
+            'library_manager.mail_template_library_loan_overdue',
+            raise_if_not_found=False,
+        )
+        if not template:
+            return
+
+        for loan in loans:
+            if not loan.member_id.email:
+                continue
+            mail_id = template.send_mail(
+                loan.id,
+                force_send=False,
+                raise_exception=False,
+            )
+            if mail_id:
+                loan.overdue_email_sent_at = fields.Datetime.now()
