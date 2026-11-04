@@ -59,12 +59,6 @@ class TestLoanReport(TransactionCase):
         average = self._rows(self.average)[0]
         self.assertLess(popular.book_top_rank, average.book_top_rank)
 
-    def test_never_borrowed_book_comes_first_in_least_borrowed(self):
-        self._returned_loan(self.popular)
-        never = self._rows(self.never)[0]
-        popular = self._rows(self.popular)[0]
-        self.assertLess(never.book_low_rank, popular.book_low_rank)
-
     def test_overdue_loan_is_flagged(self):
         loan = self.Loan.create({
             'book_id': self.popular.id,
@@ -82,3 +76,11 @@ class TestLoanReport(TransactionCase):
         # En una vista SQL no hay tabla donde escribir: crear no debe funcionar
         with self.assertRaises(Exception), mute_logger('odoo.sql_db'), self.cr.savepoint():
             self.Report.create({'book_id': self.popular.id})
+
+    def test_top_ranks_are_unique_so_top_n_shows_exactly_n(self):
+        self._returned_loan(self.popular)
+        self._returned_loan(self.average)   # empate: 1 prestamo cada uno
+        self.env.flush_all()
+        ranks = set(self.Report.search([]).mapped('book_top_rank'))
+        total_books = self.env['library.book'].search_count([])
+        self.assertEqual(len(ranks), total_books)

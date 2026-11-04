@@ -53,11 +53,6 @@
               parent="menu_library_reports_popularity"
               action="action_library_report_top_books"
               sequence="10"/>
-    <menuitem id="menu_library_report_least_books"
-              name="Least Borrowed Books"
-              parent="menu_library_reports_popularity"
-              action="action_library_report_least_books"
-              sequence="20"/>
     <menuitem id="menu_library_report_top_authors"
               name="Most Read Authors"
               parent="menu_library_reports_popularity"

@@ -3,6 +3,7 @@
     'version': '17.0.2.0.0',
     'category': 'Services/Library',
     'summary': 'Books, authors, categories, members and loans',
+    'description': 'Books, authors, categories, members, loans, statistics and a PDF report.',
     'author': 'Jose Miguel',
     'sequence': -100,
     'depends': ['base', 'mail'],

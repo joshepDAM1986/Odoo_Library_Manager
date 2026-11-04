@@ -82,18 +82,6 @@
         </field>
     </record>
 
-    <!-- Libros menos prestados (0 = nunca prestado) -->
-    <record id="view_library_loan_report_pivot_least" model="ir.ui.view">
-        <field name="name">library.loan.report.pivot.least</field>
-        <field name="model">library.loan.report</field>
-        <field name="arch" type="xml">
-            <pivot string="Least Borrowed Books" sample="1" disable_linking="1">
-                <field name="book_id" type="row"/>
-                <field name="loan_count" type="measure"/>
-            </pivot>
-        </field>
-    </record>
-
     <!-- ====================== BUSQUEDA ====================== -->
     <record id="view_library_loan_report_search" model="ir.ui.view">
         <field name="name">library.loan.report.search</field>
@@ -205,35 +193,6 @@
         </field>
     </record>
 
-    <!-- Least Borrowed Books: filtros de cuantos elementos mostrar (se pueden cambiar desde la interfaz) -->
-    <record id="view_library_loan_report_search_least" model="ir.ui.view">
-        <field name="name">library.loan.report.search.least</field>
-        <field name="model">library.loan.report</field>
-        <field name="arch" type="xml">
-            <search string="Least Borrowed Books">
-                <field name="book_id"/>
-                <field name="author_id"/>
-                <field name="member_id"/>
-                <separator/>
-                <filter name="bottom_5" string="Bottom 5" domain="[('book_low_rank', '&lt;=', 5)]"/>
-                <filter name="bottom_10" string="Bottom 10" domain="[('book_low_rank', '&lt;=', 10)]"/>
-                <filter name="bottom_20" string="Bottom 20" domain="[('book_low_rank', '&lt;=', 20)]"/>
-                <filter name="bottom_50" string="Bottom 50" domain="[('book_low_rank', '&lt;=', 50)]"/>
-                <separator/>
-                <filter name="filter_ongoing" string="Ongoing" domain="[('loan_state', '=', 'ongoing')]"/>
-                <filter name="filter_returned" string="Returned" domain="[('loan_state', '=', 'returned')]"/>
-                <filter name="filter_overdue" string="Overdue" domain="[('overdue_count', '>', 0)]"/>
-                <group expand="0" string="Group By">
-                    <filter name="group_book" string="Book" context="{'group_by': 'book_id'}"/>
-                    <filter name="group_author" string="Author" context="{'group_by': 'author_id'}"/>
-                    <filter name="group_member" string="Member" context="{'group_by': 'member_id'}"/>
-                    <filter name="group_month" string="Month" context="{'group_by': 'loan_date:month'}"/>
-                    <filter name="group_status" string="Status" context="{'group_by': 'loan_state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
     <!-- ======================= ACCIONES ===================== -->
 
     <record id="action_library_report_months" model="ir.actions.act_window">
@@ -263,20 +222,6 @@
         <field name="view_mode">graph</field>
         <field name="view_id" ref="view_library_loan_report_graph_top_books"/>
         <field name="act_window_id" ref="action_library_report_top_books"/>
-    </record>
-
-    <record id="action_library_report_least_books" model="ir.actions.act_window">
-        <field name="name">Least Borrowed Books</field>
-        <field name="res_model">library.loan.report</field>
-        <field name="view_mode">pivot</field>
-        <field name="search_view_id" ref="view_library_loan_report_search_least"/>
-        <field name="context">{'search_default_bottom_10': 1}</field>
-    </record>
-    <record id="action_library_report_least_books_pivot" model="ir.actions.act_window.view">
-        <field name="sequence">1</field>
-        <field name="view_mode">pivot</field>
-        <field name="view_id" ref="view_library_loan_report_pivot_least"/>
-        <field name="act_window_id" ref="action_library_report_least_books"/>
     </record>
 
     <record id="action_library_report_top_authors" model="ir.actions.act_window">

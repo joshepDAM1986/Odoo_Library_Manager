@@ -38,11 +38,12 @@ class LibraryLoanReport(models.Model):
     days_late = fields.Float(
         string='Avg Days Late', readonly=True, digits=(16, 1), group_operator='avg')
 
-    # Posiciones en los "rankings" (1 = el mas prestado). Solo se usan en los
-    # dominios de las acciones para quedarse con el top 10 y que los graficos
-    # sean legibles aunque haya miles de libros.
+    # Posiciones en los "rankings" (1 = el mas prestado). Se usan en los filtros
+    # "Top N" para que los graficos sean legibles aunque haya miles de libros.
+    # Son posiciones UNICAS (ROW_NUMBER): "Top 10" muestra exactamente 10. Si hay
+    # empate, desempata el id. Con RANK() los empates compartirian posicion y
+    # el "Top 10" podria mostrar 13 elementos.
     book_top_rank = fields.Integer(string='Book Rank (most borrowed)', readonly=True, group_operator='min')
-    book_low_rank = fields.Integer(string='Book Rank (least borrowed)', readonly=True, group_operator='min')
     author_rank = fields.Integer(string='Author Rank', readonly=True, group_operator='min')
     member_rank = fields.Integer(string='Member Rank', readonly=True, group_operator='min')
 
@@ -57,20 +58,19 @@ class LibraryLoanReport(models.Model):
             ),
             book_ranks AS (
                 SELECT book_id,
-                       RANK() OVER (ORDER BY total DESC) AS top_rank,
-                       ROW_NUMBER() OVER (ORDER BY total ASC, book_id) AS low_rank
+                       ROW_NUMBER() OVER (ORDER BY total DESC, book_id) AS top_rank
                   FROM book_totals
             ),
             author_ranks AS (
                 SELECT author_id,
-                       RANK() OVER (ORDER BY SUM(total) DESC) AS author_rank
+                       ROW_NUMBER() OVER (ORDER BY SUM(total) DESC, author_id) AS author_rank
                   FROM book_totals
                  WHERE author_id IS NOT NULL
               GROUP BY author_id
             ),
             member_ranks AS (
                 SELECT member_id,
-                       RANK() OVER (ORDER BY COUNT(*) DESC) AS member_rank
+                       ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC, member_id) AS member_rank
                   FROM library_loan
                  WHERE state IN ('ongoing', 'returned')
               GROUP BY member_id
@@ -92,7 +92,6 @@ class LibraryLoanReport(models.Model):
                      ELSE GREATEST(COALESCE(l.return_date, CURRENT_DATE) - l.due_date, 0)
                 END AS days_late,
                 br.top_rank AS book_top_rank,
-                br.low_rank AS book_low_rank,
                 ar.author_rank AS author_rank,
                 mr.member_rank AS member_rank
               FROM library_book b
