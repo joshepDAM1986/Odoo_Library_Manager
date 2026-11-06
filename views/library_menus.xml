@@ -4,9 +4,9 @@
          Los menus que cuelgan directamente de la raiz salen como pestañas
          en la barra superior. Se abre el de sequence mas bajo (Home). -->
     <menuitem id="menu_library_root"
-              name="Library"
-              groups="library_manager.group_library_user"
-              sequence="10"/>
+          name="Library"
+          groups="library_manager.group_library_user"
+          sequence="10"/>
 
     <menuitem id="menu_library_home"
               name="Home"

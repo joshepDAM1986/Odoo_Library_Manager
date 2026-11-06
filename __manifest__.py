@@ -7,6 +7,7 @@
     'author': 'Jose Miguel',
     'sequence': -100,
     'depends': ['base', 'mail'],
+    'icon': '/library_manager/static/description/icon_v2.png',
     'data': [
         'security/library_security.xml',
         'security/ir.model.access.csv',
