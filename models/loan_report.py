@@ -30,6 +30,7 @@ class LibraryLoanReport(models.Model):
     loan_state = fields.Selection([
         ('ongoing', 'Ongoing'),
         ('returned', 'Returned'),
+        ('lost', 'Lost'),
     ], string='Loan Status', readonly=True)
 
     # Medidas (lo que se suma / promedia en los graficos)
@@ -53,7 +54,7 @@ class LibraryLoanReport(models.Model):
                 SELECT b.id AS book_id, b.author_id AS author_id, COUNT(l.id) AS total
                   FROM library_book b
              LEFT JOIN library_loan l
-                    ON l.book_id = b.id AND l.state IN ('ongoing', 'returned')
+                    ON l.book_id = b.id AND l.state IN ('ongoing', 'returned', 'lost')
               GROUP BY b.id, b.author_id
             ),
             book_ranks AS (
@@ -72,7 +73,7 @@ class LibraryLoanReport(models.Model):
                 SELECT member_id,
                        ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC, member_id) AS member_rank
                   FROM library_loan
-                 WHERE state IN ('ongoing', 'returned')
+                 WHERE state IN ('ongoing', 'returned', 'lost')
               GROUP BY member_id
             )
             SELECT
@@ -88,7 +89,7 @@ class LibraryLoanReport(models.Model):
                 CASE WHEN l.id IS NULL THEN 0 ELSE 1 END AS loan_count,
                 CASE WHEN l.state = 'ongoing' AND l.due_date < CURRENT_DATE
                      THEN 1 ELSE 0 END AS overdue_count,
-                CASE WHEN l.id IS NULL THEN NULL
+                CASE WHEN l.id IS NULL OR l.state = 'lost' THEN NULL
                      ELSE GREATEST(COALESCE(l.return_date, CURRENT_DATE) - l.due_date, 0)
                 END AS days_late,
                 br.top_rank AS book_top_rank,
@@ -98,7 +99,7 @@ class LibraryLoanReport(models.Model):
               JOIN book_ranks br ON br.book_id = b.id
          LEFT JOIN author_ranks ar ON ar.author_id = b.author_id
          LEFT JOIN library_loan l
-                ON l.book_id = b.id AND l.state IN ('ongoing', 'returned')
+                ON l.book_id = b.id AND l.state IN ('ongoing', 'returned', 'lost')
          LEFT JOIN member_ranks mr ON mr.member_id = l.member_id
         """
 

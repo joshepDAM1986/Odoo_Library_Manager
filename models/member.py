@@ -45,8 +45,11 @@ class LibraryMember(models.Model):
 
     @api.depends('loan_ids')
     def _compute_loan_count(self):
+        data = self.env['library.loan']._read_group(
+            [('member_id', 'in', self.ids)], ['member_id'], ['__count'])
+        counts = {member.id: count for member, count in data}
         for member in self:
-            member.loan_count = len(member.loan_ids)
+            member.loan_count = counts.get(member.id, 0)
 
     @api.depends('name', 'state')
     def _compute_display_name(self):

@@ -1,7 +1,7 @@
 __pycache__/
-config/
 *.pyc
 *.pyo
 .vscode/
 *.log
 *.zip
+config/odoo.conf

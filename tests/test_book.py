@@ -67,3 +67,7 @@ class TestBookStates(TransactionCase):
     def test_pages_cannot_be_negative(self):
         with self.assertRaises(IntegrityError), mute_logger('odoo.sql_db'), self.cr.savepoint():
             self.Book.create({'name': 'Negative book', 'pages': -5})
+
+    def test_ancient_publication_year_is_accepted(self):
+        book = self.Book.create({'name': 'Ancient epic', 'publication_year': -800})
+        self.assertEqual(book.publication_year, -800)

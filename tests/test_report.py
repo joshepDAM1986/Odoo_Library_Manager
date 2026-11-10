@@ -84,3 +84,16 @@ class TestLoanReport(TransactionCase):
         ranks = set(self.Report.search([]).mapped('book_top_rank'))
         total_books = self.env['library.book'].search_count([])
         self.assertEqual(len(ranks), total_books)
+
+    def test_lost_loans_are_counted_without_growing_late_days(self):
+        loan = self.Loan.create({
+            'book_id': self.average.id,
+            'member_id': self.member.id,
+            'loan_date': self.today - timedelta(days=10),
+            'due_date': self.today - timedelta(days=3),
+        })
+        loan.action_confirm()
+        self.average.action_mark_lost()
+        rows = self._rows(self.average)
+        self.assertEqual(sum(rows.mapped('loan_count')), 1)
+        self.assertIn('lost', rows.mapped('loan_state'))

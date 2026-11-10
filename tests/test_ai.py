@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import TransactionCase
 
 POST = 'odoo.addons.library_manager.models.book.requests.post'
@@ -143,3 +143,32 @@ class TestSuggestCategories(TransactionCase):
         with patch(POST, side_effect=requests.exceptions.ConnectionError()):
             with self.assertRaises(UserError):
                 self.book.action_suggest_categories()
+
+    # --- permisos ---------------------------------------------------------
+    def _user_in_group(self, login, group_xmlid):
+        return self.env['res.users'].create({
+            'name': login,
+            'login': login,
+            'groups_id': [(6, 0, [
+                self.env.ref('base.group_user').id,
+                self.env.ref(group_xmlid).id,
+            ])],
+        })
+
+    def test_reader_cannot_use_ai_suggestion(self):
+        self._set_params()
+        reader = self._user_in_group(
+            'reader_ai_test', 'library_manager.group_library_user')
+        with patch(POST) as mock_post:
+            with self.assertRaises(AccessError):
+                self.book.with_user(reader).action_suggest_categories()
+        # La comprobación va antes de la llamada de pago
+        mock_post.assert_not_called()
+
+    def test_librarian_can_use_ai_suggestion(self):
+        self._set_params()
+        librarian = self._user_in_group(
+            'librarian_ai_test', 'library_manager.group_library_manager')
+        with patch(POST, return_value=gemini_response('["Test Fiction"]')):
+            self.book.with_user(librarian).action_suggest_categories()
+        self.assertIn(self.fiction, self.book.category_ids)

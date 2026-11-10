@@ -1,12 +1,13 @@
 {
     'name': 'Library Manager',
-    'version': '17.0.2.0.0',
+    'version': '17.0.2.1.0',
     'category': 'Services/Library',
     'summary': 'Books, authors, categories, members and loans',
     'description': 'Books, authors, categories, members, loans, statistics and a PDF report.',
     'author': 'Jose Miguel',
     'sequence': -100,
     'depends': ['base', 'mail'],
+    'external_dependencies': {'python': ['requests']},
     'icon': '/library_manager/static/description/icon_v2.png',
     'data': [
         'security/library_security.xml',

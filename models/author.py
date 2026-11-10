@@ -33,8 +33,11 @@ class LibraryAuthor(models.Model):
 
     @api.depends('book_ids')
     def _compute_book_count(self):
+        data = self.env['library.book']._read_group(
+            [('author_id', 'in', self.ids)], ['author_id'], ['__count'])
+        counts = {author.id: count for author, count in data}
         for author in self:
-            author.book_count = len(author.book_ids)
+            author.book_count = counts.get(author.id, 0)
 
     @api.depends('book_ids.pages')
     def _compute_total_pages(self):

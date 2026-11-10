@@ -18,7 +18,8 @@
                 <field name="state" widget="badge"
                        decoration-info="state == 'draft'"
                        decoration-warning="state == 'ongoing'"
-                       decoration-success="state == 'returned'"/>
+                       decoration-success="state == 'returned'"
+                       decoration-danger="state == 'lost'"/>
             </tree>
         </field>
     </record>
@@ -54,6 +55,10 @@
                          invisible="state != 'ongoing' or days_overdue == 0">
                         This loan is overdue.
                     </div>
+                    <div class="alert alert-danger" role="alert"
+                         invisible="state != 'lost'">
+                        The book was lost during this loan.
+                    </div>
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
@@ -64,7 +69,7 @@
                         </group>
                         <group>
                             <field name="loan_date" readonly="state != 'draft'"/>
-                            <field name="due_date" readonly="state in ('returned', 'cancelled')"/>
+                            <field name="due_date" readonly="state in ('returned', 'cancelled', 'lost')"/>
                             <field name="return_date"/>
                             <field name="days_overdue"/>
                         </group>
@@ -94,6 +99,7 @@
                         domain="[('state', '=', 'ongoing'), ('due_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="returned_loans" string="Returned" domain="[('state', '=', 'returned')]"/>
                 <filter name="filter_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter name="filter_lost" string="Lost" domain="[('state', '=', 'lost')]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
                     <filter name="group_by_member" string="Member" context="{'group_by': 'member_id'}"/>

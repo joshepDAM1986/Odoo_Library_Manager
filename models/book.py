@@ -6,7 +6,7 @@ from datetime import date
 import requests
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 _logger = logging.getLogger(__name__)
@@ -124,8 +124,12 @@ class LibraryBook(models.Model):
     # Campos calculados y dependientes de otros campos
     @api.depends("loan_ids")
     def _compute_loan_count(self):
+        data = self.env["library.loan"]._read_group(
+            [("book_id", "in", self.ids)], ["book_id"], ["__count"]
+        )
+        counts = {book.id: count for book, count in data}
         for book in self:
-            book.loan_count = len(book.loan_ids)
+            book.loan_count = counts.get(book.id, 0)
 
     # Restricciones de validación para garantizar la coherencia de los datos
     @api.constrains("publication_year")
@@ -133,13 +137,11 @@ class LibraryBook(models.Model):
         current_year = date.today().year
 
         for book in self:
-            if book.publication_year and not (
-                1000 <= book.publication_year <= current_year
-            ):
+            if book.publication_year and book.publication_year > current_year:
                 raise ValidationError(
                     _(
-                        "The publication year must be "
-                        "between 1000 and %s."
+                        "The publication year cannot be "
+                        "later than %s."
                     ) % current_year
                 )
 
@@ -175,6 +177,13 @@ class LibraryBook(models.Model):
                 _("This book is already marked as lost.")
             )
 
+        # El préstamo en curso de estos libros pasa a "perdido": queda
+        # constancia de quién lo tenía y ya no se puede devolver.
+        self.env["library.loan"].search([
+            ("book_id", "in", self.ids),
+            ("state", "=", "ongoing"),
+        ]).write({"state": "lost"})
+
         self.write({"state": "lost"})
 
     def action_recover(self):
@@ -208,6 +217,16 @@ class LibraryBook(models.Model):
     # Acción para sugerir categorías usando la API de Gemini
     def action_suggest_categories(self):
         self.ensure_one()
+
+        # Solo los bibliotecarios pueden gastar cuota de la API. El botón ya
+        # está oculto con groups=, pero un método público se puede llamar por
+        # RPC: la comprobación tiene que estar también en el servidor.
+        if not self.env.su and not self.env.user.has_group(
+            "library_manager.group_library_manager"
+        ):
+            raise AccessError(
+                _("Only librarians can use the AI category suggestion.")
+            )
 
         # Obtener configuración de Odoo
         params = self.env[

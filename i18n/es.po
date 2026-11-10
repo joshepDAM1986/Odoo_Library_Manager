@@ -1,0 +1,1873 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* library_manager
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0-20260908\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-10 11:20+0000\n"
+"PO-Revision-Date: 2026-11-10 11:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/member.py:0
+#, python-format
+msgid "%s (Suspended)"
+msgstr "%s (Suspendido)"
+
+#. module: library_manager
+#: model:ir.actions.report,print_report_name:library_manager.action_report_library_author
+msgid "'Author - %s' % (object.name)"
+msgstr "'Autor - %s' % (object.name)"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__type
+msgid ""
+"- Contact: Use this to organize the contact details of employees of a given company (e.g. CEO, CFO, ...).\n"
+"- Invoice Address: Preferred address for all invoices. Selected by default when you invoice an order that belongs to this company.\n"
+"- Delivery Address: Preferred address for all deliveries. Selected by default when you deliver an order that belongs to this company.\n"
+"- Other: Other address for the company (e.g. subsidiary, ...)"
+msgstr ""
+"- Contacto: sirve para organizar los datos de contacto de los empleados de una empresa (p. ej., director general, director financiero...).\n"
+"- Dirección de facturación: dirección preferida para todas las facturas. Se selecciona por defecto al facturar un pedido de esta empresa.\n"
+"- Dirección de entrega: dirección preferida para todas las entregas. Se selecciona por defecto al entregar un pedido de esta empresa.\n"
+"- Otra: otra dirección de la empresa (p. ej., una filial...)"
+
+#. module: library_manager
+#: model:mail.template,body_html:library_manager.mail_template_library_loan_overdue
+msgid ""
+"<div>\n"
+"                <p>Hello <t t-out=\"object.member_id.name or ''\"></t>,</p>\n"
+"                <p>The return deadline for the following book has passed:</p>\n"
+"                <ul>\n"
+"                    <li><strong>Book:</strong> <t t-out=\"object.book_id.name\"></t></li>\n"
+"                    <li><strong>Loan:</strong> <t t-out=\"object.name\"></t></li>\n"
+"                    <li><strong>Due date:</strong> <t t-out=\"object.due_date\"></t></li>\n"
+"                </ul>\n"
+"                <p>Please return the book, or contact the library if you already did.</p>\n"
+"                <p>Thank you,<br>The Library</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Hola <t t-out=\"object.member_id.name or ''\"></t>,</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Te avisamos de que ha vencido el plazo de devolución de este libro:</p>\n"
+"                <ul style=\"padding:0 0 0 32px;margin:0px 0 16px 0;box-sizing:border-box;list-style-type:disc;\">\n"
+"                    <li><strong style=\"box-sizing:border-box;font-weight:bolder;\">Libro:</strong> <t t-out=\"object.book_id.name\"></t></li>\n"
+"                    <li><strong style=\"box-sizing:border-box;font-weight:bolder;\">Préstamo:</strong> <t t-out=\"object.name\"></t></li>\n"
+"                    <li><strong style=\"box-sizing:border-box;font-weight:bolder;\">Fecha límite:</strong> <t t-out=\"object.due_date\"></t></li>\n"
+"                </ul>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Por favor, devuelve el libro o ponte en contacto con la biblioteca si ya lo has devuelto.</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Gracias,<br>Biblioteca</p>\n"
+"            </div>\n"
+"        "
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "<i class=\"fa fa-calendar me-1\" title=\"Year\"/>"
+msgstr "<i class=\"fa fa-calendar me-1\" title=\"Año\"/>"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "<i class=\"fa fa-user me-1\" title=\"Author\"/>"
+msgstr "<i class=\"fa fa-user me-1\" title=\"Autor\"/>"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "<strong>Total:</strong>"
+msgstr "<strong>Total:</strong>"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "AI Category Suggestion"
+msgstr "Sugerencia de categorías con IA"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_needaction
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_needaction
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_needaction
+msgid "Action Needed"
+msgstr "Acción necesaria"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+msgid "Activate"
+msgstr "Activar"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__active
+#: model:ir.model.fields.selection,name:library_manager.selection__library_member__state__active
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Active"
+msgstr "Activo"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__active_lang_count
+msgid "Active Lang Count"
+msgstr "Nº de idiomas activos"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "Active members"
+msgstr "Socios activos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: library_manager
+#: model:ir.ui.menu,name:library_manager.menu_library_reports_activity
+msgid "Activity"
+msgstr "Actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Decoración de la excepción de actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Icono del tipo de actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__type
+msgid "Address Type"
+msgstr "Tipo de dirección"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__lang
+msgid "All the emails and documents sent to this contact will be translated in this language."
+msgstr "Todos los correos y documentos enviados a este contacto se traducirán a este idioma."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_attachment_count
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_attachment_count
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_attachment_count
+msgid "Attachment Count"
+msgstr "Nº de archivos adjuntos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__author_id
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__author_id
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Author"
+msgstr "Autor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__name
+msgid "Author Name"
+msgstr "Nombre del autor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__author_rank
+msgid "Author Rank"
+msgstr "Posición del autor"
+
+#. module: library_manager
+#: model:ir.actions.report,name:library_manager.action_report_library_author
+msgid "Author Sheet"
+msgstr "Ficha de autor"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_author
+#: model:ir.ui.menu,name:library_manager.menu_library_author
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_tree
+msgid "Authors"
+msgstr "Autores"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_book__state__available
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#, python-format
+msgid "Available"
+msgstr "Disponible"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__avatar_1920
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__avatar_1024
+msgid "Avatar 1024"
+msgstr "Avatar 1024"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__avatar_128
+msgid "Avatar 128"
+msgstr "Avatar 128"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__avatar_256
+msgid "Avatar 256"
+msgstr "Avatar 256"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__avatar_512
+msgid "Avatar 512"
+msgstr "Avatar 512"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__days_late
+msgid "Avg Days Late"
+msgstr "Media de días de retraso"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__bank_ids
+msgid "Banks"
+msgstr "Bancos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__barcode
+msgid "Barcode"
+msgstr "Código de barras"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__bio
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+msgid "Biography"
+msgstr "Biografía"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__birth_date
+msgid "Birth Date"
+msgstr "Fecha de nacimiento"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__is_blacklisted
+msgid "Blacklist"
+msgstr "Lista negra"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__book_id
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__book_id
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+msgid "Book"
+msgstr "Libro"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__book_count
+msgid "Book Count"
+msgstr "Nº de libros"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__book_top_rank
+msgid "Book Rank (most borrowed)"
+msgstr "Posición del libro (más prestados)"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__name
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Book Title"
+msgstr "Título del libro"
+
+#. module: library_manager
+#. odoo-javascript
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.actions.act_window,name:library_manager.action_library_book
+#: model:ir.model.fields,field_description:library_manager.field_library_author__book_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_category__book_ids
+#: model:ir.ui.menu,name:library_manager.menu_library_book
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_tree
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_category_form
+#, python-format
+msgid "Books"
+msgstr "Libros"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "Born:"
+msgstr "Nacimiento:"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_book__state__borrowed
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#, python-format
+msgid "Borrowed"
+msgstr "Prestado"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_bounce
+msgid "Bounce"
+msgstr "Rebotes"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: library_manager
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan__state__cancelled
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_category
+#: model:ir.model.fields,field_description:library_manager.field_library_book__category_ids
+#: model:ir.ui.menu,name:library_manager.menu_library_category
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_category_tree
+msgid "Categories"
+msgstr "Categorías"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Categories added: %s"
+msgstr "Categorías añadidas: %s"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_category_form
+msgid "Category"
+msgstr "Categoría"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_category__name
+msgid "Category Name"
+msgstr "Nombre de la categoría"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__channel_ids
+msgid "Channels"
+msgstr "Canales"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__is_company
+msgid "Check if the contact is a company, otherwise it is a person"
+msgstr "Marca esta casilla si el contacto es una empresa; si no, es una persona."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__employee
+msgid "Check this box if this contact is an Employee."
+msgstr "Marca esta casilla si este contacto es un empleado."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__city
+msgid "City"
+msgstr "Ciudad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_category__color
+#: model:ir.model.fields,field_description:library_manager.field_library_member__color
+msgid "Color Index"
+msgstr "Índice de color"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__commercial_partner_id
+msgid "Commercial Entity"
+msgstr "Entidad comercial"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__company_id
+msgid "Company"
+msgstr "Empresa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__company_registry
+msgid "Company ID"
+msgstr "ID de la empresa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__company_name
+msgid "Company Name"
+msgstr "Nombre de la empresa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__commercial_company_name
+msgid "Company Name Entity"
+msgstr "Nombre de la entidad comercial"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__company_type
+msgid "Company Type"
+msgstr "Tipo de empresa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__contact_address
+msgid "Complete Address"
+msgstr "Dirección completa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__complete_name
+msgid "Complete Name"
+msgstr "Nombre completo"
+
+#. module: library_manager
+#: model:ir.ui.menu,name:library_manager.menu_library_config
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_res_partner
+#: model:ir.model.fields,field_description:library_manager.field_library_member__child_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_id
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Could not connect to Gemini. Check the server internet connection."
+msgstr "No se pudo conectar con Gemini. Comprueba la conexión a internet del servidor."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__message_bounce
+msgid "Counter of the number of bounced emails for this contact"
+msgstr "Contador de correos rebotados de este contacto"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__country_id
+msgid "Country"
+msgstr "País"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__country_code
+msgid "Country Code"
+msgstr "Código de país"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "Cover"
+msgstr "Portada"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__cover_image
+msgid "Cover Image"
+msgstr "Imagen de portada"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__cover_image_128
+msgid "Cover Thumbnail"
+msgstr "Miniatura de portada"
+
+#. module: library_manager
+#: model:ir.actions.server,name:library_manager.action_partner_create_library_member
+msgid "Create library member"
+msgstr "Crear socio de la biblioteca"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__create_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_book__create_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_category__create_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__create_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_member__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__create_date
+#: model:ir.model.fields,field_description:library_manager.field_library_book__create_date
+#: model:ir.model.fields,field_description:library_manager.field_library_category__create_date
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__create_date
+#: model:ir.model.fields,field_description:library_manager.field_library_member__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__days_overdue
+msgid "Days Overdue"
+msgstr "Días de retraso"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "Delete"
+msgstr "Eliminar"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__description
+#: model:ir.model.fields,field_description:library_manager.field_library_category__description
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_category_form
+msgid "Description"
+msgstr "Descripción"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__display_name
+#: model:ir.model.fields,field_description:library_manager.field_library_book__display_name
+#: model:ir.model.fields,field_description:library_manager.field_library_category__display_name
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__display_name
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__display_name
+#: model:ir.model.fields,field_description:library_manager.field_library_member__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: library_manager
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan__state__draft
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "Dropdown menu"
+msgstr "Menú desplegable"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__due_date
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__due_date
+msgid "Due Date"
+msgstr "Fecha límite"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+msgid "Edit"
+msgstr "Editar"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__partner_share
+msgid "Either customer (not a user), either shared user. Indicated the current partner is a customer without access or with a limited access created for sharing data."
+msgstr "Cliente (no usuario) o usuario compartido. Indica que el contacto actual es un cliente sin acceso, o con un acceso limitado creado para compartir datos."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__email
+msgid "Email"
+msgstr "Correo electrónico"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_follower_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_follower_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_partner_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_partner_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (contactos)"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Icono de Font Awesome, p. ej. fa-tasks"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__email_formatted
+msgid "Format email address \"Name <email@domain>\""
+msgstr "Formato de la dirección de correo \"Nombre <correo@dominio>\""
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__email_formatted
+msgid "Formatted Email"
+msgstr "Correo con formato"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini API authentication or permission error.\n"
+"\n"
+"Check your API key and project permissions.\n"
+"\n"
+"%s"
+msgstr ""
+"Error de autenticación o de permisos en la API de Gemini.\n"
+"\n"
+"Comprueba tu clave de API y los permisos del proyecto.\n"
+"\n"
+"%s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini API error (HTTP %s):\n"
+"%s"
+msgstr ""
+"Error de la API de Gemini (HTTP %s):\n"
+"%s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini API quota or rate limit exceeded.\n"
+"\n"
+"%s"
+msgstr ""
+"Se ha superado la cuota o el límite de peticiones de la API de Gemini.\n"
+"\n"
+"%s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Gemini did not respond within 30 seconds. Please try again."
+msgstr "Gemini no respondió en 30 segundos. Inténtalo de nuevo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Gemini did not suggest any matching categories."
+msgstr "Gemini no sugirió ninguna categoría coincidente."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini model '%s' was not found or is not available for your API key.\n"
+"\n"
+"Configure a supported model in:\n"
+"library_manager.gemini_model\n"
+"\n"
+"Google response: %s"
+msgstr ""
+"El modelo de Gemini '%s' no se encontró o no está disponible para tu clave de API.\n"
+"\n"
+"Configura un modelo compatible en:\n"
+"library_manager.gemini_model\n"
+"\n"
+"Respuesta de Google: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini rejected the request.\n"
+"\n"
+"%s"
+msgstr ""
+"Gemini rechazó la solicitud.\n"
+"\n"
+"%s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"Gemini returned an invalid category response.\n"
+"\n"
+"Details: %s"
+msgstr ""
+"Gemini devolvió una respuesta de categorías no válida.\n"
+"\n"
+"Detalles: %s"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "General Information"
+msgstr "Información general"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_latitude
+msgid "Geo Latitude"
+msgstr "Latitud geográfica"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_longitude
+msgid "Geo Longitude"
+msgstr "Longitud geográfica"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__has_message
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__has_message
+#: model:ir.model.fields,field_description:library_manager.field_library_member__has_message
+msgid "Has Message"
+msgstr "Tiene mensaje"
+
+#. module: library_manager
+#: model:ir.actions.client,name:library_manager.action_library_dashboard
+#: model:ir.ui.menu,name:library_manager.menu_library_home
+msgid "Home"
+msgstr "Inicio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__id
+#: model:ir.model.fields,field_description:library_manager.field_library_book__id
+#: model:ir.model.fields,field_description:library_manager.field_library_category__id
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__id
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__id
+#: model:ir.model.fields,field_description:library_manager.field_library_member__id
+msgid "ID"
+msgstr "ID"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__im_status
+msgid "IM Status"
+msgstr "Estado de mensajería"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__isbn
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "ISBN"
+msgstr "ISBN"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_exception_icon
+msgid "Icon"
+msgstr "Icono"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icono que indica una actividad de excepción."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_book__message_needaction
+#: model:ir.model.fields,help:library_manager.field_library_loan__message_needaction
+#: model:ir.model.fields,help:library_manager.field_library_member__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado, hay mensajes nuevos que requieren tu atención."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_book__message_has_error
+#: model:ir.model.fields,help:library_manager.field_library_loan__message_has_error
+#: model:ir.model.fields,help:library_manager.field_library_member__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, algunos mensajes tienen un error de entrega."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__is_blacklisted
+msgid "If the email address is on the blacklist, the contact won't receive mass mailing anymore, from any list"
+msgstr "Si la dirección de correo está en la lista negra, el contacto dejará de recibir correos masivos, de cualquier lista."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__image_1920
+msgid "Image"
+msgstr "Imagen"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__image_1024
+msgid "Image 1024"
+msgstr "Imagen 1024"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__image_128
+msgid "Image 128"
+msgstr "Imagen 128"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__image_256
+msgid "Image 256"
+msgstr "Imagen 256"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__image_512
+msgid "Image 512"
+msgstr "Imagen 512"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__industry_id
+msgid "Industry"
+msgstr "Sector"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__contact_address_inline
+msgid "Inlined Complete Address"
+msgstr "Dirección completa en una línea"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Invalid Gemini model configuration."
+msgstr "Configuración del modelo de Gemini no válida."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_is_follower
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_is_follower
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_is_follower
+msgid "Is Follower"
+msgstr "Es seguidor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__is_public
+msgid "Is Public"
+msgstr "Es público"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__is_company
+msgid "Is a Company"
+msgstr "Es una empresa"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__function
+msgid "Job Position"
+msgstr "Puesto de trabajo"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__join_date
+msgid "Join Date"
+msgstr "Fecha de alta"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__lang
+msgid "Language"
+msgstr "Idioma"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__write_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_book__write_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_category__write_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__write_uid
+#: model:ir.model.fields,field_description:library_manager.field_library_member__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__write_date
+#: model:ir.model.fields,field_description:library_manager.field_library_book__write_date
+#: model:ir.model.fields,field_description:library_manager.field_library_category__write_date
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__write_date
+#: model:ir.model.fields,field_description:library_manager.field_library_member__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: library_manager
+#: model:ir.ui.menu,name:library_manager.menu_library_root
+#: model_terms:ir.ui.view,arch_db:library_manager.view_partner_form_library
+msgid "Library"
+msgstr "Biblioteca"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_author
+msgid "Library Author"
+msgstr "Autor de la biblioteca"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_book
+msgid "Library Book"
+msgstr "Libro de la biblioteca"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_category
+msgid "Library Category"
+msgstr "Categoría de la biblioteca"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_loan
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "Library Loan"
+msgstr "Préstamo de la biblioteca"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_loan
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_tree
+msgid "Library Loans"
+msgstr "Préstamos de la biblioteca"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.xml:0
+#, python-format
+msgid "Library Manager"
+msgstr "Gestor de biblioteca"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_member
+msgid "Library Member"
+msgstr "Socio de la biblioteca"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_partner.py:0
+#, python-format
+msgid "Library Members"
+msgstr "Socios de la biblioteca"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_partner.py:0
+#: model:ir.model.fields,field_description:library_manager.field_library_member__member_ids
+#: model:ir.model.fields,field_description:library_manager.field_res_partner__member_ids
+#: model:ir.model.fields,field_description:library_manager.field_res_users__member_ids
+#, python-format
+msgid "Library Memberships"
+msgstr "Membresías de la biblioteca"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__library_member_count
+#: model:ir.model.fields,field_description:library_manager.field_res_partner__library_member_count
+#: model:ir.model.fields,field_description:library_manager.field_res_users__library_member_count
+msgid "Library Memberships Count"
+msgstr "Nº de membresías de la biblioteca"
+
+#. module: library_manager
+#: model:res.groups,name:library_manager.group_library_manager
+msgid "Library: Librarian"
+msgstr "Biblioteca: Bibliotecario"
+
+#. module: library_manager
+#: model:mail.template,name:library_manager.mail_template_library_loan_overdue
+msgid "Library: Overdue loan notice"
+msgstr "Biblioteca: Aviso de préstamo vencido"
+
+#. module: library_manager
+#: model:res.groups,name:library_manager.group_library_user
+msgid "Library: Reader"
+msgstr "Biblioteca: Lector"
+
+#. module: library_manager
+#: model:ir.actions.server,name:library_manager.ir_cron_library_overdue_email_ir_actions_server
+msgid "Library: Send overdue emails"
+msgstr "Biblioteca: Enviar avisos de retraso"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_id
+msgid "Loan"
+msgstr "Préstamo"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_analysis
+#: model:ir.ui.menu,name:library_manager.menu_library_report_analysis
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_pivot
+msgid "Loan Analysis"
+msgstr "Análisis de préstamos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__loan_count
+#: model:ir.model.fields,field_description:library_manager.field_library_member__loan_count
+msgid "Loan Count"
+msgstr "Nº de préstamos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__loan_date
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_date
+msgid "Loan Date"
+msgstr "Fecha del préstamo"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__name
+msgid "Loan Reference"
+msgstr "Referencia del préstamo"
+
+#. module: library_manager
+#: model:ir.model,name:library_manager.model_library_loan_report
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+msgid "Loan Statistics"
+msgstr "Estadísticas de préstamos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_state
+msgid "Loan Status"
+msgstr "Estado del préstamo"
+
+#. module: library_manager
+#. odoo-javascript
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/member.py:0
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields,field_description:library_manager.field_library_book__loan_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_count
+#: model:ir.model.fields,field_description:library_manager.field_library_member__loan_ids
+#: model:ir.ui.menu,name:library_manager.menu_library_loan
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+#, python-format
+msgid "Loans"
+msgstr "Préstamos"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_status
+#: model:ir.ui.menu,name:library_manager.menu_library_report_status
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_graph_status
+msgid "Loans by Status"
+msgstr "Préstamos por estado"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_months
+#: model:ir.ui.menu,name:library_manager.menu_library_report_months
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_graph_months
+msgid "Loans per Month"
+msgstr "Préstamos por mes"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_graph_top_authors
+msgid "Loans per Month by Author"
+msgstr "Préstamos por mes por autor"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_graph_top_books
+msgid "Loans per Month by Book"
+msgstr "Préstamos por mes por libro"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_graph_top_readers
+msgid "Loans per Month by Member"
+msgstr "Préstamos por mes por socio"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_book__state__lost
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan__state__lost
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan_report__loan_state__lost
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#, python-format
+msgid "Lost"
+msgstr "Perdido"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Mark as Lost"
+msgstr "Marcar como perdido"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__member_id
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__member_id
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+msgid "Member"
+msgstr "Socio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__member_number
+msgid "Member Number"
+msgstr "Nº de socio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__member_rank
+msgid "Member Rank"
+msgstr "Posición del socio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__member_state
+msgid "Member Status"
+msgstr "Estado del socio"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+msgid "Member name"
+msgstr "Nombre del socio"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.actions.act_window,name:library_manager.action_library_member
+#: model:ir.ui.menu,name:library_manager.menu_library_member
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_tree
+#, python-format
+msgid "Members"
+msgstr "Socios"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_has_error
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_has_error
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de entrega del mensaje"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_ids
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__mobile
+msgid "Mobile"
+msgstr "Móvil"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Month"
+msgstr "Mes"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_top_readers
+#: model:ir.ui.menu,name:library_manager.menu_library_report_top_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Most Active Readers"
+msgstr "Lectores más activos"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_top_books
+#: model:ir.ui.menu,name:library_manager.menu_library_report_top_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+msgid "Most Borrowed Books"
+msgstr "Libros más prestados"
+
+#. module: library_manager
+#: model:ir.actions.act_window,name:library_manager.action_library_report_top_authors
+#: model:ir.ui.menu,name:library_manager.menu_library_report_top_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+msgid "Most Read Authors"
+msgstr "Autores más leídos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Fecha límite de mi actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Name or Number"
+msgstr "Nombre o número"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "New Book"
+msgstr "Nuevo libro"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "New Loan"
+msgstr "Nuevo préstamo"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.xml:0
+#, python-format
+msgid "New book"
+msgstr "Nuevo libro"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.xml:0
+#, python-format
+msgid "New loan"
+msgstr "Nuevo préstamo"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Fecha límite de la próxima actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la próxima actividad"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_type_id
+msgid "Next Activity Type"
+msgstr "Tipo de la próxima actividad"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid ""
+"No Gemini API key configured.\n"
+"\n"
+"Go to Settings > Technical > System Parameters and create:\n"
+"\n"
+"library_manager.gemini_api_key"
+msgstr ""
+"No hay ninguna clave de API de Gemini configurada.\n"
+"\n"
+"Ve a Ajustes > Técnico > Parámetros del sistema y crea:\n"
+"\n"
+"library_manager.gemini_api_key"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__email_normalized
+msgid "Normalized Email"
+msgstr "Correo normalizado"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__comment
+#: model:ir.model.fields,field_description:library_manager.field_library_member__notes
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_needaction_counter
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_needaction_counter
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Nº de acciones"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__message_has_error_counter
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__message_has_error_counter
+#: model:ir.model.fields,field_description:library_manager.field_library_member__message_has_error_counter
+msgid "Number of errors"
+msgstr "Nº de errores"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_book__message_needaction_counter
+#: model:ir.model.fields,help:library_manager.field_library_loan__message_needaction_counter
+#: model:ir.model.fields,help:library_manager.field_library_member__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_book__message_has_error_counter
+#: model:ir.model.fields,help:library_manager.field_library_loan__message_has_error_counter
+#: model:ir.model.fields,help:library_manager.field_library_member__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de entrega"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan__state__ongoing
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan_report__loan_state__ongoing
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#, python-format
+msgid "Ongoing"
+msgstr "En curso"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Only available books can be borrowed."
+msgstr "Solo se pueden prestar libros disponibles."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Only borrowed books can be returned."
+msgstr "Solo se pueden devolver libros prestados."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "Only draft loans can be confirmed."
+msgstr "Solo se pueden confirmar préstamos en borrador."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "Only draft loans can be deleted. Return or cancel the loan instead."
+msgstr "Solo se pueden eliminar préstamos en borrador. Devuelve o cancela el préstamo en su lugar."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "Only draft or ongoing loans can be cancelled."
+msgstr "Solo se pueden cancelar préstamos en borrador o en curso."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Only librarians can use the AI category suggestion."
+msgstr "Solo los bibliotecarios pueden usar la sugerencia de categorías con IA."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Only lost books can be recovered."
+msgstr "Solo se pueden recuperar libros perdidos."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "Only ongoing loans can be returned."
+msgstr "Solo se pueden devolver préstamos en curso."
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#, python-format
+msgid "Overdue"
+msgstr "Retrasados"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__overdue_email_sent_at
+msgid "Overdue Email Sent At"
+msgstr "Aviso de retraso enviado el"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__overdue_count
+msgid "Overdue Loans"
+msgstr "Préstamos con retraso"
+
+#. module: library_manager
+#: model:mail.template,subject:library_manager.mail_template_library_loan_overdue
+msgid "Overdue loan notice - {{ object.book_id.name }}"
+msgstr "Aviso de préstamo vencido - {{ object.book_id.name }}"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.xml:0
+#, python-format
+msgid "Overview of your library"
+msgstr "Resumen de tu biblioteca"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__pages
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "Pages"
+msgstr "Páginas"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__parent_name
+msgid "Parent name"
+msgstr "Nombre del padre"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__same_company_registry_partner_id
+msgid "Partner with same Company Registry"
+msgstr "Contacto con el mismo registro mercantil"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__same_vat_partner_id
+msgid "Partner with same Tax ID"
+msgstr "Contacto con el mismo NIF"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__phone
+msgid "Phone"
+msgstr "Teléfono"
+
+#. module: library_manager
+#: model:ir.ui.menu,name:library_manager.menu_library_reports_popularity
+msgid "Popularity"
+msgstr "Popularidad"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+msgid "Print PDF"
+msgstr "Imprimir PDF"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Publication Details"
+msgstr "Datos de publicación"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__publication_year
+msgid "Publication Year"
+msgstr "Año de publicación"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Recover"
+msgstr "Recuperar"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__ref
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__parent_id
+msgid "Related Company"
+msgstr "Empresa relacionada"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "Return"
+msgstr "Devolver"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__return_date
+#: model:ir.model.fields,field_description:library_manager.field_library_loan_report__return_date
+msgid "Return Date"
+msgstr "Fecha de devolución"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan__state__returned
+#: model:ir.model.fields.selection,name:library_manager.selection__library_loan_report__loan_state__returned
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#, python-format
+msgid "Returned"
+msgstr "Devuelto"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__user_id
+msgid "Salesperson"
+msgstr "Comercial"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+msgid "Search Loans"
+msgstr "Buscar préstamos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__self
+msgid "Self"
+msgstr "Propio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_share
+msgid "Share Partner"
+msgstr "Contacto compartido"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__signup_expiration
+msgid "Signup Expiration"
+msgstr "Caducidad del registro"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__signup_token
+msgid "Signup Token"
+msgstr "Token de registro"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__signup_type
+msgid "Signup Token Type"
+msgstr "Tipo de token de registro"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__signup_valid
+msgid "Signup Token is Valid"
+msgstr "El token de registro es válido"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__signup_url
+msgid "Signup URL"
+msgstr "URL de registro"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__starred_message_ids
+msgid "Starred Message"
+msgstr "Mensaje destacado"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__state_id
+msgid "State"
+msgstr "Provincia"
+
+#. module: library_manager
+#: model:ir.ui.menu,name:library_manager.menu_library_reports
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__state
+#: model:ir.model.fields,field_description:library_manager.field_library_loan__state
+#: model:ir.model.fields,field_description:library_manager.field_library_member__state
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Status"
+msgstr "Estado"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estado según las actividades\n"
+"Vencida: la fecha límite ya ha pasado\n"
+"Hoy: la fecha de la actividad es hoy\n"
+"Planificada: actividades futuras."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__street
+msgid "Street"
+msgstr "Calle"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__street2
+msgid "Street2"
+msgstr "Calle 2"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Suggest Categories (AI)"
+msgstr "Sugerir categorías (IA)"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+msgid "Suspend"
+msgstr "Suspender"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:library_manager.selection__library_member__state__suspended
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+#, python-format
+msgid "Suspended"
+msgstr "Suspendido"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__category_id
+msgid "Tags"
+msgstr "Etiquetas"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__vat
+msgid "Tax ID"
+msgstr "NIF"
+
+#. module: library_manager
+#: model:ir.model.constraint,message:library_manager.constraint_library_book_isbn_unique
+msgid "The ISBN must be unique."
+msgstr "El ISBN debe ser único."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__country_code
+msgid ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
+msgstr ""
+"Código ISO del país en dos caracteres. \n"
+"Puedes usar este campo para hacer búsquedas rápidas."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__vat
+msgid "The Tax Identification Number. Values here will be validated based on the country format. You can use '/' to indicate that the partner is not subject to tax."
+msgstr "Número de identificación fiscal. Los valores se validarán según el formato del país. Puedes usar '/' para indicar que el contacto no está sujeto a impuestos."
+
+#. module: library_manager
+#: model:ir.model.constraint,message:library_manager.constraint_library_author_name_unique
+msgid "The author name must be unique."
+msgstr "El nombre del autor debe ser único."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "The birth date cannot be in the future!"
+msgstr "¡La fecha de nacimiento no puede estar en el futuro!"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "The book was lost during this loan."
+msgstr "El libro se perdió durante este préstamo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "The due date cannot be earlier than the loan date."
+msgstr "La fecha límite no puede ser anterior a la fecha del préstamo."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__user_id
+msgid "The internal user in charge of this contact."
+msgstr "El usuario interno a cargo de este contacto."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "The member must be active to confirm the loan."
+msgstr "El socio debe estar activo para confirmar el préstamo."
+
+#. module: library_manager
+#: model:ir.model.constraint,message:library_manager.constraint_library_member_member_number_unique
+msgid "The member number must be unique."
+msgstr "El número de socio debe ser único."
+
+#. module: library_manager
+#: model:ir.model.constraint,message:library_manager.constraint_library_book_pages_positive
+msgid "The number of pages cannot be negative."
+msgstr "El número de páginas no puede ser negativo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "The publication year cannot be later than %s."
+msgstr "El año de publicación no puede ser posterior a %s."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__company_registry
+msgid "The registry number of the company. Use it if it is different from the Tax ID. It must be unique across all partners of a same country"
+msgstr "Número de registro de la empresa. Úsalo si es distinto del NIF. Debe ser único entre todos los contactos de un mismo país."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "The return date cannot be earlier than the loan date."
+msgstr "La fecha de devolución no puede ser anterior a la fecha del préstamo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_partner.py:0
+#, python-format
+msgid "The selected contacts are already library members."
+msgstr "Los contactos seleccionados ya son socios de la biblioteca."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "There are no categories to choose from. Create categories first."
+msgstr "No hay categorías entre las que elegir. Crea categorías primero."
+
+#. module: library_manager
+#: model:ir.model.constraint,message:library_manager.constraint_library_book_name_author_unique
+msgid "This author already has a book with that title."
+msgstr "Este autor ya tiene un libro con ese título."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "This book is already marked as lost."
+msgstr "Este libro ya está marcado como perdido."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__email_normalized
+msgid "This field is used to search on email address as the primary email field can contain more than strictly an email address."
+msgstr "Este campo se usa para buscar por dirección de correo, ya que el campo de correo principal puede contener algo más que una dirección."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "This loan is overdue."
+msgstr "Este préstamo está vencido."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_form
+msgid "This member is suspended and cannot borrow books."
+msgstr "Este socio está suspendido y no puede tomar libros prestados."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__tz
+msgid "Timezone"
+msgstr "Zona horaria"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__tz_offset
+msgid "Timezone offset"
+msgstr "Desfase horario"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__title
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_tree
+msgid "Title"
+msgstr "Título"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+msgid "Title or ISBN"
+msgstr "Título o ISBN"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Top 10"
+msgstr "Top 10"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Top 20"
+msgstr "Top 20"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Top 5"
+msgstr "Top 5"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_readers
+msgid "Top 50"
+msgstr "Top 50"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__total_pages
+msgid "Total Pages Written"
+msgstr "Total de páginas escritas"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "Total books"
+msgstr "Total de libros"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Tipo de la actividad de excepción del registro."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__barcode
+msgid "Use a barcode to identify this contact."
+msgstr "Usa un código de barras para identificar este contacto."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__user_ids
+msgid "Users"
+msgstr "Usuarios"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__website
+msgid "Website Link"
+msgstr "Enlace del sitio web"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_member__tz
+msgid ""
+"When printing documents and exporting/importing data, time values are computed according to this timezone.\n"
+"If the timezone is not set, UTC (Coordinated Universal Time) is used.\n"
+"Anywhere else, time values are computed according to the time offset of your web client."
+msgstr ""
+"Al imprimir documentos y al exportar o importar datos, las horas se calculan según esta zona horaria.\n"
+"Si no se define, se usa UTC (tiempo universal coordinado).\n"
+"En cualquier otro lugar, las horas se calculan según el desfase horario de tu navegador."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+msgid "Write a brief biography..."
+msgstr "Escribe una breve biografía..."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Write a brief description or summary of the book..."
+msgstr "Escribe una breve descripción o resumen del libro..."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "Year"
+msgstr "Año"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__zip
+msgid "Zip"
+msgstr "Código postal"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "books,"
+msgstr "libros,"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "e.g. 978-3-16-148410-0"
+msgstr "p. ej., 978-3-16-148410-0"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "e.g. Don Quijote de la Mancha"
+msgstr "p. ej., Don Quijote de la Mancha"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
+msgid "pages"
+msgstr "páginas"

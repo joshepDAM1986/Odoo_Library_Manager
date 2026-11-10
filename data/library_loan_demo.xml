@@ -2,15 +2,15 @@
 <odoo noupdate="1">
 
     <!-- Socios extra para que los rankings tengan variedad -->
-    <record id="member_demo_4" model="library.member">
+    <record id="member_extra_1" model="library.member">
         <field name="name">Pablo Navarro</field>
         <field name="email">pablo.navarro@example.com</field>
     </record>
-    <record id="member_demo_5" model="library.member">
+    <record id="member_extra_2" model="library.member">
         <field name="name">Lucía Ortega</field>
         <field name="email">lucia.ortega@example.com</field>
     </record>
-    <record id="member_demo_6" model="library.member">
+    <record id="member_extra_3" model="library.member">
         <field name="name">Marta Gil</field>
         <field name="email">marta.gil@example.com</field>
     </record>
@@ -27,7 +27,7 @@
     </record>
     <record id="loan_demo_02" model="library.loan">
         <field name="book_id" ref="book_poe_2"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=226)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=212)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=223)).strftime('%Y-%m-%d')"/>
@@ -35,7 +35,7 @@
     </record>
     <record id="loan_demo_03" model="library.loan">
         <field name="book_id" ref="book_austen_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=222)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=208)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=208)).strftime('%Y-%m-%d')"/>
@@ -43,7 +43,7 @@
     </record>
     <record id="loan_demo_04" model="library.loan">
         <field name="book_id" ref="book_ggm_2"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=207)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=193)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=190)).strftime('%Y-%m-%d')"/>
@@ -51,7 +51,7 @@
     </record>
     <record id="loan_demo_05" model="library.loan">
         <field name="book_id" ref="book_orwell_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=202)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=188)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=199)).strftime('%Y-%m-%d')"/>
@@ -99,7 +99,7 @@
     </record>
     <record id="loan_demo_11" model="library.loan">
         <field name="book_id" ref="book_allende_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=176)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=162)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=171)).strftime('%Y-%m-%d')"/>
@@ -107,7 +107,7 @@
     </record>
     <record id="loan_demo_12" model="library.loan">
         <field name="book_id" ref="book_tolkien_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=175)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=161)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=161)).strftime('%Y-%m-%d')"/>
@@ -123,7 +123,7 @@
     </record>
     <record id="loan_demo_14" model="library.loan">
         <field name="book_id" ref="book_cervantes_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=169)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=155)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=163)).strftime('%Y-%m-%d')"/>
@@ -147,7 +147,7 @@
     </record>
     <record id="loan_demo_17" model="library.loan">
         <field name="book_id" ref="book_cervantes_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=149)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=135)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=143)).strftime('%Y-%m-%d')"/>
@@ -179,7 +179,7 @@
     </record>
     <record id="loan_demo_21" model="library.loan">
         <field name="book_id" ref="book_ggm_1"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=138)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=124)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=125)).strftime('%Y-%m-%d')"/>
@@ -211,7 +211,7 @@
     </record>
     <record id="loan_demo_25" model="library.loan">
         <field name="book_id" ref="book_cervantes_2"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=109)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=95)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=97)).strftime('%Y-%m-%d')"/>
@@ -219,7 +219,7 @@
     </record>
     <record id="loan_demo_26" model="library.loan">
         <field name="book_id" ref="book_borges_1"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=100)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=86)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=76)).strftime('%Y-%m-%d')"/>
@@ -227,7 +227,7 @@
     </record>
     <record id="loan_demo_27" model="library.loan">
         <field name="book_id" ref="book_cervantes_1"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=99)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=85)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=96)).strftime('%Y-%m-%d')"/>
@@ -235,7 +235,7 @@
     </record>
     <record id="loan_demo_28" model="library.loan">
         <field name="book_id" ref="book_cervantes_2"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=98)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=84)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=87)).strftime('%Y-%m-%d')"/>
@@ -243,7 +243,7 @@
     </record>
     <record id="loan_demo_29" model="library.loan">
         <field name="book_id" ref="book_cervantes_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=97)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=83)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=74)).strftime('%Y-%m-%d')"/>
@@ -251,7 +251,7 @@
     </record>
     <record id="loan_demo_30" model="library.loan">
         <field name="book_id" ref="book_poe_1"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=96)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=82)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=85)).strftime('%Y-%m-%d')"/>
@@ -299,7 +299,7 @@
     </record>
     <record id="loan_demo_36" model="library.loan">
         <field name="book_id" ref="book_king_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=78)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=64)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=61)).strftime('%Y-%m-%d')"/>
@@ -307,7 +307,7 @@
     </record>
     <record id="loan_demo_37" model="library.loan">
         <field name="book_id" ref="book_orwell_2"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=76)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=62)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=69)).strftime('%Y-%m-%d')"/>
@@ -315,7 +315,7 @@
     </record>
     <record id="loan_demo_38" model="library.loan">
         <field name="book_id" ref="book_ggm_2"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=73)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=59)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=63)).strftime('%Y-%m-%d')"/>
@@ -323,7 +323,7 @@
     </record>
     <record id="loan_demo_39" model="library.loan">
         <field name="book_id" ref="book_austen_2"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=73)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=59)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=55)).strftime('%Y-%m-%d')"/>
@@ -331,7 +331,7 @@
     </record>
     <record id="loan_demo_40" model="library.loan">
         <field name="book_id" ref="book_orwell_1"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=73)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=59)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=65)).strftime('%Y-%m-%d')"/>
@@ -355,7 +355,7 @@
     </record>
     <record id="loan_demo_43" model="library.loan">
         <field name="book_id" ref="book_tolkien_2"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=59)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=29)).strftime('%Y-%m-%d')"/>
@@ -395,7 +395,7 @@
     </record>
     <record id="loan_demo_48" model="library.loan">
         <field name="book_id" ref="book_cervantes_1"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=50)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=36)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=38)).strftime('%Y-%m-%d')"/>
@@ -403,7 +403,7 @@
     </record>
     <record id="loan_demo_49" model="library.loan">
         <field name="book_id" ref="book_ggm_1"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=48)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=34)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=35)).strftime('%Y-%m-%d')"/>
@@ -427,7 +427,7 @@
     </record>
     <record id="loan_demo_52" model="library.loan">
         <field name="book_id" ref="book_vargas_1"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=37)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=23)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=33)).strftime('%Y-%m-%d')"/>
@@ -435,7 +435,7 @@
     </record>
     <record id="loan_demo_53" model="library.loan">
         <field name="book_id" ref="book_tolkien_2"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=37)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=23)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=31)).strftime('%Y-%m-%d')"/>
@@ -443,7 +443,7 @@
     </record>
     <record id="loan_demo_54" model="library.loan">
         <field name="book_id" ref="book_tolkien_2"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=36)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=22)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
@@ -459,7 +459,7 @@
     </record>
     <record id="loan_demo_56" model="library.loan">
         <field name="book_id" ref="book_borges_1"/>
-        <field name="member_id" ref="member_demo_4"/>
+        <field name="member_id" ref="member_extra_1"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=32)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=18)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=11)).strftime('%Y-%m-%d')"/>
@@ -475,7 +475,7 @@
     </record>
     <record id="loan_demo_58" model="library.loan">
         <field name="book_id" ref="book_ggm_2"/>
-        <field name="member_id" ref="member_demo_5"/>
+        <field name="member_id" ref="member_extra_2"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=23)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=9)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
@@ -483,7 +483,7 @@
     </record>
     <record id="loan_demo_59" model="library.loan">
         <field name="book_id" ref="book_ggm_1"/>
-        <field name="member_id" ref="member_demo_6"/>
+        <field name="member_id" ref="member_extra_3"/>
         <field name="loan_date" eval="(DateTime.today() - timedelta(days=23)).strftime('%Y-%m-%d')"/>
         <field name="due_date" eval="(DateTime.today() - timedelta(days=9)).strftime('%Y-%m-%d')"/>
         <field name="return_date" eval="(DateTime.today() - timedelta(days=16)).strftime('%Y-%m-%d')"/>

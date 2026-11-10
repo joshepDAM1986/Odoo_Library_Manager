@@ -13,16 +13,17 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
 - **Authors**: biography, birth date, book counter (smart button), total pages written and a **Print PDF** button for the author sheet.
 - **Categories**: colour tags, many-to-many with books.
-- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
+- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
-- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to +14 days) and status (draft / ongoing / returned / cancelled).
+- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to +14 days) and status (draft / ongoing / returned / cancelled / lost).
   - *Confirm* checks that the member is active and borrows the book.
   - *Return* gives the book back and stores the return date.
   - *Cancel* releases the book if the loan was ongoing.
+  - *Lost*: marking a book as lost closes its ongoing loan as `lost` (final state, kept as history of who had it). The book cannot then be returned or cancelled through that loan.
   - Date constraints: the due date and the return date cannot be earlier than the loan date (the same date is allowed).
   - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
   - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
-  - A daily scheduled job queues one overdue email per loan for members with an email address.
+  - A daily scheduled job queues one overdue email per loan for members with an email address. Changing the due date re-arms the notice.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most and least borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
@@ -32,7 +33,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 
 ## Overdue email notifications
 
-Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates.
+Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates (it is reset if the due date changes). The scheduled action is defined with `numbercall = -1`; without it Odoo 17 would run it once and then deactivate it. The email template is written in English and rendered in the member's language, so it can be translated like the rest of the module.
 
 Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail Servers) and make sure the mail queue is running. Loans without a member email are skipped and can be notified later if an address is added.
 
@@ -45,7 +46,9 @@ library_manager/
 ├── views/         views (incl. kanban and res.partner inheritance), actions and menus
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
-├── data/          sequences and demo data
+├── data/          sequences, scheduled job, mail template and demo data
+├── migrations/    data migrations between module versions
+├── i18n/          translations (Spanish: `es.po`)
 ├── static/src/dashboard/   OWL component, template and styles
 └── tests/         automated tests
 ```
@@ -109,6 +112,7 @@ The feature uses the **Google Gemini API** (REST `generateContent`). It is optio
 Notes:
 
 - The book title, author, year and description are sent to Google when the button is pressed. The model can only choose among the categories that already exist in Odoo, and matches are **added** without removing the book's current categories.
+- Only librarians can use the feature: the button is hidden for readers and the server also checks the group, so it cannot be triggered through RPC.
 - The key is sent in the `x-goog-api-key` header (never in the URL) and must never be committed to Git.
 - Free-tier usage is limited, and Google's terms for unpaid usage allow submitted content to be used to improve its products. Do not use it with real customer data.
 - HTTP 404 usually means the model is not available for your key (change `library_manager.gemini_model`); HTTP 429 means a quota or rate limit was reached.
@@ -117,9 +121,10 @@ Notes:
 
 - Late-return penalties (suspend members automatically).
 - Record rules / multi-company support.
-- Translations (i18n).
+- Translations to other languages. The source strings are in English; export a template with `odoo --modules=library_manager --i18n-export=xx.po -l xx_XX`.
 
 ## Notes
 
 - Target version: **Odoo 17.0**. Syntax differs from other versions (for example, list views are `<list>` from Odoo 18).
 - License: LGPL-3.
+- Keep `odoo.conf` (with its `admin_passwd`) outside the module and out of version control; use an `odoo.conf.example` as a template.

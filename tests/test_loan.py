@@ -130,3 +130,90 @@ class TestLoan(TransactionCase):
         loan.action_confirm()
         loan.action_return()
         self.assertEqual(loan.days_overdue, 3)
+
+    # --- libro perdido con el préstamo en curso ---------------------------
+    def test_mark_lost_closes_the_ongoing_loan(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        self.assertEqual(loan.state, 'lost')
+        self.assertEqual(self.book.state, 'lost')
+
+    def test_lost_loan_cannot_be_returned_or_cancelled(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        with self.assertRaises(UserError):
+            loan.action_return()
+        with self.assertRaises(UserError):
+            loan.action_cancel()
+
+    def test_recovering_the_book_keeps_the_loan_as_lost(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        self.book.action_recover()
+        self.assertEqual(loan.state, 'lost')
+        self.assertEqual(self.book.state, 'available')
+
+    def test_lost_loan_is_not_overdue(self):
+        loan = self._new_loan(
+            loan_date=self.today - timedelta(days=10),
+            due_date=self.today - timedelta(days=3))
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        self.assertEqual(loan.days_overdue, 0)
+
+    def test_lost_loan_cannot_be_deleted(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        with self.assertRaises(UserError):
+            loan.unlink()
+
+    # --- aviso de retraso (cron) ------------------------------------------
+    def _overdue_loan(self, email='member@example.com'):
+        self.member.email = email
+        loan = self._new_loan(
+            loan_date=self.today - timedelta(days=10),
+            due_date=self.today - timedelta(days=3))
+        loan.action_confirm()
+        return loan
+
+    def _mails_for(self, loan):
+        return self.env['mail.mail'].search([
+            ('model', '=', 'library.loan'), ('res_id', '=', loan.id)])
+
+    def test_cron_is_unlimited_and_active(self):
+        # Sin numbercall=-1 el cron se ejecutaría una sola vez y se desactivaría
+        cron = self.env.ref('library_manager.ir_cron_library_overdue_email')
+        self.assertEqual(cron.numbercall, -1)
+        self.assertTrue(cron.active)
+
+    def test_cron_sends_one_notice_per_overdue_loan(self):
+        loan = self._overdue_loan()
+        self.Loan._cron_send_overdue_emails()
+        self.assertEqual(len(self._mails_for(loan)), 1)
+        self.assertTrue(loan.overdue_email_sent_at)
+        # Una segunda ejecución no vuelve a avisar
+        self.Loan._cron_send_overdue_emails()
+        self.assertEqual(len(self._mails_for(loan)), 1)
+
+    def test_cron_skips_members_without_email(self):
+        loan = self._overdue_loan(email=False)
+        self.Loan._cron_send_overdue_emails()
+        self.assertFalse(self._mails_for(loan))
+        self.assertFalse(loan.overdue_email_sent_at)
+
+    def test_cron_ignores_lost_loans(self):
+        loan = self._overdue_loan()
+        self.book.action_mark_lost()
+        self.Loan._cron_send_overdue_emails()
+        self.assertFalse(self._mails_for(loan))
+
+    def test_changing_due_date_resets_the_overdue_notice(self):
+        loan = self._overdue_loan()
+        self.Loan._cron_send_overdue_emails()
+        self.assertTrue(loan.overdue_email_sent_at)
+        loan.due_date = self.today + timedelta(days=5)
+        self.assertFalse(loan.overdue_email_sent_at)
