@@ -4,6 +4,17 @@ Odoo 17 module to manage a small library: books, authors, categories, members an
 
 Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, QWeb and testing).
 
+## Screenshots
+
+<p>
+  <img src="docs/screenshots/partner-library.png" alt="Library tab in contacts" width="300">
+  <img src="docs/screenshots/books-kanban.png" alt="Books kanban" width="300">
+</p>
+<p>
+  <img src="docs/screenshots/loan-form.png" alt="Loan form" width="300">
+  <img src="docs/screenshots/dashboard.png" alt="Home dashboard" width="308">
+</p>
+
 ## Features
 
 - **Books**: title, ISBN, publication year, pages, author, categories, cover image and status (available / borrowed / lost).
