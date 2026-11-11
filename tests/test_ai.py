@@ -4,6 +4,7 @@ import requests
 
 from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import TransactionCase
+from odoo.tools import mute_logger
 
 POST = 'odoo.addons.library_manager.models.book.requests.post'
 
@@ -96,18 +97,22 @@ class TestSuggestCategories(TransactionCase):
         self.assertEqual(self.book.category_ids, self.fiction)
 
     # --- respuestas incorrectas -------------------------------------------
+
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_invalid_json_raises_a_clear_error(self):
         self._set_params()
         with patch(POST, return_value=gemini_response('no json here')):
             with self.assertRaises(UserError):
                 self.book.action_suggest_categories()
 
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_answer_that_is_not_a_list_raises_a_clear_error(self):
         self._set_params()
         with patch(POST, return_value=gemini_response('{"category": "Test Fiction"}')):
             with self.assertRaises(UserError):
                 self.book.action_suggest_categories()
 
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_response_without_candidates_raises_a_clear_error(self):
         self._set_params()
         response = MagicMock()
@@ -118,6 +123,8 @@ class TestSuggestCategories(TransactionCase):
                 self.book.action_suggest_categories()
 
     # --- errores de red y HTTP --------------------------------------------
+
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_quota_error_is_reported(self):
         self._set_params()
         response = gemini_response(ok=False, status_code=429, error_message='quota')
@@ -125,6 +132,7 @@ class TestSuggestCategories(TransactionCase):
             with self.assertRaises(UserError):
                 self.book.action_suggest_categories()
 
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_unknown_model_is_reported(self):
         self._set_params()
         response = gemini_response(ok=False, status_code=404, error_message='not found')
@@ -138,6 +146,7 @@ class TestSuggestCategories(TransactionCase):
             with self.assertRaises(UserError):
                 self.book.action_suggest_categories()
 
+    @mute_logger('odoo.addons.library_manager.models.book')
     def test_network_error_is_reported(self):
         self._set_params()
         with patch(POST, side_effect=requests.exceptions.ConnectionError()):

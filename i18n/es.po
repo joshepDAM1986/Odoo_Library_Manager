@@ -451,7 +451,6 @@ msgstr "Confirmar"
 #. module: library_manager
 #: model:ir.model,name:library_manager.model_res_partner
 #: model:ir.model.fields,field_description:library_manager.field_library_member__child_ids
-#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_id
 msgid "Contact"
 msgstr "Contacto"
 
@@ -985,6 +984,16 @@ msgid "Library: Send overdue emails"
 msgstr "Biblioteca: Enviar avisos de retraso"
 
 #. module: library_manager
+#: model:ir.actions.server,name:library_manager.ir_cron_library_suspend_overdue_ir_actions_server
+msgid "Library: Suspend members with overdue loans"
+msgstr "Biblioteca: Suspender socios con préstamos vencidos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__partner_id
+msgid "Linked Contact"
+msgstr "Contacto vinculado"
+
+#. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_id
 msgid "Loan"
 msgstr "Préstamo"
@@ -1097,6 +1106,11 @@ msgstr "Marcar como perdido"
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
 msgid "Member"
 msgstr "Socio"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_member__notes
+msgid "Member Notes"
+msgstr "Notas del socio"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_member__member_number
@@ -1259,7 +1273,6 @@ msgstr "Correo normalizado"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_member__comment
-#: model:ir.model.fields,field_description:library_manager.field_library_member__notes
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
 msgid "Notes"
 msgstr "Notas"
@@ -1372,7 +1385,7 @@ msgstr "Solo se pueden devolver préstamos en curso."
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
 #, python-format
 msgid "Overdue"
-msgstr "Retrasados"
+msgstr "De retraso"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_loan__overdue_email_sent_at
@@ -1603,6 +1616,20 @@ msgstr "Suspender"
 #, python-format
 msgid "Suspended"
 msgstr "Suspendido"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/loan.py:0
+#, python-format
+msgid "Suspended automatically: loan %(loan)s of the book '%(book)s' is overdue (due date %(date)s)."
+msgstr "Suspendido automáticamente: el préstamo %(loan)s del libro '%(book)s' está vencido (fecha límite %(date)s)."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Suspended automatically: the book '%(book)s' was lost during loan %(loan)s."
+msgstr "Suspendido automáticamente: el libro '%(book)s' se perdió durante el préstamo %(loan)s."
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_member__category_id

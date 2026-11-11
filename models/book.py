@@ -179,10 +179,21 @@ class LibraryBook(models.Model):
 
         # El préstamo en curso de estos libros pasa a "perdido": queda
         # constancia de quién lo tenía y ya no se puede devolver.
-        self.env["library.loan"].search([
+        lost_loans = self.env["library.loan"].search([
             ("book_id", "in", self.ids),
             ("state", "=", "ongoing"),
-        ]).write({"state": "lost"})
+        ])
+        lost_loans.write({"state": "lost"})
+
+        # El socio que lo tenía se suspende. No se reactiva al recuperar el
+        # libro: puede haberse repuesto con otro ejemplar y eso no lo absuelve.
+        for loan in lost_loans:
+            loan._suspend_member(
+                _("Suspended automatically: the book '%(book)s' was lost "
+                  "during loan %(loan)s.") % {
+                    "book": loan.book_id.name,
+                    "loan": loan.name,
+                })
 
         self.write({"state": "lost"})
 

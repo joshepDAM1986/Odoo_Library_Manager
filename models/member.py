@@ -13,7 +13,7 @@ class LibraryMember(models.Model):
 
     partner_id = fields.Many2one(
         'res.partner',
-        string='Contact',
+        string='Linked Contact',
         required=True,
         ondelete='restrict',
         index=True,
@@ -32,7 +32,7 @@ class LibraryMember(models.Model):
         ('active', 'Active'),
         ('suspended', 'Suspended'),
     ], string='Status', default='active', tracking=True)
-    notes = fields.Text(string='Notes')
+    notes = fields.Text(string='Member Notes')
     active = fields.Boolean(default=True)
 
     loan_ids = fields.One2many('library.loan', 'member_id', string='Loans')
@@ -52,6 +52,7 @@ class LibraryMember(models.Model):
             member.loan_count = counts.get(member.id, 0)
 
     @api.depends('name', 'state')
+    @api.depends_context('lang')
     def _compute_display_name(self):
         # Los socios suspendidos salen marcados en cualquier desplegable
         for member in self:

@@ -57,7 +57,7 @@
                                     </t>
                                     <t t-else="">
                                         <div class="rounded border bg-light d-flex align-items-center justify-content-center text-muted" style="width: 65px; height: 95px;">
-                                            <i class="fa fa-book fa-2x"/>
+                                            <i class="fa fa-book fa-2x" title="Cover"/>
                                         </div>
                                     </t>
                                 </div>

@@ -37,7 +37,12 @@ class TestMember(TransactionCase):
         self.assertEqual(member.state, 'active')
 
     def test_suspended_member_is_marked_in_display_name(self):
+        # La marca está traducida (Suspended / Suspendido...), así que no se
+        # compara el texto: solo que un suspendido se distingue en los desplegables.
         member = self.Member.create({'name': 'Ana Test'})
         self.assertEqual(member.display_name, 'Ana Test')
         member.action_suspend()
-        self.assertIn('(Suspended)', member.display_name)
+        self.assertNotEqual(member.display_name, 'Ana Test')
+        self.assertTrue(member.display_name.startswith('Ana Test ('))
+        member.action_activate()
+        self.assertEqual(member.display_name, 'Ana Test')

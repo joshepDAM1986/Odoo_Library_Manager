@@ -7,12 +7,12 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 ## Screenshots
 
 <p>
-  <img src="docs/screenshots/partner-library.png" alt="Library tab in contacts" width="300">
+  <img src="docs/screenshots/dashboard.png" alt="Home dashboard" width="300">
   <img src="docs/screenshots/books-kanban.png" alt="Books kanban" width="300">
 </p>
 <p>
   <img src="docs/screenshots/loan-form.png" alt="Loan form" width="300">
-  <img src="docs/screenshots/dashboard.png" alt="Home dashboard" width="308">
+  <img src="docs/screenshots/partner-library.png" alt="Library tab in contacts" width="300">
 </p>
 
 ## Features
@@ -35,6 +35,8 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
   - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
   - A daily scheduled job queues one overdue email per loan for members with an email address. Changing the due date re-arms the notice.
+  - A second daily job **suspends members with an overdue loan** (even without an email), and marking a book as lost suspends the member who had it. The reason is logged in the member's chatter. A suspended member cannot borrow but can still return books.
+  - **Reactivation is always manual** (*Activate* button): recovering a book does not reactivate the member, since a replacement copy does not forgive the member. If a member is reactivated while still holding an overdue loan, the next run suspends them again.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most and least borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
@@ -108,7 +110,7 @@ docker compose run --rm web odoo -d test_library -i library_manager \
     --test-enable --test-tags /library_manager --stop-after-init --no-http
 ```
 
-Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`. Some `ERROR` log lines are expected: they come from tests that simulate API failures on purpose.
+Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`. The tests that simulate API failures mute the module's logger, so the log stays clean.
 
 ## Enable the AI suggestion
 
@@ -130,7 +132,7 @@ Notes:
 
 ## Roadmap
 
-- Late-return penalties (suspend members automatically).
+- Grace period before suspending, and timed suspensions that expire by themselves.
 - Record rules / multi-company support.
 - Translations to other languages. The source strings are in English; export a template with `odoo --modules=library_manager --i18n-export=xx.po -l xx_XX`.
 

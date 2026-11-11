@@ -217,3 +217,80 @@ class TestLoan(TransactionCase):
         self.assertTrue(loan.overdue_email_sent_at)
         loan.due_date = self.today + timedelta(days=5)
         self.assertFalse(loan.overdue_email_sent_at)
+
+    # --- suspensión automática del socio ----------------------------------
+    def test_suspend_cron_is_unlimited_and_active(self):
+        cron = self.env.ref('library_manager.ir_cron_library_suspend_overdue')
+        self.assertEqual(cron.numbercall, -1)
+        self.assertTrue(cron.active)
+
+    def test_cron_suspends_member_with_overdue_loan(self):
+        self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        self.assertEqual(self.member.state, 'suspended')
+
+    def test_cron_suspends_even_without_email(self):
+        self._overdue_loan(email=False)
+        self.Loan._cron_suspend_overdue_members()
+        self.assertEqual(self.member.state, 'suspended')
+
+    def test_cron_does_not_suspend_when_not_overdue(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.Loan._cron_suspend_overdue_members()
+        self.assertEqual(self.member.state, 'active')
+
+    def test_cron_does_not_suspend_after_returning_the_book(self):
+        loan = self._overdue_loan()
+        loan.action_return()
+        self.Loan._cron_suspend_overdue_members()
+        self.assertEqual(self.member.state, 'active')
+
+    def test_suspension_leaves_the_reason_in_the_chatter(self):
+        loan = self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        bodies = ' '.join(self.member.message_ids.mapped('body'))
+        self.assertIn(loan.name, bodies)
+
+    def test_second_cron_run_does_not_post_again(self):
+        self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        count = len(self.member.message_ids)
+        self.Loan._cron_suspend_overdue_members()
+        self.assertEqual(len(self.member.message_ids), count)
+
+    def test_suspended_member_cannot_borrow_again(self):
+        self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        other_book = self.env['library.book'].create({'name': 'Another book'})
+        new_loan = self._new_loan(book_id=other_book.id)
+        with self.assertRaises(UserError):
+            new_loan.action_confirm()
+
+    def test_returning_the_late_book_does_not_reactivate_the_member(self):
+        loan = self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        loan.action_return()           # un socio suspendido sí puede devolver
+        self.assertEqual(loan.state, 'returned')
+        self.assertEqual(self.member.state, 'suspended')
+
+    def test_marking_the_book_as_lost_suspends_the_member(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        self.assertEqual(self.member.state, 'suspended')
+        self.assertIn(loan.name, ' '.join(self.member.message_ids.mapped('body')))
+
+    def test_recovering_the_book_does_not_reactivate_the_member(self):
+        loan = self._new_loan()
+        loan.action_confirm()
+        self.book.action_mark_lost()
+        self.book.action_recover()
+        self.assertEqual(self.book.state, 'available')
+        self.assertEqual(self.member.state, 'suspended')
+
+    def test_librarian_can_reactivate_manually(self):
+        self._overdue_loan()
+        self.Loan._cron_suspend_overdue_members()
+        self.member.action_activate()
+        self.assertEqual(self.member.state, 'active')

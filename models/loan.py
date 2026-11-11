@@ -154,3 +154,36 @@ class LibraryLoan(models.Model):
             )
             if mail_id:
                 loan.overdue_email_sent_at = fields.Datetime.now()
+
+    def _suspend_member(self, reason):
+        """Suspende al socio de este préstamo (si sigue activo) y deja el motivo
+        en su chatter. La reactivación es siempre manual (botón Activate):
+        reponer un libro no absuelve al socio."""
+        self.ensure_one()
+        member = self.member_id
+        if member.state != 'active':
+            return False
+        member.action_suspend()
+        member.message_post(body=reason)
+        return True
+
+    @api.model
+    def _cron_suspend_overdue_members(self):
+        """Suspende a los socios con algún préstamo en curso pasado de fecha.
+
+        No depende del email del socio (a diferencia del aviso): se suspende
+        a todos. Un socio suspendido sigue pudiendo devolver sus libros."""
+        today = fields.Date.context_today(self)
+        loans = self.search([
+            ('state', '=', 'ongoing'),
+            ('due_date', '<', today),
+            ('member_id.state', '=', 'active'),
+        ])
+        for loan in loans:
+            loan._suspend_member(
+                _("Suspended automatically: loan %(loan)s of the book "
+                  "'%(book)s' is overdue (due date %(date)s).") % {
+                    'loan': loan.name,
+                    'book': loan.book_id.name,
+                    'date': loan.due_date,
+                })
