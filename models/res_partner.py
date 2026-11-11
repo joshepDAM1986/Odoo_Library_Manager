@@ -6,8 +6,7 @@ class ResPartner(models.Model):
     # Sin _name: se AÑADEN campos y metodos al modelo existente res.partner
     _inherit = 'res.partner'
 
-    # groups: los usuarios sin permisos de biblioteca ni ven estos campos
-    # ni provocan errores de acceso al abrir un contacto.
+    # groups: los usuarios sin permisos de biblioteca no ven estos campos
     member_ids = fields.One2many(
         'library.member', 'partner_id',
         string='Library Memberships',

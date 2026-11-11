@@ -15,10 +15,7 @@ GEMINI_BASE_URL = (
     "https://generativelanguage.googleapis.com/v1beta"
 )
 
-# Modelo predeterminado para proyectos nuevos.
-# Se puede cambiar desde los parámetros de Odoo.
 DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
-
 
 class LibraryBook(models.Model):
     _name = "library.book"
@@ -229,9 +226,7 @@ class LibraryBook(models.Model):
     def action_suggest_categories(self):
         self.ensure_one()
 
-        # Solo los bibliotecarios pueden gastar cuota de la API. El botón ya
-        # está oculto con groups=, pero un método público se puede llamar por
-        # RPC: la comprobación tiene que estar también en el servidor.
+        # Solo los bibliotecarios pueden gastar cuota de la API.
         if not self.env.su and not self.env.user.has_group(
             "library_manager.group_library_manager"
         ):

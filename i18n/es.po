@@ -1385,7 +1385,7 @@ msgstr "Solo se pueden devolver préstamos en curso."
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_search
 #, python-format
 msgid "Overdue"
-msgstr "De retraso"
+msgstr "Con retraso"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_loan__overdue_email_sent_at

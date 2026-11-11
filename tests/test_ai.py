@@ -97,7 +97,6 @@ class TestSuggestCategories(TransactionCase):
         self.assertEqual(self.book.category_ids, self.fiction)
 
     # --- respuestas incorrectas -------------------------------------------
-
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_invalid_json_raises_a_clear_error(self):
         self._set_params()
@@ -123,7 +122,6 @@ class TestSuggestCategories(TransactionCase):
                 self.book.action_suggest_categories()
 
     # --- errores de red y HTTP --------------------------------------------
-
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_quota_error_is_reported(self):
         self._set_params()
@@ -171,7 +169,6 @@ class TestSuggestCategories(TransactionCase):
         with patch(POST) as mock_post:
             with self.assertRaises(AccessError):
                 self.book.with_user(reader).action_suggest_categories()
-        # La comprobación va antes de la llamada de pago
         mock_post.assert_not_called()
 
     def test_librarian_can_use_ai_suggestion(self):

@@ -22,8 +22,7 @@
         </field>
     </record>
 
-    <!-- Vista Kanban: catalogo en cuadricula (sin agrupar por estado).
-         El estado se ve dentro de cada tarjeta y se filtra con el panel lateral. -->
+    <!-- Vista Kanban: catalogo en cuadricula (sin agrupar por estado) -->
     <record id="view_library_book_kanban" model="ir.ui.view">
         <field name="name">library.book.kanban</field>
         <field name="model">library.book</field>

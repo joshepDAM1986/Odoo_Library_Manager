@@ -4,9 +4,6 @@ from odoo import _, api, fields, models
 class LibraryMember(models.Model):
     _name = 'library.member'
     _description = 'Library Member'
-    # _inherits = herencia por delegacion: cada socio tiene un res.partner
-    # asociado y los campos del partner (name, email, phone...) se pueden
-    # usar directamente en el socio, aunque se guardan en la tabla res_partner.
     _inherits = {'res.partner': 'partner_id'}
     _inherit = ['mail.thread']
     _order = 'member_number desc'

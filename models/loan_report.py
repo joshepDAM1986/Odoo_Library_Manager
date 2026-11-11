@@ -2,17 +2,6 @@ from odoo import fields, models, tools
 
 
 class LibraryLoanReport(models.Model):
-    """Estadisticas de prestamos.
-
-    Es un modelo de SOLO LECTURA respaldado por una vista SQL (_auto = False):
-    no tiene tabla propia, Odoo no crea nada y los datos se calculan al vuelo
-    a partir de library_book y library_loan. Es el patron de los informes
-    estandar de Odoo (sale.report, account.invoice.report...).
-
-    Una fila por prestamo (en curso o devuelto) y, ademas, una fila por cada
-    libro que nunca se ha prestado (loan_id vacio y loan_count = 0), para
-    poder ver tambien los libros "menos prestados".
-    """
     _name = 'library.loan.report'
     _description = 'Loan Statistics'
     _auto = False
@@ -39,11 +28,6 @@ class LibraryLoanReport(models.Model):
     days_late = fields.Float(
         string='Avg Days Late', readonly=True, digits=(16, 1), group_operator='avg')
 
-    # Posiciones en los "rankings" (1 = el mas prestado). Se usan en los filtros
-    # "Top N" para que los graficos sean legibles aunque haya miles de libros.
-    # Son posiciones UNICAS (ROW_NUMBER): "Top 10" muestra exactamente 10. Si hay
-    # empate, desempata el id. Con RANK() los empates compartirian posicion y
-    # el "Top 10" podria mostrar 13 elementos.
     book_top_rank = fields.Integer(string='Book Rank (most borrowed)', readonly=True, group_operator='min')
     author_rank = fields.Integer(string='Author Rank', readonly=True, group_operator='min')
     member_rank = fields.Integer(string='Member Rank', readonly=True, group_operator='min')

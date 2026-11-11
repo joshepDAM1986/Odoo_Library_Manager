@@ -96,9 +96,6 @@ class LibraryLoan(models.Model):
             vals = dict(vals, overdue_email_sent_at=False)
         return super().write(vals)
 
-    # Flujo: draft -> ongoing -> returned  (o cancelled)
-    # "lost" no se pulsa a mano: lo pone book.action_mark_lost() si el libro
-    # se pierde con el préstamo en curso.
     def action_confirm(self):
         for loan in self:
             if loan.state != 'draft':
