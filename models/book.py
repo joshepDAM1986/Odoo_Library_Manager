@@ -247,9 +247,8 @@ class LibraryBook(models.Model):
             raise UserError(
                 _(
                     "No Gemini API key configured.\n\n"
-                    "Go to Settings > Technical > "
-                    "System Parameters and create:\n\n"
-                    "library_manager.gemini_api_key"
+                    "Go to Settings > Library and set the "
+                    "Gemini API Key."
                 )
             )
 

@@ -88,9 +88,16 @@ msgstr "<strong>Total:</strong>"
 #. module: library_manager
 #. odoo-python
 #: code:addons/library_manager/models/book.py:0
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
 #, python-format
 msgid "AI Category Suggestion"
 msgstr "Sugerencia de categorías con IA"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_res_config_settings__library_gemini_api_key
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "API key created in Google AI Studio. Without a key the AI category suggestion is disabled and the rest of the module keeps working."
+msgstr "Clave de API creada en Google AI Studio. Sin clave, la sugerencia de categorías con IA se desactiva y el resto del módulo sigue funcionando."
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_book__message_needaction
@@ -525,6 +532,28 @@ msgid "Days Overdue"
 msgstr "Días de retraso"
 
 #. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_res_config_settings__library_loan_days
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Days a new loan lasts by default. Loans that already exist keep their own due date."
+msgstr "Días que dura un préstamo nuevo por defecto. Los préstamos ya existentes conservan su propia fecha límite."
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_res_config_settings__library_grace_days
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Days after the due date before the daily job suspends the member. Overdue notices are still sent from the due date."
+msgstr "Días que pasan desde la fecha límite antes de que la tarea diaria suspenda al socio. Los avisos de retraso se siguen enviando desde la fecha límite."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Default Loan Period"
+msgstr "Periodo de préstamo por defecto"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_res_config_settings__library_loan_days
+msgid "Default Loan Period (days)"
+msgstr "Periodo de préstamo por defecto (días)"
+
+#. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
 msgid "Delete"
 msgstr "Eliminar"
@@ -655,6 +684,18 @@ msgstr ""
 "%s"
 
 #. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_res_config_settings__library_gemini_api_key
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Gemini API Key"
+msgstr "Clave de la API de Gemini"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_res_config_settings__library_gemini_model
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Gemini Model"
+msgstr "Modelo de Gemini"
+
+#. module: library_manager
 #. odoo-python
 #: code:addons/library_manager/models/book.py:0
 #, python-format
@@ -727,6 +768,16 @@ msgstr "Latitud geográfica"
 #: model:ir.model.fields,field_description:library_manager.field_library_member__partner_longitude
 msgid "Geo Longitude"
 msgstr "Longitud geográfica"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Grace Period Before Suspension"
+msgstr "Periodo de gracia antes de suspender"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_res_config_settings__library_grace_days
+msgid "Grace Period Before Suspension (days)"
+msgstr "Periodo de gracia antes de suspender (días)"
 
 #. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
@@ -896,6 +947,7 @@ msgstr "Última actualización el"
 
 #. module: library_manager
 #: model:ir.ui.menu,name:library_manager.menu_library_root
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:library_manager.view_partner_form_library
 msgid "Library"
 msgstr "Biblioteca"
@@ -1043,6 +1095,7 @@ msgstr "Estado del préstamo"
 #: model:ir.model.fields,field_description:library_manager.field_library_loan_report__loan_count
 #: model:ir.model.fields,field_description:library_manager.field_library_member__loan_ids
 #: model:ir.ui.menu,name:library_manager.menu_library_loan
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
 #, python-format
@@ -1163,6 +1216,12 @@ msgid "Mobile"
 msgstr "Móvil"
 
 #. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_res_config_settings__library_gemini_model
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "Model used for the AI category suggestion. The default is gemini-3.5-flash-lite."
+msgstr "Modelo usado para la sugerencia de categorías con IA. El valor por defecto es gemini-3.5-flash-lite."
+
+#. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_authors
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_loan_report_search_books
@@ -1256,15 +1315,11 @@ msgstr "Tipo de la próxima actividad"
 msgid ""
 "No Gemini API key configured.\n"
 "\n"
-"Go to Settings > Technical > System Parameters and create:\n"
-"\n"
-"library_manager.gemini_api_key"
+"Go to Settings > Library and set the Gemini API Key."
 msgstr ""
 "No hay ninguna clave de API de Gemini configurada.\n"
 "\n"
-"Ve a Ajustes > Técnico > Parámetros del sistema y crea:\n"
-"\n"
-"library_manager.gemini_api_key"
+"Ve a Ajustes > Biblioteca y configura la clave de la API de Gemini."
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_member__email_normalized
@@ -1685,9 +1740,23 @@ msgid "The due date cannot be earlier than the loan date."
 msgstr "La fecha límite no puede ser anterior a la fecha del préstamo."
 
 #. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_config_settings.py:0
+#, python-format
+msgid "The grace period cannot be negative."
+msgstr "El periodo de gracia no puede ser negativo."
+
+#. module: library_manager
 #: model:ir.model.fields,help:library_manager.field_library_member__user_id
 msgid "The internal user in charge of this contact."
 msgstr "El usuario interno a cargo de este contacto."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_config_settings.py:0
+#, python-format
+msgid "The loan period must be at least 1 day."
+msgstr "El periodo de préstamo debe ser de al menos 1 día."
 
 #. module: library_manager
 #. odoo-python
@@ -1883,6 +1952,11 @@ msgstr "Código postal"
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "books,"
 msgstr "libros,"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
+msgid "days"
+msgstr "días"
 
 #. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form

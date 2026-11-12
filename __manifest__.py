@@ -1,6 +1,6 @@
 {
     'name': 'Library Manager',
-    'version': '17.0.2.1.0',
+    'version': '17.0.2.2.0',
     'category': 'Services/Library',
     'summary': 'Books, authors, categories, members and loans',
     'description': 'Books, authors, categories, members, loans, statistics and a PDF report.',
@@ -25,6 +25,7 @@
         'views/library_dashboard_views.xml',
         'report/library_author_report.xml',
         'views/library_report_views.xml',
+        'views/res_config_settings_views.xml',
         'views/library_menus.xml',
     ],
     'demo': [

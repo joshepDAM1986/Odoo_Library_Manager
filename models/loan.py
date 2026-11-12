@@ -4,6 +4,11 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
+# Valores por defecto si los ajustes no están configurados.
+DEFAULT_LOAN_DAYS = 14
+DEFAULT_GRACE_DAYS = 0
+
+
 class LibraryLoan(models.Model):
     _name = 'library.loan'
     _description = 'Library Loan'
@@ -29,7 +34,7 @@ class LibraryLoan(models.Model):
 
     due_date = fields.Date(
         string='Due Date', required=True,
-        default=lambda self: fields.Date.context_today(self) + timedelta(days=14))
+        default=lambda self: self._default_due_date())
 
     return_date = fields.Date(string='Return Date', readonly=True, tracking=True)
 
@@ -67,6 +72,24 @@ class LibraryLoan(models.Model):
             else:
                 continue
             loan.days_overdue = max((end_date - loan.due_date).days, 0)
+
+    @api.model
+    def _get_int_setting(self, key, default):
+        """Lee un entero de ir.config_parameter con un valor de reserva.
+
+        Si el parámetro no existe o no contiene un número válido (por ejemplo,
+        tras editarlo a mano en Parámetros del sistema), se usa ``default``.
+        """
+        value = self.env['ir.config_parameter'].sudo().get_param(key, default)
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return default
+
+    def _default_due_date(self):
+        days = self._get_int_setting(
+            'library_manager.loan_days', DEFAULT_LOAN_DAYS)
+        return fields.Date.context_today(self) + timedelta(days=max(days, 1))
 
     @api.constrains('loan_date', 'due_date', 'return_date')
     def _check_dates(self):
@@ -169,11 +192,16 @@ class LibraryLoan(models.Model):
         """Suspende a los socios con algún préstamo en curso pasado de fecha.
 
         No depende del email del socio (a diferencia del aviso): se suspende
-        a todos. Un socio suspendido sigue pudiendo devolver sus libros."""
-        today = fields.Date.context_today(self)
+        a todos. Un socio suspendido sigue pudiendo devolver sus libros.
+
+        Los ajustes pueden añadir días de gracia antes de suspender; el aviso
+        por email no espera a la gracia (sigue saliendo al vencer)."""
+        grace_days = max(self._get_int_setting(
+            'library_manager.grace_days', DEFAULT_GRACE_DAYS), 0)
+        cutoff = fields.Date.context_today(self) - timedelta(days=grace_days)
         loans = self.search([
             ('state', '=', 'ongoing'),
-            ('due_date', '<', today),
+            ('due_date', '<', cutoff),
             ('member_id.state', '=', 'active'),
         ])
         for loan in loans:

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.library</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Library" string="Library" name="library_manager">
+                    <block title="Loans" name="library_loans_setting_container">
+                        <setting id="library_loan_days_setting"
+                                 string="Default Loan Period"
+                                 help="Days a new loan lasts by default. Loans that already exist keep their own due date.">
+                            <field name="library_loan_days" class="o_light_label"/>
+                            <span class="text-muted ms-1">days</span>
+                        </setting>
+                        <setting id="library_grace_days_setting"
+                                 string="Grace Period Before Suspension"
+                                 help="Days after the due date before the daily job suspends the member. Overdue notices are still sent from the due date.">
+                            <field name="library_grace_days" class="o_light_label"/>
+                            <span class="text-muted ms-1">days</span>
+                        </setting>
+                    </block>
+                    <block title="AI Category Suggestion" name="library_ai_setting_container">
+                        <setting id="library_gemini_api_key_setting"
+                                 string="Gemini API Key"
+                                 help="API key created in Google AI Studio. Without a key the AI category suggestion is disabled and the rest of the module keeps working.">
+                            <field name="library_gemini_api_key" password="True"
+                                   placeholder="AIza..."/>
+                        </setting>
+                        <setting id="library_gemini_model_setting"
+                                 string="Gemini Model"
+                                 help="Model used for the AI category suggestion. The default is gemini-3.5-flash-lite.">
+                            <field name="library_gemini_model"
+                                   placeholder="gemini-3.5-flash-lite"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

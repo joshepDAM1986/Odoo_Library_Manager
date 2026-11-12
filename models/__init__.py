@@ -5,3 +5,4 @@ from . import member
 from . import loan
 from . import res_partner
 from . import loan_report
+from . import res_config_settings

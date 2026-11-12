@@ -26,7 +26,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
-- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to +14 days) and status (draft / ongoing / returned / cancelled / lost).
+- **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to the configured loan period, 14 days by default) and status (draft / ongoing / returned / cancelled / lost).
   - *Confirm* checks that the member is active and borrows the book.
   - *Return* gives the book back and stores the return date.
   - *Cancel* releases the book if the loan was ongoing.
@@ -39,14 +39,15 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - **Reactivation is always manual** (*Activate* button): recovering a book does not reactivate the member, since a replacement copy does not forgive the member. If a member is reactivated while still holding an overdue loan, the next run suspends them again.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
-- **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most and least borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
+- **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
+- **Settings screen** (*Settings > Library*): Gemini API key and model, default loan period and days of grace before suspending. The key and model keep the same system-parameter names, so existing installations need no migration.
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
 - **Demo data**: categories, authors, books, members and ~60 historical loans spread over the last months (so the statistics have something to show). It is only loaded in databases created with demo data.
 
 ## Overdue email notifications
 
-Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates (it is reset if the due date changes). The scheduled action is defined with `numbercall = -1`; without it Odoo 17 would run it once and then deactivate it. The email template is written in English and rendered in the member's language, so it can be translated like the rest of the module.
+Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. The email is sent on the due date and does not wait for the grace period: the grace period only delays the automatic suspension (*Settings > Library*). A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates (it is reset if the due date changes). The scheduled action is defined with `numbercall = -1`; without it Odoo 17 would run it once and then deactivate it. The email template is written in English and rendered in the member's language, so it can be translated like the rest of the module.
 
 Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail Servers) and make sure the mail queue is running. Loans without a member email are skipped and can be notified later if an address is added.
 
@@ -55,7 +56,7 @@ Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail 
 ```
 library_manager/
 ├── __manifest__.py
-├── models/        author, book, category, member, loan, res_partner, loan_report (SQL view)
+├── models/        author, book, category, member, loan, res_partner, loan_report (SQL view), res_config_settings
 ├── views/         views (incl. kanban and res.partner inheritance), actions and menus
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
@@ -79,6 +80,7 @@ library_manager/
 - Reporting with a SQL-view model (`_auto = False`), graph and pivot views, window functions (`RANK`) for top-N rankings.
 - `TransactionCase` tests, including mocking an external API.
 - Calling an external API with the key stored in `ir.config_parameter`.
+- A standard Odoo settings screen (`res.config.settings`) with `config_parameter` fields and the *Settings* app block.
 
 ## Install (Docker)
 
@@ -117,10 +119,12 @@ Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with
 The feature uses the **Google Gemini API** (REST `generateContent`). It is optional: without a key the button shows a clear message and nothing else is affected.
 
 1. Create a Gemini API key in [Google AI Studio](https://aistudio.google.com/apikey).
-2. In Odoo, enable developer mode and open **Settings > Technical > System Parameters**.
-3. Create `library_manager.gemini_api_key` with your key as the value.
-4. Optional: create `library_manager.gemini_model` to choose the model. The default is `gemini-3.5-flash-lite`; check in [Google's model list](https://ai.google.dev/gemini-api/docs/models) and [pricing](https://ai.google.dev/gemini-api/docs/pricing) that it is available for your project.
-5. Restart Odoo after changing Python code, open a book and press **Suggest Categories (AI)**.
+2. In Odoo, open **Settings > Library**.
+3. Paste the key in **Gemini API Key** and save.
+4. Optional: set **Gemini Model** to choose another model. The default is `gemini-3.5-flash-lite`; check in [Google's model list](https://ai.google.dev/gemini-api/docs/models) and [pricing](https://ai.google.dev/gemini-api/docs/pricing) that it is available for your project.
+5. Open a book and press **Suggest Categories (AI)**.
+
+The screen stores the values in the existing system parameters (`library_manager.gemini_api_key` and `library_manager.gemini_model`), so they can also be edited from *Settings > Technical > System Parameters*.
 
 Notes:
 
@@ -128,11 +132,11 @@ Notes:
 - Only librarians can use the feature: the button is hidden for readers and the server also checks the group, so it cannot be triggered through RPC.
 - The key is sent in the `x-goog-api-key` header (never in the URL) and must never be committed to Git.
 - Free-tier usage is limited, and Google's terms for unpaid usage allow submitted content to be used to improve its products. Do not use it with real customer data.
-- HTTP 404 usually means the model is not available for your key (change `library_manager.gemini_model`); HTTP 429 means a quota or rate limit was reached.
+- HTTP 404 usually means the model is not available for your key (change **Gemini Model** in *Settings > Library*); HTTP 429 means a quota or rate limit was reached.
 
 ## Roadmap
 
-- Grace period before suspending, and timed suspensions that expire by themselves.
+- Timed suspensions that expire by themselves.
 - Record rules / multi-company support.
 - Translations to other languages. The source strings are in English; export a template with `odoo --modules=library_manager --i18n-export=xx.po -l xx_XX`.
 
