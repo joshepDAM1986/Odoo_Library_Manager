@@ -1,6 +1,6 @@
 # Odoo Library Manager
 
-Odoo 17 module to manage a small library: books, authors, categories, members and loans, with an OWL home dashboard, a PDF report and an optional AI category suggestion.
+Odoo 17 module to manage a small library: books, authors, categories, members and loans, with an OWL home dashboard, a PDF report, an optional AI category suggestion and ISBN autofill.
 
 Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, QWeb and testing).
 
@@ -22,6 +22,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Side filter panel (status and categories, with counters) to browse large catalogs.
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
+- **ISBN autofill (Open Library)**: type the ISBN and press **Autofill from ISBN** to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites fields you already filled (see [Autofill from ISBN](#autofill-from-isbn)).
 - **Authors**: biography, birth date, book counter (smart button), total pages written and a **Print PDF** button for the author sheet.
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
@@ -81,6 +82,7 @@ library_manager/
 - `TransactionCase` tests, including mocking an external API.
 - Calling an external API with the key stored in `ir.config_parameter`.
 - A standard Odoo settings screen (`res.config.settings`) with `config_parameter` fields and the *Settings* app block.
+- A public API without a key (Open Library), ISBN-10/13 check-digit validation and downloading an image.
 
 ## Install (Docker)
 
@@ -133,6 +135,23 @@ Notes:
 - The key is sent in the `x-goog-api-key` header (never in the URL) and must never be committed to Git.
 - Free-tier usage is limited, and Google's terms for unpaid usage allow submitted content to be used to improve its products. Do not use it with real customer data.
 - HTTP 404 usually means the model is not available for your key (change **Gemini Model** in *Settings > Library*); HTTP 429 means a quota or rate limit was reached.
+
+## Autofill from ISBN
+
+The **Autofill from ISBN** button next to the ISBN field completes a book from [Open Library](https://openlibrary.org/). It needs no key or configuration.
+
+1. Open a book (or press *New*).
+2. Type the ISBN, with or without hyphens.
+3. Press **Autofill from ISBN**.
+
+The button checks the ISBN check digit (ISBN-10 and ISBN-13), asks Open Library and fills the fields that are still empty. On an unsaved book it creates the book with the fetched title and reopens the form; on an existing book it only fills the gaps, so a title or author you already wrote is kept.
+
+Notes:
+
+- Only librarians can use it: the button is hidden for readers and the server checks the group too.
+- The author is matched by name ignoring case and created only if it does not exist. Only the first author is used, because a book stores a single author.
+- The cover is downloaded when it is an image of at most 5 MB. If the download fails, the rest of the data is still filled and the notification warns about it.
+- Open Library is a free service without availability guarantees, and its data may be incomplete or differ from the printed edition. The description is not fetched because the endpoint used does not return it.
 
 ## Roadmap
 

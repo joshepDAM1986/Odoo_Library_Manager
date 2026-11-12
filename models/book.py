@@ -1,6 +1,8 @@
 
+import base64
 import json
 import logging
+import re
 from datetime import date
 
 import requests
@@ -16,6 +18,10 @@ GEMINI_BASE_URL = (
 )
 
 DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
+
+OPEN_LIBRARY_BOOKS_URL = "https://openlibrary.org/api/books"
+OPEN_LIBRARY_TIMEOUT = 30
+MAX_COVER_BYTES = 5 * 1024 * 1024
 
 class LibraryBook(models.Model):
     _name = "library.book"
@@ -219,6 +225,362 @@ class LibraryBook(models.Model):
             ],
             "context": {
                 "default_book_id": self.id
+            },
+        }
+
+    # --- Autorrelleno por ISBN (Open Library) ----------------------------
+    @api.model
+    def _normalize_isbn(self, value):
+        """Quita guiones y espacios y deja el ISBN en mayúsculas."""
+        return "".join(
+            char
+            for char in (value or "").upper()
+            if char not in " -"
+        )
+
+    @api.model
+    def _is_valid_isbn(self, isbn):
+        """Comprueba la longitud y el dígito de control (ISBN-10 o 13)."""
+        if len(isbn) == 10:
+            if not isbn[:9].isdigit() or not (
+                isbn[9].isdigit() or isbn[9] == "X"
+            ):
+                return False
+            total = sum(
+                (10 - index)
+                * (10 if char == "X" else int(char))
+                for index, char in enumerate(isbn)
+            )
+            return total % 11 == 0
+
+        if len(isbn) == 13:
+            if not isbn.isdigit() or isbn[:3] not in ("978", "979"):
+                return False
+            total = sum(
+                int(char) * (1 if index % 2 == 0 else 3)
+                for index, char in enumerate(isbn)
+            )
+            return total % 10 == 0
+
+        return False
+
+    @api.model
+    def _extract_publication_year(self, value):
+        """Extrae un año válido de fechas como '1988' o 'March 1988'."""
+        match = re.search(r"\b(\d{4})\b", value or "")
+        if not match:
+            return 0
+        year = int(match.group(1))
+        current_year = date.today().year
+        return year if 1000 <= year <= current_year else 0
+
+    def _check_isbn_access(self):
+        """Solo los bibliotecarios pueden consultar la API externa."""
+        if not self.env.su and not self.env.user.has_group(
+            "library_manager.group_library_manager"
+        ):
+            raise AccessError(
+                _("Only librarians can use the ISBN autofill.")
+            )
+
+    @api.model
+    def _get_or_create_author(self, name):
+        """Devuelve el autor con ese nombre o lo crea (nombre es UNIQUE)."""
+        name = (name or "").strip()
+        if not name:
+            return self.env["library.author"]
+        author = self.env["library.author"].search(
+            [("name", "=ilike", name)], limit=1
+        )
+        return author or self.env["library.author"].create({
+            "name": name
+        })
+
+    def _fetch_open_library_data(self, isbn):
+        """Consulta Open Library y devuelve los datos del ISBN indicado."""
+        try:
+            _logger.info(
+                "Requesting Open Library data for ISBN %s", isbn
+            )
+            response = requests.get(
+                OPEN_LIBRARY_BOOKS_URL,
+                params={
+                    "bibkeys": f"ISBN:{isbn}",
+                    "format": "json",
+                    "jscmd": "data",
+                },
+                timeout=OPEN_LIBRARY_TIMEOUT,
+            )
+
+        except requests.exceptions.Timeout:
+            raise UserError(
+                _(
+                    "Open Library did not respond within 30 seconds. "
+                    "Please try again."
+                )
+            )
+
+        except requests.exceptions.RequestException:
+            _logger.exception(
+                "Network error connecting to Open Library"
+            )
+            raise UserError(
+                _(
+                    "Could not connect to Open Library. "
+                    "Check the server internet connection."
+                )
+            )
+
+        if response.status_code == 404:
+            raise UserError(
+                _(
+                    "Open Library has no data for ISBN %s. "
+                    "Check the ISBN or try later."
+                ) % isbn
+            )
+
+        if not response.ok:
+            _logger.error(
+                "Open Library error. Status: %s, ISBN: %s",
+                response.status_code,
+                isbn,
+            )
+            raise UserError(
+                _("Open Library returned an error (HTTP %s).")
+                % response.status_code
+            )
+
+        try:
+            result = response.json()
+        except ValueError:
+            _logger.warning(
+                "Invalid Open Library response for ISBN %s", isbn
+            )
+            raise UserError(
+                _("Open Library returned an invalid response.")
+            )
+
+        data = (
+            result.get(f"ISBN:{isbn}")
+            if isinstance(result, dict)
+            else None
+        )
+
+        if not data:
+            raise UserError(
+                _(
+                    "Open Library has no data for ISBN %s. "
+                    "Check the ISBN or try later."
+                ) % isbn
+            )
+
+        return data
+
+    def _fetch_cover_image(self, url):
+        """Descarga la portada y la devuelve en base64, o None si falla.
+
+        Un fallo con la imagen no debe impedir rellenar el resto de datos.
+        """
+        if not url:
+            return None
+
+        try:
+            response = requests.get(
+                url, timeout=OPEN_LIBRARY_TIMEOUT
+            )
+        except requests.exceptions.RequestException:
+            _logger.warning(
+                "Could not download the cover image %s", url
+            )
+            return None
+
+        if not response.ok:
+            _logger.warning(
+                "Cover download failed with HTTP %s: %s",
+                response.status_code,
+                url,
+            )
+            return None
+
+        content = response.content or b""
+
+        if not content or len(content) > MAX_COVER_BYTES:
+            _logger.warning(
+                "Cover image skipped (empty or larger than 5 MB): %s",
+                url,
+            )
+            return None
+
+        content_type = (response.headers or {}).get(
+            "Content-Type", ""
+        )
+        if content_type and not content_type.startswith("image/"):
+            _logger.warning(
+                "Cover URL did not return an image: %s", url
+            )
+            return None
+
+        return base64.b64encode(content).decode("ascii")
+
+    def _prepare_isbn_values(self, data, isbn):
+        """Prepara los valores devueltos por Open Library, reemplazando los existentes.
+
+        Devuelve ``(values, cover_failed)``. ``values`` siempre incluye el
+        ISBN normalizado; el resto de campos solo aparece si estaba vacío.
+        """
+        values = {"isbn": isbn}
+
+        title = (data.get("title") or "").strip()
+        if title:
+            values["name"] = title
+
+        if data.get("authors"):
+            authors = data.get("authors") or []
+            author_name = ""
+            if authors and isinstance(authors[0], dict):
+                author_name = (
+                    authors[0].get("name") or ""
+                ).strip()
+            if author_name:
+                author = self._get_or_create_author(author_name)
+                values["author_id"] = author.id
+
+        if data.get("publish_date"):
+            year = self._extract_publication_year(
+                data.get("publish_date")
+            )
+            if year:
+                values["publication_year"] = year
+
+        if data.get("number_of_pages"):
+            try:
+                pages = int(data.get("number_of_pages") or 0)
+            except (TypeError, ValueError):
+                pages = 0
+            if pages > 0:
+                values["pages"] = pages
+
+        cover_failed = False
+        if data.get("cover"):
+            cover = data.get("cover") or {}
+            cover_url = (
+                cover.get("medium")
+                or cover.get("large")
+                or cover.get("small")
+            )
+            cover_image = self._fetch_cover_image(cover_url)
+            if cover_image:
+                values["cover_image"] = cover_image
+            elif cover_url:
+                cover_failed = True
+
+        return values, cover_failed
+
+    def action_fill_from_isbn(self):
+        """Rellena el libro con los datos de Open Library a partir del ISBN.
+
+        Sobrescribe los campos cuando Open Library devuelve un valor. Si el libro todavía
+        no está guardado, se crea directamente para poder rellenar el título.
+        """
+        self.ensure_one()
+        self._check_isbn_access()
+
+        raw_isbn = (self.isbn or "").strip()
+        if not raw_isbn:
+            raise UserError(_("Enter an ISBN first."))
+
+        isbn = self._normalize_isbn(raw_isbn)
+        if not self._is_valid_isbn(isbn):
+            raise UserError(
+                _(
+                    "ISBN '%s' is not valid. "
+                    "Check the number and its check digit."
+                ) % raw_isbn
+            )
+
+        duplicate_domain = [("isbn", "=", isbn)]
+        if self._origin.id:
+            duplicate_domain.append(
+                ("id", "!=", self._origin.id)
+            )
+        duplicate = self.search(duplicate_domain, limit=1)
+        if duplicate:
+            raise UserError(
+                _(
+                    "A book with ISBN %(isbn)s already exists: "
+                    "%(title)s."
+                ) % {
+                    "isbn": isbn,
+                    "title": duplicate.name,
+                }
+            )
+
+        data = self._fetch_open_library_data(isbn)
+        values, cover_failed = self._prepare_isbn_values(
+            data, isbn
+        )
+
+        # Libro nuevo: se guarda con lo obtenido y se reabre el formulario.
+        if not self._origin.id:
+            create_values = dict(values)
+            if not create_values.get("name"):
+                create_values["name"] = (self.name or "").strip()
+            if not create_values.get("name"):
+                raise UserError(
+                    _(
+                        "Open Library did not return a title "
+                        "for ISBN %s."
+                    ) % isbn
+                )
+            book = self.create(create_values)
+            return {
+                "type": "ir.actions.act_window",
+                "res_model": "library.book",
+                "res_id": book.id,
+                "view_mode": "form",
+                "target": "current",
+            }
+
+        filled = []
+        if "name" in values:
+            filled.append(_("title"))
+        if "author_id" in values:
+            filled.append(_("author"))
+        if "publication_year" in values:
+            filled.append(_("publication year"))
+        if "pages" in values:
+            filled.append(_("pages"))
+        if "cover_image" in values:
+            filled.append(_("cover"))
+
+        self.write(values)
+
+        if filled:
+            message = _(
+                "Filled from Open Library: %s."
+            ) % ", ".join(filled)
+            notification_type = "success"
+        else:
+            message = _(
+                "Open Library returned data, but the book "
+                "fields were already filled."
+            )
+            notification_type = "warning"
+
+        if cover_failed:
+            message = _(
+                "%(message)s The cover could not be downloaded."
+            ) % {"message": message}
+            notification_type = "warning"
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("ISBN Autofill"),
+                "message": message,
+                "type": notification_type,
+                "sticky": False,
             },
         }
 

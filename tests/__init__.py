@@ -6,3 +6,4 @@ from . import test_ai
 from . import test_author
 from . import test_report
 from . import test_settings
+from . import test_isbn

@@ -18,6 +18,13 @@ msgstr ""
 
 #. module: library_manager
 #. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "%(message)s The cover could not be downloaded."
+msgstr "%(message)s No se pudo descargar la portada."
+
+#. module: library_manager
+#. odoo-python
 #: code:addons/library_manager/models/member.py:0
 #, python-format
 msgid "%s (Suspended)"
@@ -84,6 +91,13 @@ msgstr "<i class=\"fa fa-user me-1\" title=\"Autor\"/>"
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "<strong>Total:</strong>"
 msgstr "<strong>Total:</strong>"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "A book with ISBN %(isbn)s already exists: %(title)s."
+msgstr "Ya existe un libro con el ISBN %(isbn)s: %(title)s."
 
 #. module: library_manager
 #. odoo-python
@@ -211,6 +225,11 @@ msgstr "Ficha de autor"
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_tree
 msgid "Authors"
 msgstr "Autores"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Autofill from ISBN"
+msgstr "Autorrellenar desde ISBN"
 
 #. module: library_manager
 #. odoo-javascript
@@ -469,6 +488,13 @@ msgid "Could not connect to Gemini. Check the server internet connection."
 msgstr "No se pudo conectar con Gemini. Comprueba la conexión a internet del servidor."
 
 #. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Could not connect to Open Library. Check the server internet connection."
+msgstr "No se pudo conectar con Open Library. Comprueba la conexión a internet del servidor."
+
+#. module: library_manager
 #: model:ir.model.fields,help:library_manager.field_library_member__message_bounce
 msgid "Counter of the number of bounced emails for this contact"
 msgstr "Contador de correos rebotados de este contacto"
@@ -612,6 +638,20 @@ msgstr "Correo electrónico"
 #: model:ir.model.fields,field_description:library_manager.field_library_member__employee
 msgid "Employee"
 msgstr "Empleado"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Enter an ISBN first."
+msgstr "Introduce primero un ISBN."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Filled from Open Library: %s."
+msgstr "Datos rellenados desde Open Library: %s."
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_book__message_follower_ids
@@ -823,6 +863,20 @@ msgstr "Estado de mensajería"
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "ISBN"
 msgstr "ISBN"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "ISBN '%s' is not valid. Check the number and its check digit."
+msgstr "El ISBN '%s' no es válido. Comprueba el número y su dígito de control."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "ISBN Autofill"
+msgstr "Autorrelleno por ISBN"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_member__activity_exception_icon
@@ -1333,6 +1387,48 @@ msgid "Notes"
 msgstr "Notas"
 
 #. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library did not respond within 30 seconds. Please try again."
+msgstr "Open Library no respondió en 30 segundos. Inténtalo de nuevo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library did not return a title for ISBN %s."
+msgstr "Open Library no devolvió un título para el ISBN %s."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library has no data for ISBN %s. Check the ISBN or try later."
+msgstr "Open Library no tiene datos para el ISBN %s. Comprueba el ISBN o inténtalo más tarde."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library returned an error (HTTP %s)."
+msgstr "Open Library devolvió un error (HTTP %s)."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library returned an invalid response."
+msgstr "Open Library devolvió una respuesta no válida."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library returned data, but the book fields were already filled."
+msgstr "Open Library devolvió datos, pero los campos del libro ya estaban rellenos."
+
+#. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_book__message_needaction_counter
 #: model:ir.model.fields,field_description:library_manager.field_library_loan__message_needaction_counter
 #: model:ir.model.fields,field_description:library_manager.field_library_member__message_needaction_counter
@@ -1415,6 +1511,13 @@ msgstr "Solo se pueden cancelar préstamos en borrador o en curso."
 #, python-format
 msgid "Only librarians can use the AI category suggestion."
 msgstr "Solo los bibliotecarios pueden usar la sugerencia de categorías con IA."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Only librarians can use the ISBN autofill."
+msgstr "Solo los bibliotecarios pueden usar el autorrelleno por ISBN."
 
 #. module: library_manager
 #. odoo-python
@@ -1949,9 +2052,23 @@ msgid "Zip"
 msgstr "Código postal"
 
 #. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "author"
+msgstr "autor"
+
+#. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "books,"
 msgstr "libros,"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "cover"
+msgstr "portada"
 
 #. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.res_config_settings_view_form
@@ -1972,3 +2089,17 @@ msgstr "p. ej., Don Quijote de la Mancha"
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "pages"
 msgstr "páginas"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "publication year"
+msgstr "año de publicación"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "title"
+msgstr "título"

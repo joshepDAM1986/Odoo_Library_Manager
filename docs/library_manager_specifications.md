@@ -139,6 +139,22 @@ stateDiagram-v2
 
 Catalogue-style kanban (cover and a coloured status label), list and form, with a side filter panel by status and category.
 
+### 4.4 Autofill from ISBN
+
+The *Autofill from ISBN* button next to the ISBN field completes a book from the [Open Library](https://openlibrary.org/) public API. It needs no key or configuration.
+
+- **RF-ISBN-01** Only librarians can use it: the button is hidden for readers and the server checks the group too.
+- **RF-ISBN-02** The ISBN is normalised first (spaces and hyphens removed, X in upper case) and its check digit is validated as ISBN-10 or ISBN-13. A missing or invalid ISBN is rejected before calling the API.
+- **RF-ISBN-03** An ISBN that already belongs to another book is rejected before calling the API, with the title of the existing book. The normalised ISBN is what gets stored.
+- **RF-ISBN-04** The action only fills **empty** fields; it never overwrites a value typed by the librarian.
+- **RF-ISBN-05** It fills the title (only when empty), author, publication year, pages and cover. Since the title is required, pressing the button on an unsaved book creates it with the returned data and reopens the form.
+- **RF-ISBN-06** The author is reused when a name matches ignoring case, and created otherwise. Only the first author is used, because the model stores one.
+- **RF-ISBN-07** The cover is downloaded from the medium, large or small URL (in that order) and is skipped when it is empty, not an image or larger than 5 MB. A cover failure never blocks the rest of the fields; the notification then warns about it.
+- **RF-ISBN-08** Timeouts (30 s), connection errors, HTTP errors and ISBNs without data are reported as clear messages, never as a traceback.
+- **RF-ISBN-09** A notification lists the fields that were filled. If Open Library had data but everything was already filled, it says so with a warning.
+
+The endpoint (`/api/books?bibkeys=ISBN:...&format=json&jscmd=data`) does not return the description, so that field is left untouched. Data quality and availability depend on Open Library, a free service without an SLA.
+
 ## 5. Authors and categories
 
 **Authors**: name (required), birth date, biography and their books.
@@ -344,8 +360,8 @@ First tab of the menu (*Home*). OWL component that shows grouped counters:
 
 - **RNF-01 Compatibility.** Odoo 17.0. View syntax is that of this version (`<tree>`, `invisible="…"` without `attrs`); operation on other versions is not guaranteed.
 - **RNF-02 Language.** Source texts are in English and translatable. A Spanish translation is included (`i18n/es.po`).
-- **RNF-03 Testing.** The module includes automated tests (`TransactionCase`) covering books, authors, members, contacts, loans, settings, statistics and the Gemini integration (with the API mocked). Every behaviour change must come with its tests, and the suite must finish with `0 failed, 0 error(s)`.
-- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys.
+- **RNF-03 Testing.** The module includes automated tests (`TransactionCase`) covering books, authors, members, contacts, loans, settings, statistics, the Gemini integration and the Open Library integration (both external APIs mocked). Every behaviour change must come with its tests, and the suite must finish with `0 failed, 0 error(s)`.
+- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds the ISBN autofill; it changes no stored data either.
 - **RNF-05 Demo data.** Categories, authors, books, members and about 60 historical loans, loaded only in databases created with demo data.
 - **RNF-06 Secrets.** Neither the Gemini key nor `odoo.conf` is stored in the repository.
 - **RNF-07 Performance.** Counters (loans per book and per member, books per author, memberships per contact) are computed with one grouped query per batch, not one query per record.
@@ -360,6 +376,8 @@ Current behaviours worth knowing about. They are not requirements: they are open
 4. **Suspensions do not expire by themselves.** The grace period delays the suspension, but once a member is suspended only a librarian can reactivate them.
 5. **The email notice is marked when queued**, not when delivered. If the mail server fails afterwards, the notice is not retried by the module.
 6. **No record rules or multi-company.** All users with access see all records.
+7. **ISBN uniqueness is textual.** Two books can coexist with the same ISBN written with and without hyphens; the autofill normalises the ISBN of the book being edited and only compares normalised values.
+8. **The ISBN autofill depends on Open Library.** Its metadata can be incomplete or differ from the printed edition (for example the publication year), and the description is not fetched because the endpoint does not return it.
 
 Planned lines of evolution (see the README *Roadmap*): temporary suspensions, record rules and multi-company, and more translations.
 
@@ -383,7 +401,7 @@ Where each group of requirements lives, so a change can start from the right fil
 
 | Area (IDs) | Business logic | Views / data | Tests |
 |---|---|---|---|
-| **Security** (`RF-SEG`) | `security/library_security.xml` (groups, default users), `security/ir.model.access.csv` (access rights). Group checks in `models/res_partner.py` (field `groups=`) and `models/book.py::action_suggest_categories`. | `groups=` attributes in `views/*.xml` | `tests/test_ai.py` (reader vs librarian) |
+| **Security** (`RF-SEG`) | `security/library_security.xml` (groups, default users), `security/ir.model.access.csv` (access rights). Group checks in `models/res_partner.py` (field `groups=`) and `models/book.py` (`action_suggest_categories`, `_check_isbn_access`). | `groups=` attributes in `views/*.xml` | `tests/test_ai.py`, `tests/test_isbn.py` (reader vs librarian) |
 | **Data integrity** (`RF-DAT`) | `ondelete='restrict'` on `author_id` (`models/book.py`), `book_id` and `member_id` (`models/loan.py`), `partner_id` (`models/member.py`) | — | per model |
 | **Books** (`RF-LIB`) | `models/book.py`: `_sql_constraints` (ISBN, title + author), `_check_publication_year`, `action_borrow`, `action_return`, `action_mark_lost`, `action_recover`, `action_view_loans`, `_compute_loan_count` | `views/library_book_views.xml` | `tests/test_book.py` |
 | **Authors and categories** (`RF-AUT`) | `models/author.py`: `_sql_constraints`, `_check_birth_date`, `_compute_book_count`, `_compute_total_pages`, `action_view_author_books`, `action_print_report`. Categories: `models/category.py` | `views/library_author_views.xml`, `views/library_category_views.xml` | `tests/test_author.py` |
@@ -393,6 +411,7 @@ Where each group of requirements lives, so a change can start from the right fil
 | **Scheduled jobs** (`RF-CRON`) | `models/loan.py`: `_cron_send_overdue_emails`, `_cron_suspend_overdue_members`, `_suspend_member` | `data/library_cron.xml` (both jobs, `numbercall = -1`), `data/library_mail_template.xml` | `tests/test_loan.py` |
 | **Settings** (`RF-SET`) | `models/res_config_settings.py` (`config_parameter` fields and constraints), `models/loan.py` (`_get_int_setting`, `_default_due_date`, grace in `_cron_suspend_overdue_members`) | `views/res_config_settings_views.xml` | `tests/test_settings.py` |
 | **AI suggestion** (`RF-IA`) | `models/book.py::action_suggest_categories` (key and model lookup, prompt, HTTP call, error handling and matching all live in this one method) | Button in `views/library_book_views.xml` | `tests/test_ai.py` |
+| **ISBN autofill** (`RF-ISBN`) | `models/book.py`: `_normalize_isbn`, `_is_valid_isbn`, `_extract_publication_year`, `_check_isbn_access`, `_get_or_create_author`, `_fetch_open_library_data`, `_fetch_cover_image`, `_prepare_isbn_values`, `action_fill_from_isbn` | Button in `views/library_book_views.xml` | `tests/test_isbn.py` |
 | **Dashboard** (`RF-PAN`) | `static/src/dashboard/dashboard.js` (cards, counters, permission checks) | `static/src/dashboard/dashboard.xml`, `dashboard.scss`, `views/library_dashboard_views.xml` | none (JavaScript is not covered) |
 | **Statistics** (`RF-EST`) | `models/loan_report.py`: `_query` (the SQL view, including the rankings) and `init` | `views/library_report_views.xml`, `views/library_menus.xml` | `tests/test_report.py` |
 | **PDF report** (`RF-INF`) | `models/author.py::action_print_report` | `report/library_author_report.xml` | — |
@@ -403,6 +422,7 @@ Where each group of requirements lives, so a change can start from the right fil
 - **A new loan status** (as `lost` was): the `Selection` in `models/loan.py`; the status lists inside the SQL of `models/loan_report.py` (the `IN ('ongoing', 'returned', 'lost')` appears in **three** places, and `loan_state` has its own `Selection`); badge, alert and filter in `views/library_loan_view.xml`; a migration if existing data must change; tests; `i18n/es.po`; this document.
 - **A new setting**: a field with `config_parameter` in `models/res_config_settings.py`, a `<setting>` element in `views/res_config_settings_views.xml`, the read in the place it applies (fall back to the default, as `models/loan.py::_get_int_setting` does), a test in `tests/test_settings.py`, `i18n/es.po` and this document.
 - **A new user-visible text**: add it in English in the code and add its translation to `i18n/es.po`. Keys that already exist in other Odoo modules can collide in the dashboard's JavaScript (that is why the card says “Overdue loans”).
+- **A new external API call**: keep the request in the model, set a timeout, catch `requests.exceptions.Timeout` and `RequestException`, turn HTTP and parsing errors into `UserError`, and test every branch with `unittest.mock.patch` (see `tests/test_ai.py` and `tests/test_isbn.py`).
 - **A new field on the member**: avoid labels equal to those of `res.partner` (Odoo warns about duplicated labels because of the `_inherits`; “Contact” and “Notes” had to be renamed for that reason).
 
 ### Pitfalls already hit
