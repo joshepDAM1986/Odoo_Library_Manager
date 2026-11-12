@@ -22,7 +22,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Side filter panel (status and categories, with counters) to browse large catalogs.
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
-- **ISBN autofill (Open Library)**: type the ISBN and press **Autofill from ISBN** to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites fields you already filled (see [Autofill from ISBN](#autofill-from-isbn)).
+- **ISBN autofill (Open Library)**: enter the ISBN, then use **Autofill from ISBN** in the book form's top header to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites fields you already filled (see [Autofill from ISBN](#autofill-from-isbn)).
 - **Authors**: biography, birth date, book counter (smart button), total pages written and a **Print PDF** button for the author sheet.
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
@@ -40,7 +40,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - **Reactivation is always manual** (*Activate* button): recovering a book does not reactivate the member, since a replacement copy does not forgive the member. If a member is reactivated while still holding an overdue loan, the next run suspends them again.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
-- **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Rankings are limited to the top 10 so charts stay readable with large catalogs.
+- **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Popularity reports default to the top 10 and offer Top 5 / 10 / 20 / 50 filters.
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
 - **Settings screen** (*Settings > Library*): Gemini API key and model, default loan period and days of grace before suspending. The key and model keep the same system-parameter names, so existing installations need no migration.
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
@@ -84,37 +84,26 @@ library_manager/
 - A standard Odoo settings screen (`res.config.settings`) with `config_parameter` fields and the *Settings* app block.
 - A public API without a key (Open Library), ISBN-10/13 check-digit validation and downloading an image.
 
-## Install (Docker)
+## Installation and development
 
-The project runs with Docker Compose (Odoo 17 + PostgreSQL 15). The module lives in `./extra-addons`, mounted at `/mnt/extra-addons`.
+This repository contains the addon only; it does not include an Odoo server, PostgreSQL instance, or Docker Compose configuration. Use an Odoo 17.0 installation and PostgreSQL, and make sure the parent directory of `library_manager` is included in Odoo's `addons_path`. Install the Python dependency declared by the manifest (`requests`) in the Python environment used by Odoo.
 
-```bash
-docker compose up -d
-```
-
-Open `http://localhost:8069`, create a database (tick *Demo data* if you want the sample records), then install **Library Manager** from Apps.
-
-After changing the code:
+Restart the Odoo service after Python changes, then update the module from Apps or with:
 
 ```bash
-docker compose restart web
-docker compose exec web odoo -d YOUR_DB -u library_manager --stop-after-init \
-    --db_host=db --db_user=odoo --db_password=odoo --no-http
-docker compose restart web
+odoo -d YOUR_DB -u library_manager --stop-after-init
 ```
 
-Python changes need the restart **before** the update; XML and manifest changes need the update (`-u`). After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
+Use `-i library_manager` instead of `-u` for a first CLI installation. Enable demo data when creating the database if you want the sample catalog and historical loans. After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
 
-## Run the tests
-
-Use a separate database so your real one is not touched:
+To run the automated suite, use a separate test database:
 
 ```bash
-docker compose run --rm web odoo -d test_library -i library_manager \
-    --test-enable --test-tags /library_manager --stop-after-init --no-http
+odoo -d test_library -i library_manager \
+    --test-enable --test-tags /library_manager --stop-after-init
 ```
 
-Once `test_library` exists, use `-u` instead of `-i`. A successful run ends with `0 failed, 0 error(s)`. The tests that simulate API failures mute the module's logger, so the log stays clean.
+Once `test_library` exists, use `-u` instead of `-i`. The tests that simulate API failures mute the module's logger.
 
 ## Enable the AI suggestion
 
@@ -138,11 +127,11 @@ Notes:
 
 ## Autofill from ISBN
 
-The **Autofill from ISBN** button next to the ISBN field completes a book from [Open Library](https://openlibrary.org/). It needs no key or configuration.
+The **Autofill from ISBN** button in the book form's top header completes a book from [Open Library](https://openlibrary.org/). It needs no key or configuration.
 
 1. Open a book (or press *New*).
 2. Type the ISBN, with or without hyphens.
-3. Press **Autofill from ISBN**.
+3. Press **Autofill from ISBN** in the form header.
 
 The button checks the ISBN check digit (ISBN-10 and ISBN-13), asks Open Library and fills the fields that are still empty. On an unsaved book it creates the book with the fetched title and reopens the form; on an existing book it only fills the gaps, so a title or author you already wrote is kept.
 

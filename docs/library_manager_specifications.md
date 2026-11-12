@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Module** | `library_manager` |
-| **Version described** | 17.0.2.1.0 |
+| **Version described** | 17.0.2.3.0 |
 | **Platform** | Odoo 17.0 (Community), PostgreSQL |
 | **Dependencies** | `base`, `mail`; Python library `requests` |
 | **License** | LGPL-3 |
@@ -348,7 +348,7 @@ First tab of the menu (*Home*). OWL component that shows grouped counters:
 
 - **RF-EST-01** Only `ongoing`, `returned` and `lost` loans count. Drafts and cancelled loans do not appear in any statistic.
 - **RF-EST-02** Available measures: number of loans, number of overdue loans and average days late. The days late of a loan are `max(return date or, if there is none, today − due date, 0)`; lost loans do not enter that average.
-- **RF-EST-03** The three popularity reports open limited to the **Top 10**, and offer Top 5 / 10 / 20 / 50 filters to change it.
+- **RF-EST-03** The three popularity reports open with the **Top 10** filter active, and offer Top 5 / 10 / 20 / 50 filters to change the displayed ranking.
 - **RF-EST-04** Ranking positions are calculated over the full history and without ties: with the same number of loans, the order is by identifier. They are not recalculated when other filters (for example, a date range) are applied.
 - **RF-EST-05** All reports can be filtered by *Ongoing*, *Returned* and *Overdue*, and grouped by book, author, member, month and status. There is no filter for lost loans; they can be seen by grouping by status.
 
