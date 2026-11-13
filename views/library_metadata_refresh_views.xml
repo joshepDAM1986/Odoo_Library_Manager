@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_library_metadata_refresh_tree" model="ir.ui.view">
+        <field name="name">library.metadata.refresh.tree</field>
+        <field name="model">library.metadata.refresh</field>
+        <field name="arch" type="xml">
+            <tree string="Open Library Refreshes" create="0" edit="0" delete="0"
+                  decoration-success="state == 'done'"
+                  decoration-danger="state == 'failed'"
+                  decoration-warning="state in ('queued', 'processing')">
+                <field name="name"/>
+                <field name="state" widget="badge"/>
+                <field name="requested_by"/>
+                <field name="create_date"/>
+                <field name="processed_at"/>
+                <field name="message" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_library_metadata_refresh_search" model="ir.ui.view">
+        <field name="name">library.metadata.refresh.search</field>
+        <field name="model">library.metadata.refresh</field>
+        <field name="arch" type="xml">
+            <search string="Open Library Refreshes">
+                <field name="name"/>
+                <field name="requested_by"/>
+                <filter name="queued" string="Queued" domain="[('state', '=', 'queued')]"/>
+                <filter name="processing" string="Processing" domain="[('state', '=', 'processing')]"/>
+                <filter name="failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <filter name="done" string="Completed" domain="[('state', '=', 'done')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_library_metadata_refresh" model="ir.actions.act_window">
+        <field name="name">Open Library Refreshes</field>
+        <field name="res_model">library.metadata.refresh</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_library_metadata_refresh_search"/>
+    </record>
+</odoo>

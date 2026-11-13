@@ -3,6 +3,7 @@ import base64
 import json
 import logging
 import re
+import time
 from datetime import date
 
 import requests
@@ -39,6 +40,13 @@ class LibraryBook(models.Model):
 
     isbn = fields.Char(
         string="ISBN",
+    )
+
+    openlibrary_key = fields.Char(
+        string="Open Library ID",
+        index=True,
+        help="Open Library work ID (for example, OL123W) or edition ID "
+             "(for example, OL123M).",
     )
 
     publication_year = fields.Integer(
@@ -239,6 +247,17 @@ class LibraryBook(models.Model):
         )
 
     @api.model
+    def _normalize_openlibrary_book_key(self, value):
+        value = (value or "").strip().upper()
+        match = re.fullmatch(
+            r"(?:HTTPS?://OPENLIBRARY\.ORG)?"
+            r"(?:/(?:WORKS|BOOKS)/)?(OL\d+[WM])"
+            r"(?:\.JSON)?(?:/[^?]*)?",
+            value,
+        )
+        return match.group(1) if match else False
+
+    @api.model
     def _is_valid_isbn(self, isbn):
         """Comprueba la longitud y el dígito de control (ISBN-10 o 13)."""
         if len(isbn) == 10:
@@ -354,6 +373,8 @@ class LibraryBook(models.Model):
     def _fetch_open_library_data(self, isbn):
         """Consulta Open Library y devuelve los datos del ISBN indicado."""
         try:
+            if self.env.context.get("openlibrary_bulk_refresh"):
+                time.sleep(1)
             _logger.info(
                 "Requesting Open Library data for ISBN %s", isbn
             )
@@ -431,6 +452,116 @@ class LibraryBook(models.Model):
 
         return data
 
+    def _fetch_open_library_record(self, route, key):
+        """Fetch one work or edition by its Open Library ID."""
+        url = f"https://openlibrary.org/{route}/{key}.json"
+        try:
+            if self.env.context.get("openlibrary_bulk_refresh"):
+                time.sleep(1)
+            response = requests.get(url, timeout=OPEN_LIBRARY_TIMEOUT)
+        except requests.exceptions.Timeout:
+            raise UserError(_(
+                "Open Library did not respond within 30 seconds. Please try again."
+            ))
+        except requests.exceptions.RequestException:
+            _logger.exception("Network error fetching Open Library ID %s", key)
+            raise UserError(_(
+                "Could not connect to Open Library. Check the server internet connection."
+            ))
+
+        if response.status_code == 404:
+            raise UserError(_("Open Library has no data for ID %s.") % key)
+        if not response.ok:
+            raise UserError(_(
+                "Open Library returned an error (HTTP %s)."
+            ) % response.status_code)
+        try:
+            data = response.json()
+        except ValueError:
+            raise UserError(_("Open Library returned an invalid response."))
+        if not isinstance(data, dict):
+            raise UserError(_("Open Library returned an invalid response."))
+        return data
+
+    @api.model
+    def _prepare_openlibrary_key_data(self, key):
+        """Adapt a Work or Edition record to the shape used by autofill."""
+        is_work = key.endswith("W")
+        record = self._fetch_open_library_record(
+            "works" if is_work else "books", key
+        )
+        authors = record.get("authors") or []
+
+        # Editions may omit the author list but refer to their parent work.
+        work_record = {}
+        if not is_work and not authors:
+            works = record.get("works") or []
+            work_key = False
+            if works and isinstance(works[0], dict):
+                work_key = self._normalize_openlibrary_book_key(
+                    works[0].get("key")
+                )
+            if work_key:
+                try:
+                    work_record = self._fetch_open_library_record(
+                        "works", work_key
+                    )
+                    authors = work_record.get("authors") or []
+                except UserError:
+                    _logger.warning(
+                        "Could not fetch parent work %s for edition %s",
+                        work_key,
+                        key,
+                    )
+
+        normalized_authors = []
+        for item in authors:
+            if not isinstance(item, dict):
+                continue
+            author_ref = item.get("author")
+            if not isinstance(author_ref, dict):
+                author_ref = item
+            normalized_authors.append({
+                "name": item.get("name") or author_ref.get("name") or "",
+                "key": author_ref.get("key") or author_ref.get("url") or "",
+            })
+
+        def first_cover_id(cover_ids):
+            if not isinstance(cover_ids, (list, tuple)):
+                cover_ids = [cover_ids]
+            return next((value for value in cover_ids
+                         if str(value).isdigit() and int(value) > 0), False)
+
+        cover_id = (
+            first_cover_id(record.get("covers"))
+            or first_cover_id(work_record.get("covers"))
+        )
+        cover = ({
+            "medium": f"https://covers.openlibrary.org/b/id/{cover_id}-M.jpg",
+        } if cover_id else {})
+
+        description = record.get("description") or work_record.get("description")
+        if isinstance(description, dict):
+            description = description.get("value")
+
+        return {
+            "title": record.get("title") or work_record.get("title") or "",
+            "authors": normalized_authors,
+            "publish_date": (
+                record.get("publish_date")
+                or record.get("first_publish_date")
+                or work_record.get("first_publish_date")
+            ),
+            "number_of_pages": record.get("number_of_pages"),
+            "cover": cover,
+            "description": description,
+            "openlibrary_key": key,
+            # ISBNs identify editions, so only take them from an edition record.
+            "identifiers": record.get("identifiers") or {},
+            "isbn_10": record.get("isbn_10") or [],
+            "isbn_13": record.get("isbn_13") or [],
+        }
+
     def _fetch_cover_image(self, url):
         """Descarga la portada y la devuelve en base64, o None si falla.
 
@@ -440,6 +571,8 @@ class LibraryBook(models.Model):
             return None
 
         try:
+            if self.env.context.get("openlibrary_bulk_refresh"):
+                time.sleep(1)
             response = requests.get(
                 url, timeout=OPEN_LIBRARY_TIMEOUT
             )
@@ -477,16 +610,51 @@ class LibraryBook(models.Model):
 
         return base64.b64encode(content).decode("ascii")
 
-    def _prepare_isbn_values(self, data, isbn):
-        """Prepara los valores devueltos por Open Library, reemplazando los existentes.
-
-        Devuelve ``(values, cover_failed)``. ``values`` siempre incluye el
-        ISBN normalizado; el resto de campos solo aparece si estaba vacío.
-        """
-        values = {"isbn": isbn}
+    def _prepare_isbn_values(self, data, isbn=False, openlibrary_key=False):
+        """Prepare book values returned by Open Library for ISBN or OLID lookup."""
+        values = {}
+        isbn_conflict = False
+        if isbn:
+            values["isbn"] = isbn
+        else:
+            identifiers = data.get("identifiers") or {}
+            if not isinstance(identifiers, dict):
+                identifiers = {}
+            isbn_candidates = []
+            for field in ("isbn_13", "isbn_10"):
+                for source in (data, identifiers):
+                    candidates = source.get(field) or []
+                    if isinstance(candidates, str):
+                        isbn_candidates.append(candidates)
+                    elif isinstance(candidates, (list, tuple)):
+                        isbn_candidates.extend(candidates)
+            for candidate in isbn_candidates:
+                candidate = self._normalize_isbn(str(candidate or ""))
+                if self._is_valid_isbn(candidate):
+                    if not (
+                        self.env.context.get("openlibrary_refresh_overwrite")
+                        or not self.isbn
+                    ):
+                        break
+                    else:
+                        duplicate = self.search([
+                            ("isbn", "=", candidate),
+                            ("id", "!=", self._origin.id or 0),
+                        ], limit=1)
+                        if duplicate:
+                            isbn_conflict = candidate
+                            continue
+                        values["isbn"] = candidate
+                    break
+        key = openlibrary_key or self._normalize_openlibrary_book_key(
+            data.get("openlibrary_key") or data.get("url")
+        )
+        overwrite = self.env.context.get("openlibrary_refresh_overwrite")
+        if key and (overwrite or openlibrary_key or not self.openlibrary_key):
+            values["openlibrary_key"] = key
 
         title = (data.get("title") or "").strip()
-        if title:
+        if title and (overwrite or not self.name):
             values["name"] = title
 
         if data.get("authors"):
@@ -508,16 +676,17 @@ class LibraryBook(models.Model):
                 author = self._get_or_create_author(
                     author_name, author_key, author_data
                 )
-                values["author_id"] = author.id
+                if author and (overwrite or not self.author_id):
+                    values["author_id"] = author.id
 
-        if data.get("publish_date"):
+        if data.get("publish_date") and (overwrite or not self.publication_year):
             year = self._extract_publication_year(
                 data.get("publish_date")
             )
             if year:
                 values["publication_year"] = year
 
-        if data.get("number_of_pages"):
+        if data.get("number_of_pages") and (overwrite or not self.pages):
             try:
                 pages = int(data.get("number_of_pages") or 0)
             except (TypeError, ValueError):
@@ -525,8 +694,13 @@ class LibraryBook(models.Model):
             if pages > 0:
                 values["pages"] = pages
 
+        description = data.get("description")
+        if (isinstance(description, str) and description.strip()
+                and (overwrite or not self.description)):
+            values["description"] = description.strip()
+
         cover_failed = False
-        if data.get("cover"):
+        if data.get("cover") and (overwrite or not self.cover_image):
             cover = data.get("cover") or {}
             cover_url = (
                 cover.get("medium")
@@ -539,64 +713,83 @@ class LibraryBook(models.Model):
             elif cover_url:
                 cover_failed = True
 
-        return values, cover_failed
+        return values, cover_failed, isbn_conflict
 
     def action_fill_from_isbn(self):
-        """Rellena el libro con los datos de Open Library a partir del ISBN.
+        """Rellena el libro desde Open Library por ISBN o por su ID.
 
-        Sobrescribe los campos cuando Open Library devuelve un valor. Si el libro todavía
-        no está guardado, se crea directamente para poder rellenar el título.
+        Completa los campos vacíos. Si el libro todavía no está guardado, se
+        crea directamente para poder rellenar el título.
         """
         self.ensure_one()
         self._check_isbn_access()
 
-        raw_isbn = (self.isbn or "").strip()
-        if not raw_isbn:
-            raise UserError(_("Enter an ISBN first."))
+        raw_key = (self.openlibrary_key or "").strip()
+        if raw_key:
+            openlibrary_key = self._normalize_openlibrary_book_key(raw_key)
+            if not openlibrary_key:
+                raise UserError(_(
+                    "Open Library ID '%s' is invalid. Enter a work ID "
+                    "(OL…W) or an edition ID (OL…M)."
+                ) % raw_key)
+            data = self._prepare_openlibrary_key_data(openlibrary_key)
+            isbn = False
+        else:
+            raw_isbn = (self.isbn or "").strip()
+            if not raw_isbn:
+                raise UserError(_(
+                    "Enter an ISBN or an Open Library ID first."
+                ))
 
-        isbn = self._normalize_isbn(raw_isbn)
-        if not self._is_valid_isbn(isbn):
-            raise UserError(
-                _(
-                    "ISBN '%s' is not valid. "
-                    "Check the number and its check digit."
-                ) % raw_isbn
-            )
+            isbn = self._normalize_isbn(raw_isbn)
+            if not self._is_valid_isbn(isbn):
+                raise UserError(
+                    _(
+                        "ISBN '%s' is not valid. "
+                        "Check the number and its check digit."
+                    ) % raw_isbn
+                )
 
-        duplicate_domain = [("isbn", "=", isbn)]
-        if self._origin.id:
-            duplicate_domain.append(
-                ("id", "!=", self._origin.id)
-            )
-        duplicate = self.search(duplicate_domain, limit=1)
-        if duplicate:
-            raise UserError(
-                _(
-                    "A book with ISBN %(isbn)s already exists: "
-                    "%(title)s."
-                ) % {
-                    "isbn": isbn,
-                    "title": duplicate.name,
-                }
-            )
+            duplicate_domain = [("isbn", "=", isbn)]
+            if self._origin.id:
+                duplicate_domain.append(("id", "!=", self._origin.id))
+            duplicate = self.search(duplicate_domain, limit=1)
+            if duplicate:
+                raise UserError(
+                    _(
+                        "A book with ISBN %(isbn)s already exists: "
+                        "%(title)s."
+                    ) % {"isbn": isbn, "title": duplicate.name}
+                )
 
-        data = self._fetch_open_library_data(isbn)
-        values, cover_failed = self._prepare_isbn_values(
-            data, isbn
+            data = self._fetch_open_library_data(isbn)
+            openlibrary_key = False
+
+        values, cover_failed, isbn_conflict = self._prepare_isbn_values(
+            data, isbn, openlibrary_key
         )
 
         # Libro nuevo: se guarda con lo obtenido y se reabre el formulario.
         if not self._origin.id:
-            create_values = dict(values)
+            create_values = {
+                "name": (self.name or "").strip(),
+                "isbn": self.isbn or False,
+                "openlibrary_key": self.openlibrary_key or False,
+                "author_id": self.author_id.id or False,
+                "publication_year": self.publication_year or False,
+                "pages": self.pages or False,
+                "description": self.description or False,
+                "cover_image": self.cover_image or False,
+            }
+            if self.category_ids:
+                create_values["category_ids"] = [
+                    (6, 0, self.category_ids.ids)
+                ]
+            create_values.update(values)
             if not create_values.get("name"):
-                create_values["name"] = (self.name or "").strip()
-            if not create_values.get("name"):
-                raise UserError(
-                    _(
-                        "Open Library did not return a title "
-                        "for ISBN %s."
-                    ) % isbn
-                )
+                raise UserError(_(
+                    "Open Library did not return a title for this book identifier."
+                ))
             book = self.create(create_values)
             return {
                 "type": "ir.actions.act_window",
@@ -617,6 +810,12 @@ class LibraryBook(models.Model):
             filled.append(_("pages"))
         if "cover_image" in values:
             filled.append(_("cover"))
+        if "description" in values:
+            filled.append(_("description"))
+        if "openlibrary_key" in values:
+            filled.append(_("Open Library ID"))
+        if "isbn" in values and not isbn:
+            filled.append(_("ISBN"))
 
         self.write(values)
 
@@ -638,13 +837,61 @@ class LibraryBook(models.Model):
             ) % {"message": message}
             notification_type = "warning"
 
+        if isbn_conflict:
+            message += " " + _(
+                "ISBN %(isbn)s was not added because another book already uses it."
+            ) % {"isbn": isbn_conflict}
+            notification_type = "warning"
+
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
-                "title": _("ISBN Autofill"),
+                "title": _("Book Autofill"),
                 "message": message,
                 "type": notification_type,
+                "sticky": False,
+            },
+        }
+
+    def action_queue_openlibrary_refresh(self):
+        self._check_isbn_access()
+        if not self:
+            raise UserError(_("Select at least one book to refresh."))
+
+        eligible = self.filtered(lambda book: book.isbn or book.openlibrary_key)
+        skipped = len(self) - len(eligible)
+        if not eligible:
+            raise UserError(_(
+                "None of the selected books has an ISBN or Open Library ID."
+            ))
+
+        Queue = self.env["library.metadata.refresh"].sudo()
+        existing_ids = set(Queue.search([
+            ("state", "in", ["queued", "processing"]),
+            ("book_id", "in", eligible.ids),
+        ]).mapped("book_id").ids)
+        to_queue = eligible.filtered(lambda book: book.id not in existing_ids)
+        if to_queue:
+            Queue.create([{"book_id": book.id} for book in to_queue])
+
+        if not to_queue:
+            message = _("The selected books already have queued refreshes.")
+        else:
+            message = _(
+                "Queued %s book refreshes. Check Configuration > Open Library Refreshes for progress."
+            ) % len(to_queue)
+        if skipped:
+            message += " " + _(
+                "%s books were skipped because they have no ISBN or Open Library ID."
+            ) % skipped
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Open Library Refresh"),
+                "message": message,
+                "type": "success" if to_queue else "warning",
                 "sticky": False,
             },
         }

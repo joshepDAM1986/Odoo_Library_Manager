@@ -2,6 +2,7 @@ import logging
 import re
 import unicodedata
 from datetime import date, datetime
+import time
 
 import requests
 
@@ -89,6 +90,8 @@ class LibraryAuthor(models.Model):
     @api.model
     def _fetch_open_library_author(self, author_key):
         try:
+            if self.env.context.get('openlibrary_bulk_refresh'):
+                time.sleep(1)
             response = requests.get(
                 OPEN_LIBRARY_AUTHOR_URL % author_key,
                 timeout=OPEN_LIBRARY_TIMEOUT,
@@ -113,6 +116,8 @@ class LibraryAuthor(models.Model):
     @api.model
     def _search_open_library_author_key(self, name):
         try:
+            if self.env.context.get('openlibrary_bulk_refresh'):
+                time.sleep(1)
             response = requests.get(
                 OPEN_LIBRARY_AUTHOR_SEARCH_URL,
                 params={'q': name},
@@ -235,6 +240,40 @@ class LibraryAuthor(models.Model):
                 'title': _('Author Autofill'),
                 'message': message,
                 'type': 'success' if updated else 'warning',
+                'sticky': False,
+            },
+        }
+
+    def action_queue_openlibrary_refresh(self):
+        if not self:
+            raise UserError(_('Select at least one author to refresh.'))
+        if not self.env.su and not self.env.user.has_group(
+            'library_manager.group_library_manager'
+        ):
+            raise AccessError(_('Only librarians can queue author refreshes.'))
+
+        Queue = self.env['library.metadata.refresh'].sudo()
+        existing_ids = set(Queue.search([
+            ('state', 'in', ['queued', 'processing']),
+            ('author_id', 'in', self.ids),
+        ]).mapped('author_id').ids)
+        to_queue = self.filtered(lambda author: author.id not in existing_ids)
+        if to_queue:
+            Queue.create([{'author_id': author.id} for author in to_queue])
+
+        if not to_queue:
+            message = _('The selected authors already have queued refreshes.')
+        else:
+            message = _(
+                'Queued %s author refreshes. Check Configuration > Open Library Refreshes for progress.'
+            ) % len(to_queue)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Open Library Refresh'),
+                'message': message,
+                'type': 'success' if to_queue else 'warning',
                 'sticky': False,
             },
         }

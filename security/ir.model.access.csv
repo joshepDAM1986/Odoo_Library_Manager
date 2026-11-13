@@ -11,3 +11,4 @@ access_library_loan_user,library.loan user,model_library_loan,library_manager.gr
 access_library_loan_manager,library.loan manager,model_library_loan,library_manager.group_library_manager,1,1,1,1
 access_library_loan_report_user,library.loan.report user,model_library_loan_report,library_manager.group_library_user,1,0,0,0
 access_library_loan_report_manager,library.loan.report manager,model_library_loan_report,library_manager.group_library_manager,1,0,0,0
+access_library_metadata_refresh_manager,library.metadata.refresh manager,model_library_metadata_refresh,library_manager.group_library_manager,1,0,0,0

@@ -40,6 +40,10 @@ class LibraryMember(models.Model):
          'The member number must be unique.'),
     ]
 
+    @api.constrains('partner_id')
+    def _check_unique_member_vat(self):
+        self.mapped('partner_id')._check_library_member_vat_unique()
+
     @api.depends('loan_ids')
     def _compute_loan_count(self):
         data = self.env['library.loan']._read_group(

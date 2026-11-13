@@ -10,6 +10,7 @@
                 <field name="member_number"/>
                 <field name="name"/>
                 <field name="email"/>
+                <field name="vat" string="DNI / Tax ID"/>
                 <field name="phone"/>
                 <field name="join_date"/>
                 <field name="state" widget="badge"
@@ -50,6 +51,7 @@
                         <group>
                             <field name="member_number"/>
                             <field name="join_date"/>
+                            <field name="vat" string="DNI / Tax ID"/>
                         </group>
                         <group>
                             <field name="email" widget="email"/>

@@ -1,6 +1,6 @@
 # Odoo Library Manager
 
-Odoo 17 module to manage a small library: books, authors, categories, members and loans, with an OWL home dashboard, a PDF report, an optional AI category suggestion and ISBN autofill.
+Odoo 17 module to manage a small library: books, authors, categories, members and loans, with an OWL home dashboard, a PDF report, an optional AI category suggestion and book metadata autofill from Open Library.
 
 Built as a learning project to practise Odoo development (ORM, views, security, inheritance, OWL, QWeb and testing).
 
@@ -17,15 +17,15 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 
 ## Features
 
-- **Books**: title, ISBN, publication year, pages, author, categories, cover image and status (available / borrowed / lost).
+- **Books**: title, ISBN, optional Open Library work/edition ID, publication year, pages, author, categories, cover image and status (available / borrowed / lost).
   - Catalog-style kanban view (cards with cover thumbnails and a colour status label), plus list and form views.
   - Side filter panel (status and categories, with counters) to browse large catalogs.
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
-- **ISBN autofill (Open Library)**: enter the ISBN, then use **Autofill from ISBN** in the book form's top header to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites book fields you already filled; when author metadata is returned, the author's name, birth date and biography are refreshed (see [Autofill from ISBN](#autofill-from-isbn)).
-- **Authors**: biography, birth date, Open Library ID, book counter (smart button), total pages written, an **Autofill from Open Library** button and a **Print PDF** button for the author sheet.
+- **Book autofill (Open Library)**: enter an ISBN or an Open Library ID (`OL…M` edition or `OL…W` work), then use **Autofill from ISBN or Open Library ID** in the book form's top header. It completes empty book fields and refreshes author metadata when available. Librarians can queue a refresh for selected books from the list view.
+- **Authors**: biography, birth date, Open Library ID, book counter (smart button), total pages written, an **Autofill from Open Library** button and a **Print PDF** button for the author sheet. Librarians can queue refreshes for selected authors from the list view.
 - **Categories**: colour tags, many-to-many with books.
-- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
+- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`), so the member's **DNI/NIF is the contact's Tax ID (`vat`)** and is unique among library members. Demo members include fictitious DNI values with valid check letters. An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it; enter the DNI/NIF on the contact first or on the member form afterwards. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
 - **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to the configured loan period, 14 days by default) and status (draft / ongoing / returned / cancelled / lost).
   - *Confirm* checks that the member is active and borrows the book.
@@ -88,6 +88,8 @@ library_manager/
 
 From an author form, librarians can use **Autofill from Open Library** in the header to refresh the author's name, birth date and biography. It uses the saved Open Library ID or searches for an exact normalized author name or alias; if the search is ambiguous, enter the correct ID on the author record and retry.
 
+To refresh existing records, select books or authors in their list views and use **Queue Open Library Refresh**. You can select all books from the list view. The background job processes up to ten records per minute; results and failures appear under **Library > Configuration > Open Library Refreshes**. Book refreshes replace fields when Open Library returns newer values; authors are updated in the same way. Books without an ISBN or Open Library ID are skipped.
+
 ## Installation and development
 
 This repository contains the addon only; it does not include an Odoo server, PostgreSQL instance, or Docker Compose configuration. Use an Odoo 17.0 installation and PostgreSQL, and make sure the parent directory of `library_manager` is included in Odoo's `addons_path`. Install the Python dependency declared by the manifest (`requests`) in the Python environment used by Odoo.
@@ -129,23 +131,24 @@ Notes:
 - Free-tier usage is limited, and Google's terms for unpaid usage allow submitted content to be used to improve its products. Do not use it with real customer data.
 - HTTP 404 usually means the model is not available for your key (change **Gemini Model** in *Settings > Library*); HTTP 429 means a quota or rate limit was reached.
 
-## Autofill from ISBN
+## Autofill from ISBN or Open Library ID
 
-The **Autofill from ISBN** button in the book form's top header completes a book from [Open Library](https://openlibrary.org/). It needs no key or configuration.
+The **Autofill from ISBN or Open Library ID** button in the book form's top header completes a book from [Open Library](https://openlibrary.org/). It needs no key or configuration. Open Library has separate identifiers for a work (`OL…W`) and a specific edition (`OL…M`); the field accepts either one.
 
 1. Open a book (or press *New*).
-2. Type the ISBN, with or without hyphens.
-3. Press **Autofill from ISBN** in the form header.
+2. Enter either an ISBN or the Open Library ID in its field.
+3. Press **Autofill from ISBN or Open Library ID** in the form header.
 
-The button checks the ISBN check digit (ISBN-10 and ISBN-13), asks Open Library and fills the book fields that are still empty. On an unsaved book it creates the book with the fetched title and reopens the form; on an existing book it only fills the gaps, so a title or author you already wrote is kept. If Open Library provides an author record, the matching author is updated with its current name, birth date and biography, even when those author fields already have values. Its Open Library ID is stored on the author.
+When both fields are filled, the Open Library ID takes precedence. ISBN lookup validates its check digit (ISBN-10 or ISBN-13) and stores the corresponding edition ID when returned. Edition-ID lookup also fills an ISBN when Open Library provides a valid one and no other book already uses it. A work ID can represent many editions, so it does not choose an arbitrary edition ISBN. The action fills empty book fields from the selected record; for a new unsaved book it creates the record with the fetched title and reopens the form. If Open Library provides an author record, the matching author is updated with its current name, birth date and biography, even when those author fields already have values. The book's Open Library ID is stored on the book.
 
 Notes:
 
 - Only librarians can use it: the button is hidden for readers and the server checks the group too.
+- The Open Library ID can be shared by multiple book records, which lets separate physical copies reference the same work.
 - The author is matched by Open Library ID first, then by normalized name and returned aliases; it is created only when there is no match. If several local authors match, autofill stops with an explanation instead of creating another ambiguous duplicate; resolve the duplicate author records and retry. Only the first author is used, because a book stores a single author.
 - For an existing author whose name does not match Open Library's name or aliases, enter the author's Open Library ID in the author form once. Future ISBN autofills will match that record by ID.
 - The cover is downloaded when it is an image of at most 5 MB. If the download fails, the rest of the data is still filled and the notification warns about it.
-- Open Library is a free service without availability guarantees, and its data may be incomplete or differ from the printed edition. The description is not fetched because the endpoint used does not return it.
+- Open Library is a free service without availability guarantees, and its data may be incomplete or differ from the printed edition. The ISBN endpoint does not return a description; a work ID may provide one.
 
 ## Roadmap
 

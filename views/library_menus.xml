@@ -93,4 +93,11 @@
               parent="menu_library_config"
               action="action_library_category"
               sequence="10"/>
+
+    <menuitem id="menu_library_metadata_refresh"
+              name="Open Library Refreshes"
+              parent="menu_library_config"
+              action="action_library_metadata_refresh"
+              groups="library_manager.group_library_manager"
+              sequence="20"/>
 </odoo>

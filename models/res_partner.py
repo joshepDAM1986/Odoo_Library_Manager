@@ -1,10 +1,38 @@
+import re
+
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class ResPartner(models.Model):
     # Sin _name: se AÑADEN campos y metodos al modelo existente res.partner
     _inherit = 'res.partner'
+
+    @api.constrains('vat')
+    def _check_library_member_vat_unique(self):
+        Member = self.env['library.member'].sudo()
+        member_partner_ids = set(Member.search([
+            ('partner_id', 'in', self.ids),
+        ]).mapped('partner_id').ids)
+        for partner in self:
+            if partner.id not in member_partner_ids or not partner.vat:
+                continue
+            normalized_vat = re.sub(r'[^A-Za-z0-9]', '', partner.vat).upper()
+            if not normalized_vat:
+                continue
+            self.env.cr.execute(
+                """SELECT rp.id
+                     FROM library_member lm
+                     JOIN res_partner rp ON rp.id = lm.partner_id
+                    WHERE rp.id != %s
+                      AND upper(regexp_replace(rp.vat, '[^A-Za-z0-9]', '', 'g')) = %s
+                    LIMIT 1""",
+                (partner.id, normalized_vat),
+            )
+            if self.env.cr.fetchone():
+                raise ValidationError(
+                    _('A library member already uses this DNI / Tax ID.')
+                )
 
     # groups: los usuarios sin permisos de biblioteca no ven estos campos
     member_ids = fields.One2many(

@@ -6,6 +6,13 @@
         <field name="model">library.author</field>
         <field name="arch" type="xml">
             <tree string="Authors">
+                <header>
+                    <button name="action_queue_openlibrary_refresh"
+                            string="Queue Open Library Refresh" type="object"
+                            display="always" class="btn-primary"
+                            icon="fa-refresh"
+                            groups="library_manager.group_library_manager"/>
+                </header>
                 <field name="name"/>
                 <field name="birth_date"/>
                 <field name="book_count"/>

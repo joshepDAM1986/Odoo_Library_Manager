@@ -219,6 +219,11 @@ msgid "Open Library author key (for example, OL23919A). Set it manually to link 
 msgstr "Clave del autor en Open Library (por ejemplo, OL23919A). Asígnala manualmente para vincular un autor existente cuando su nombre sea distinto."
 
 #. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_book__openlibrary_key
+msgid "Open Library work ID (for example, OL123W) or edition ID (for example, OL123M)."
+msgstr "ID de obra en Open Library (por ejemplo, OL123W) o de edición (por ejemplo, OL123M)."
+
+#. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_loan_report__author_rank
 msgid "Author Rank"
 msgstr "Posición del autor"
@@ -2134,6 +2139,54 @@ msgid "Autofill from Open Library"
 msgstr "Rellenar desde Open Library"
 
 #. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_form
+msgid "Autofill from ISBN or Open Library ID"
+msgstr "Rellenar desde ISBN o ID de Open Library"
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_search
+msgid "Title, ISBN or Open Library ID"
+msgstr "Título, ISBN o ID de Open Library"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library ID '%s' is invalid. Enter a work ID (OL…W) or an edition ID (OL…M)."
+msgstr "El ID de Open Library '%s' no es válido. Introduce un ID de obra (OL…W) o de edición (OL…M)."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Enter an ISBN or an Open Library ID first."
+msgstr "Introduce primero un ISBN o un ID de Open Library."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library has no data for ID %s."
+msgstr "Open Library no tiene datos para el ID %s."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Open Library did not return a title for this book identifier."
+msgstr "Open Library no devolvió un título para este identificador de libro."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Book Autofill"
+msgstr "Autorrelleno del libro"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "description"
+msgstr "descripción"
+
+#. module: library_manager
 #. odoo-python
 #: code:addons/library_manager/models/author.py:0
 #, python-format
@@ -2217,3 +2270,168 @@ msgstr "fecha de nacimiento"
 #: code:addons/library_manager/models/author.py:0
 msgid "biography"
 msgstr "biografía"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_tree
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_tree
+msgid "Queue Open Library Refresh"
+msgstr "Encolar actualización de Open Library"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Select at least one book to refresh."
+msgstr "Selecciona al menos un libro para actualizar."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "None of the selected books has an ISBN or Open Library ID."
+msgstr "Ninguno de los libros seleccionados tiene ISBN ni identificador de Open Library."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "The selected books already have queued refreshes."
+msgstr "Los libros seleccionados ya tienen actualizaciones en cola."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Queued %s book refreshes. Check Configuration > Open Library Refreshes for progress."
+msgstr "Se han encolado %s actualizaciones de libros. Consulta Configuración > Actualizaciones de Open Library para ver el progreso."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "%s books were skipped because they have no ISBN or Open Library ID."
+msgstr "Se han omitido %s libros porque no tienen ISBN ni identificador de Open Library."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Select at least one author to refresh."
+msgstr "Selecciona al menos un autor para actualizar."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Only librarians can queue author refreshes."
+msgstr "Solo los bibliotecarios pueden encolar actualizaciones de autores."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "The selected authors already have queued refreshes."
+msgstr "Los autores seleccionados ya tienen actualizaciones en cola."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Queued %s author refreshes. Check Configuration > Open Library Refreshes for progress."
+msgstr "Se han encolado %s actualizaciones de autores. Consulta Configuración > Actualizaciones de Open Library para ver el progreso."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+msgid "Open Library Refresh"
+msgstr "Actualización de Open Library"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Book: %s"
+msgstr "Libro: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Author: %s"
+msgstr "Autor: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Deleted record"
+msgstr "Registro eliminado"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Book metadata refreshed."
+msgstr "Se han actualizado los datos del libro."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Author metadata refreshed."
+msgstr "Se han actualizado los datos del autor."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Unexpected error. See the server log."
+msgstr "Error inesperado. Consulta el registro del servidor."
+
+#. module: library_manager
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_tree
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
+#: model:ir.actions.act_window,name:library_manager.action_library_metadata_refresh
+#: model:ir.ui.menu,name:library_manager.menu_library_metadata_refresh
+msgid "Open Library Refreshes"
+msgstr "Actualizaciones de Open Library"
+
+#. module: library_manager
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
+msgid "Queued"
+msgstr "En cola"
+
+#. module: library_manager
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
+#: model:ir.model.fields.selection,name:library_manager.selection__library_metadata_refresh__state__processing
+msgid "Processing"
+msgstr "En proceso"
+
+#. module: library_manager
+#: model:ir.model.fields.selection,name:library_manager.selection__library_metadata_refresh__state__done
+msgid "Done"
+msgstr "Finalizado"
+
+#. module: library_manager
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
+#: model:ir.model.fields.selection,name:library_manager.selection__library_metadata_refresh__state__failed
+msgid "Failed"
+msgstr "Error"
+
+#. module: library_manager
+#: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
+msgid "Completed"
+msgstr "Completado"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/res_partner.py:0
+msgid "A library member already uses this DNI / Tax ID."
+msgstr "Otro socio ya utiliza este DNI / NIF."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_form
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_tree
+msgid "DNI / Tax ID"
+msgstr "DNI / NIF"
+
+#. module: library_manager
+#: model:ir.actions.server,name:library_manager.ir_cron_library_metadata_refresh_ir_actions_server
+msgid "Library: Refresh Open Library metadata queue"
+msgstr "Biblioteca: Procesar cola de actualización de Open Library"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "ISBN %(isbn)s was not added because another book already uses it."
+msgstr "No se añadió el ISBN %(isbn)s porque ya está asignado a otro libro."
