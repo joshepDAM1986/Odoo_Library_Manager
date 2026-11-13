@@ -21,6 +21,10 @@
         <field name="arch" type="xml">
             <form string="Author">
             <header>
+                <button name="action_fill_from_openlibrary"
+                        string="Autofill from Open Library" type="object"
+                        class="btn-outline-primary" icon="fa-download"
+                        groups="library_manager.group_library_manager"/>
                 <button name="action_print_report" string="Print PDF" type="object"
                         class="btn-primary" icon="fa-print"/>
             </header>
@@ -37,6 +41,7 @@
                         <group>
                             <field name="name"/>
                             <field name="birth_date"/>
+                            <field name="openlibrary_key"/>
                         </group>
                     </group>
                     <notebook>

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Module** | `library_manager` |
-| **Version described** | 17.0.2.3.0 |
+| **Version described** | 17.0.2.5.0 |
 | **Platform** | Odoo 17.0 (Community), PostgreSQL |
 | **Dependencies** | `base`, `mail`; Python library `requests` |
 | **License** | LGPL-3 |
@@ -88,7 +88,7 @@ erDiagram
 | Model | Technical name | Notes |
 |---|---|---|
 | Book | `library.book` | With chatter (`mail.thread`). Ordered by title. |
-| Author | `library.author` | Ordered by name. |
+| Author | `library.author` | Ordered by name; optional unique Open Library ID. |
 | Category | `library.category` | Coloured tag. |
 | Member | `library.member` | Delegation inheritance (`_inherits`) from `res.partner`. With chatter. |
 | Loan | `library.loan` | With chatter. Ordered by loan date, newest first. |
@@ -152,17 +152,20 @@ The *Autofill from ISBN* button next to the ISBN field completes a book from the
 - **RF-ISBN-07** The cover is downloaded from the medium, large or small URL (in that order) and is skipped when it is empty, not an image or larger than 5 MB. A cover failure never blocks the rest of the fields; the notification then warns about it.
 - **RF-ISBN-08** Timeouts (30 s), connection errors, HTTP errors and ISBNs without data are reported as clear messages, never as a traceback.
 - **RF-ISBN-09** A notification lists the fields that were filled. If Open Library had data but everything was already filled, it says so with a warning.
+- **RF-ISBN-10** When the book response provides an author key, the module fetches that author's record and stores the key uniquely on `library.author`. Existing authors are matched by key first, then by normalized name and aliases; multiple possible matches stop autofill with an explanation rather than creating a duplicate.
+- **RF-ISBN-11** The matching author's name, birth date and biography are overwritten with non-empty values returned by Open Library. Unparseable or year-only birth dates are ignored; an unavailable author record does not prevent the book metadata from being filled.
 
 The endpoint (`/api/books?bibkeys=ISBN:...&format=json&jscmd=data`) does not return the description, so that field is left untouched. Data quality and availability depend on Open Library, a free service without an SLA.
 
 ## 5. Authors and categories
 
-**Authors**: name (required), birth date, biography and their books.
+**Authors**: name (required), birth date, biography, optional unique Open Library ID and their books. ISBN autofill refreshes the name, birth date and biography from the linked Open Library author record when those values are available.
 
 - **RF-AUT-01** The author's name is unique.
 - **RF-AUT-02** The birth date cannot be in the future.
 - **RF-AUT-03** The author shows how many books they have (with direct access to the list) and the total pages written, which is recalculated whenever the pages of any of their books change.
 - **RF-AUT-04** The author's PDF report is printed from the author form (see section 12).
+- **RF-AUT-05** Librarians can use *Autofill from Open Library* in the author form. It uses the stored Open Library ID or searches by exact normalized name/alias, rejects missing or ambiguous matches, and updates the name, birth date and biography with non-empty values from Open Library.
 
 **Categories**: name (required), description and colour. Many-to-many relation with books. They are managed from *Configuration > Categories*.
 
@@ -361,7 +364,7 @@ First tab of the menu (*Home*). OWL component that shows grouped counters:
 - **RNF-01 Compatibility.** Odoo 17.0. View syntax is that of this version (`<tree>`, `invisible="…"` without `attrs`); operation on other versions is not guaranteed.
 - **RNF-02 Language.** Source texts are in English and translatable. A Spanish translation is included (`i18n/es.po`).
 - **RNF-03 Testing.** The module includes automated tests (`TransactionCase`) covering books, authors, members, contacts, loans, settings, statistics, the Gemini integration and the Open Library integration (both external APIs mocked). Every behaviour change must come with its tests, and the suite must finish with `0 failed, 0 error(s)`.
-- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds the ISBN autofill; it changes no stored data either.
+- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds the ISBN autofill; version 17.0.2.4.0 adds an optional Open Library author key and metadata enrichment; version 17.0.2.5.0 adds author-form autofill. These versions need no data backfills.
 - **RNF-05 Demo data.** Categories, authors, books, members and about 60 historical loans, loaded only in databases created with demo data.
 - **RNF-06 Secrets.** Neither the Gemini key nor `odoo.conf` is stored in the repository.
 - **RNF-07 Performance.** Counters (loans per book and per member, books per author, memberships per contact) are computed with one grouped query per batch, not one query per record.
@@ -404,14 +407,14 @@ Where each group of requirements lives, so a change can start from the right fil
 | **Security** (`RF-SEG`) | `security/library_security.xml` (groups, default users), `security/ir.model.access.csv` (access rights). Group checks in `models/res_partner.py` (field `groups=`) and `models/book.py` (`action_suggest_categories`, `_check_isbn_access`). | `groups=` attributes in `views/*.xml` | `tests/test_ai.py`, `tests/test_isbn.py` (reader vs librarian) |
 | **Data integrity** (`RF-DAT`) | `ondelete='restrict'` on `author_id` (`models/book.py`), `book_id` and `member_id` (`models/loan.py`), `partner_id` (`models/member.py`) | — | per model |
 | **Books** (`RF-LIB`) | `models/book.py`: `_sql_constraints` (ISBN, title + author), `_check_publication_year`, `action_borrow`, `action_return`, `action_mark_lost`, `action_recover`, `action_view_loans`, `_compute_loan_count` | `views/library_book_views.xml` | `tests/test_book.py` |
-| **Authors and categories** (`RF-AUT`) | `models/author.py`: `_sql_constraints`, `_check_birth_date`, `_compute_book_count`, `_compute_total_pages`, `action_view_author_books`, `action_print_report`. Categories: `models/category.py` | `views/library_author_views.xml`, `views/library_category_views.xml` | `tests/test_author.py` |
+| **Authors and categories** (`RF-AUT`) | `models/author.py`: Open Library search/fetch and `action_fill_from_openlibrary`, `_sql_constraints`, `_check_birth_date`, `_compute_book_count`, `_compute_total_pages`, `action_view_author_books`, `action_print_report`. Categories: `models/category.py` | `views/library_author_views.xml`, `views/library_category_views.xml` | `tests/test_author.py` |
 | **Members** (`RF-SOC`) | `models/member.py`: `create` (assigns the number), `_compute_display_name`, `action_suspend`, `action_activate`, `action_view_loans`, `_sql_constraints` (unique number). Automatic suspension: `models/loan.py::_suspend_member` and `models/book.py::action_mark_lost` | `views/library_member_views.xml`, `data/library_sequence.xml` | `tests/test_member.py`, `tests/test_loan.py` |
 | **Contacts** (`RF-CON`) | `models/res_partner.py`: `_compute_library_member_count`, `action_view_library_member`, `action_create_library_member` | `views/library_partner_views.xml` (smart button, *Library* tab, server action) | `tests/test_partner.py` |
 | **Loans** (`RF-PRE`) | `models/loan.py`: `_compute_days_overdue`, `_check_dates`, `_unlink_only_draft`, `create` (assigns the reference), `write` (clears the overdue notice mark), `action_confirm`, `action_return`, `action_cancel` | `views/library_loan_view.xml`, `data/library_loan_sequence.xml` | `tests/test_loan.py` |
 | **Scheduled jobs** (`RF-CRON`) | `models/loan.py`: `_cron_send_overdue_emails`, `_cron_suspend_overdue_members`, `_suspend_member` | `data/library_cron.xml` (both jobs, `numbercall = -1`), `data/library_mail_template.xml` | `tests/test_loan.py` |
 | **Settings** (`RF-SET`) | `models/res_config_settings.py` (`config_parameter` fields and constraints), `models/loan.py` (`_get_int_setting`, `_default_due_date`, grace in `_cron_suspend_overdue_members`) | `views/res_config_settings_views.xml` | `tests/test_settings.py` |
 | **AI suggestion** (`RF-IA`) | `models/book.py::action_suggest_categories` (key and model lookup, prompt, HTTP call, error handling and matching all live in this one method) | Button in `views/library_book_views.xml` | `tests/test_ai.py` |
-| **ISBN autofill** (`RF-ISBN`) | `models/book.py`: `_normalize_isbn`, `_is_valid_isbn`, `_extract_publication_year`, `_check_isbn_access`, `_get_or_create_author`, `_fetch_open_library_data`, `_fetch_cover_image`, `_prepare_isbn_values`, `action_fill_from_isbn` | Button in `views/library_book_views.xml` | `tests/test_isbn.py` |
+| **ISBN autofill** (`RF-ISBN`) | `models/book.py`: `_normalize_isbn`, `_is_valid_isbn`, `_extract_publication_year`, `_check_isbn_access`, `_get_or_create_author`, `_fetch_open_library_data`, `_fetch_cover_image`, `_prepare_isbn_values`, `action_fill_from_isbn`; author API helpers and unique key in `models/author.py` | Button in `views/library_book_views.xml`; author identifier in `views/library_author_views.xml` | `tests/test_isbn.py` |
 | **Dashboard** (`RF-PAN`) | `static/src/dashboard/dashboard.js` (cards, counters, permission checks) | `static/src/dashboard/dashboard.xml`, `dashboard.scss`, `views/library_dashboard_views.xml` | none (JavaScript is not covered) |
 | **Statistics** (`RF-EST`) | `models/loan_report.py`: `_query` (the SQL view, including the rankings) and `init` | `views/library_report_views.xml`, `views/library_menus.xml` | `tests/test_report.py` |
 | **PDF report** (`RF-INF`) | `models/author.py::action_print_report` | `report/library_author_report.xml` | — |

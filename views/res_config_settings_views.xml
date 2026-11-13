@@ -7,7 +7,8 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="Library" string="Library" name="library_manager">
+                <app data-string="Library" string="Library" name="library_manager"
+                     logo="/library_manager/static/description/icon_v2.png">
                     <block title="Loans" name="library_loans_setting_container">
                         <setting id="library_loan_days_setting"
                                  string="Default Loan Period"

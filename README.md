@@ -22,8 +22,8 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - Side filter panel (status and categories, with counters) to browse large catalogs.
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
-- **ISBN autofill (Open Library)**: enter the ISBN, then use **Autofill from ISBN** in the book form's top header to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites fields you already filled (see [Autofill from ISBN](#autofill-from-isbn)).
-- **Authors**: biography, birth date, book counter (smart button), total pages written and a **Print PDF** button for the author sheet.
+- **ISBN autofill (Open Library)**: enter the ISBN, then use **Autofill from ISBN** in the book form's top header to complete the title, author, year, pages and cover from the free Open Library API. It never overwrites book fields you already filled; when author metadata is returned, the author's name, birth date and biography are refreshed (see [Autofill from ISBN](#autofill-from-isbn)).
+- **Authors**: biography, birth date, Open Library ID, book counter (smart button), total pages written, an **Autofill from Open Library** button and a **Print PDF** button for the author sheet.
 - **Categories**: colour tags, many-to-many with books.
 - **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`). An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
@@ -65,6 +65,8 @@ library_manager/
 ├── migrations/    data migrations between module versions
 ├── i18n/          translations (Spanish: `es.po`)
 ├── static/src/dashboard/   OWL component, template and styles
+├── docs/          functional specification and screenshots
+│   └── screenshots/
 └── tests/         automated tests
 ```
 
@@ -83,6 +85,8 @@ library_manager/
 - Calling an external API with the key stored in `ir.config_parameter`.
 - A standard Odoo settings screen (`res.config.settings`) with `config_parameter` fields and the *Settings* app block.
 - A public API without a key (Open Library), ISBN-10/13 check-digit validation and downloading an image.
+
+From an author form, librarians can use **Autofill from Open Library** in the header to refresh the author's name, birth date and biography. It uses the saved Open Library ID or searches for an exact normalized author name or alias; if the search is ambiguous, enter the correct ID on the author record and retry.
 
 ## Installation and development
 
@@ -133,12 +137,13 @@ The **Autofill from ISBN** button in the book form's top header completes a book
 2. Type the ISBN, with or without hyphens.
 3. Press **Autofill from ISBN** in the form header.
 
-The button checks the ISBN check digit (ISBN-10 and ISBN-13), asks Open Library and fills the fields that are still empty. On an unsaved book it creates the book with the fetched title and reopens the form; on an existing book it only fills the gaps, so a title or author you already wrote is kept.
+The button checks the ISBN check digit (ISBN-10 and ISBN-13), asks Open Library and fills the book fields that are still empty. On an unsaved book it creates the book with the fetched title and reopens the form; on an existing book it only fills the gaps, so a title or author you already wrote is kept. If Open Library provides an author record, the matching author is updated with its current name, birth date and biography, even when those author fields already have values. Its Open Library ID is stored on the author.
 
 Notes:
 
 - Only librarians can use it: the button is hidden for readers and the server checks the group too.
-- The author is matched by name ignoring case and created only if it does not exist. Only the first author is used, because a book stores a single author.
+- The author is matched by Open Library ID first, then by normalized name and returned aliases; it is created only when there is no match. If several local authors match, autofill stops with an explanation instead of creating another ambiguous duplicate; resolve the duplicate author records and retry. Only the first author is used, because a book stores a single author.
+- For an existing author whose name does not match Open Library's name or aliases, enter the author's Open Library ID in the author form once. Future ISBN autofills will match that record by ID.
 - The cover is downloaded when it is an image of at most 5 MB. If the download fails, the rest of the data is still filled and the notification warns about it.
 - Open Library is a free service without availability guarantees, and its data may be incomplete or differ from the printed edition. The description is not fetched because the endpoint used does not return it.
 

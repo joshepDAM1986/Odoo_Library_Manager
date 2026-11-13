@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 17.0-20260908\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-10 11:20+0000\n"
-"PO-Revision-Date: 2026-11-12 00:00+0000\n"
+"PO-Revision-Date: 2026-11-13 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -207,6 +207,16 @@ msgstr "Autor"
 #: model:ir.model.fields,field_description:library_manager.field_library_author__name
 msgid "Author Name"
 msgstr "Nombre del autor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__openlibrary_key
+msgid "Open Library ID"
+msgstr "ID de Open Library"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_author__openlibrary_key
+msgid "Open Library author key (for example, OL23919A). Set it manually to link an existing author when their name differs."
+msgstr "Clave del autor en Open Library (por ejemplo, OL23919A). Asígnala manualmente para vincular un autor existente cuando su nombre sea distinto."
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_loan_report__author_rank
@@ -2103,3 +2113,107 @@ msgstr "año de publicación"
 #, python-format
 msgid "title"
 msgstr "título"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Several local authors match '%(name)s'. Resolve the ambiguity by assigning the correct Open Library ID to the author record, then retry ISBN autofill."
+msgstr "Varios autores locales coinciden con '%(name)s'. Resuelve la ambigüedad asignando el ID correcto de Open Library al autor y vuelve a usar el autorrelleno por ISBN."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#, python-format
+msgid "Open Library author '%s' conflicts with another local author record. Resolve the duplicate before using ISBN autofill."
+msgstr "El autor de Open Library '%s' entra en conflicto con otro registro local. Resuelve el duplicado antes de usar el autorrelleno por ISBN."
+
+#. module: library_manager
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_form
+msgid "Autofill from Open Library"
+msgstr "Rellenar desde Open Library"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Only librarians can use author autofill."
+msgstr "Solo los bibliotecarios pueden rellenar los datos del autor automáticamente."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library author search timed out. Try again."
+msgstr "La búsqueda de autores en Open Library agotó el tiempo de espera. Inténtalo de nuevo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Could not search Open Library for this author."
+msgstr "No se pudo buscar este autor en Open Library."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library could not find an exact author match for '%s'."
+msgstr "Open Library no encontró una coincidencia exacta para el autor '%s'."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library found multiple author matches for '%s'. Enter the correct Open Library ID on this author first."
+msgstr "Open Library encontró varias coincidencias para el autor '%s'. Introduce primero el ID correcto de Open Library en este autor."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library did not return data for author ID %s."
+msgstr "Open Library no devolvió datos para el ID de autor %s."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library author '%s' conflicts with another local author. Resolve the duplicate and retry."
+msgstr "El autor de Open Library '%s' entra en conflicto con otro autor local. Resuelve el duplicado e inténtalo de nuevo."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Updated from Open Library: %s."
+msgstr "Actualizado desde Open Library: %s."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Open Library ID saved; no new author details were available."
+msgstr "Se guardó el ID de Open Library, pero no había nuevos datos del autor."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Author Autofill"
+msgstr "Rellenado automático del autor"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "name"
+msgstr "nombre"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "birth date"
+msgstr "fecha de nacimiento"
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "biography"
+msgstr "biografía"

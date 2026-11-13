@@ -284,17 +284,72 @@ class LibraryBook(models.Model):
             )
 
     @api.model
-    def _get_or_create_author(self, name):
-        """Devuelve el autor con ese nombre o lo crea (nombre es UNIQUE)."""
+    def _get_or_create_author(self, name, author_key=False, author_data=None):
+        """Reconcile an Open Library author with local records before creating."""
         name = (name or "").strip()
-        if not name:
-            return self.env["library.author"]
-        author = self.env["library.author"].search(
-            [("name", "=ilike", name)], limit=1
+        Author = self.env["library.author"]
+        if not name and not author_key:
+            return Author
+
+        author_data = author_data or {}
+        canonical_name = (author_data.get("name") or name).strip()
+        alternate_names = author_data.get("alternate_names") or []
+        if isinstance(alternate_names, str):
+            alternate_names = [alternate_names]
+        aliases = {
+            Author._normalize_openlibrary_name(alias)
+            for alias in [name, canonical_name, *alternate_names]
+            if isinstance(alias, str) and alias.strip()
+        }
+
+        author = Author.search(
+            [("openlibrary_key", "=", author_key)], limit=1
+        ) if author_key else Author
+
+        if not author and aliases:
+            candidates = Author.search([])
+            matching = candidates.filtered(
+                lambda record: Author._normalize_openlibrary_name(record.name) in aliases
+            )
+            if len(matching) > 1:
+                raise UserError(_(
+                    "Several local authors match '%(name)s'. Resolve the "
+                    "ambiguity by assigning the correct Open Library ID to "
+                    "the author record, then retry ISBN autofill."
+                ) % {"name": canonical_name or name})
+            author = matching[:1]
+
+        if not author:
+            if not (canonical_name or name):
+                return Author
+            author = Author.create({"name": canonical_name or name})
+
+        values = {}
+        if canonical_name and author.name != canonical_name:
+            name_collision = Author.search([
+                ("name", "=ilike", canonical_name),
+                ("id", "!=", author.id),
+            ], limit=1)
+            if name_collision:
+                raise UserError(_(
+                    "Open Library author '%s' conflicts with another local "
+                    "author record. Resolve the duplicate before using ISBN autofill."
+                ) % canonical_name)
+            values["name"] = canonical_name
+        if author_key and author.openlibrary_key != author_key:
+            values["openlibrary_key"] = author_key
+
+        birth_date = Author._openlibrary_birth_date(
+            author_data.get("birth_date")
         )
-        return author or self.env["library.author"].create({
-            "name": name
-        })
+        if birth_date:
+            values["birth_date"] = birth_date
+        bio = Author._openlibrary_bio(author_data.get("bio"))
+        if bio:
+            values["bio"] = bio
+        if values:
+            author.write(values)
+        return author
 
     def _fetch_open_library_data(self, isbn):
         """Consulta Open Library y devuelve los datos del ISBN indicado."""
@@ -437,12 +492,22 @@ class LibraryBook(models.Model):
         if data.get("authors"):
             authors = data.get("authors") or []
             author_name = ""
+            author_key = False
+            Author = self.env["library.author"]
             if authors and isinstance(authors[0], dict):
-                author_name = (
-                    authors[0].get("name") or ""
-                ).strip()
-            if author_name:
-                author = self._get_or_create_author(author_name)
+                author_ref = authors[0]
+                author_name = (author_ref.get("name") or "").strip()
+                author_key = Author._openlibrary_author_key(
+                    author_ref.get("url") or author_ref.get("key")
+                )
+            if author_name or author_key:
+                author_data = (
+                    Author._fetch_open_library_author(author_key)
+                    if author_key else {}
+                )
+                author = self._get_or_create_author(
+                    author_name, author_key, author_data
+                )
                 values["author_id"] = author.id
 
         if data.get("publish_date"):
