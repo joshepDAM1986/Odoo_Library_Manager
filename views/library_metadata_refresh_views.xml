@@ -12,6 +12,7 @@
                 <field name="state" widget="badge"/>
                 <field name="requested_by"/>
                 <field name="create_date"/>
+                <field name="estimated_at"/>
                 <field name="processed_at"/>
                 <field name="message" optional="show"/>
             </tree>

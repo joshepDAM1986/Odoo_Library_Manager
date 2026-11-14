@@ -6,7 +6,6 @@ class LibraryCategory(models.Model):
 
     name = fields.Char(string='Category Name', required=True)
     description = fields.Text(string='Description')
-    color = fields.Integer(string='Color Index')
 
     book_ids = fields.Many2many(
         'library.book', 

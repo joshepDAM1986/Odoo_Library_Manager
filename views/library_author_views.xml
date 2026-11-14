@@ -14,6 +14,7 @@
                             groups="library_manager.group_library_manager"/>
                 </header>
                 <field name="name"/>
+                <field name="openlibrary_key"/>
                 <field name="birth_date"/>
                 <field name="book_count"/>
                 <field name="total_pages"/>
@@ -60,6 +61,10 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>

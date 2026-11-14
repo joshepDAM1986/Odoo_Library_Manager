@@ -434,7 +434,6 @@ msgid "City"
 msgstr "Ciudad"
 
 #. module: library_manager
-#: model:ir.model.fields,field_description:library_manager.field_library_category__color
 #: model:ir.model.fields,field_description:library_manager.field_library_member__color
 msgid "Color Index"
 msgstr "Índice de color"
@@ -2386,6 +2385,11 @@ msgid "Open Library Refreshes"
 msgstr "Actualizaciones de Open Library"
 
 #. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_metadata_refresh__estimated_at
+msgid "Estimated Processing Time"
+msgstr "Hora estimada de procesamiento"
+
+#. module: library_manager
 #: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_search
 msgid "Queued"
 msgstr "En cola"
@@ -2435,3 +2439,59 @@ msgstr "Biblioteca: Procesar cola de actualización de Open Library"
 #, python-format
 msgid "ISBN %(isbn)s was not added because another book already uses it."
 msgstr "No se añadió el ISBN %(isbn)s porque ya está asignado a otro libro."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+msgid "Open Library metadata check completed."
+msgstr "Comprobación de datos de Open Library completada."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Updated fields: %s"
+msgstr "Campos actualizados: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Kept existing local values because Open Library did not provide usable data: %s"
+msgstr "Se conservaron los valores locales porque Open Library no proporcionó datos utilizables para estos campos: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+msgid "All available values already matched; no changes were needed."
+msgstr "Todos los valores disponibles ya coincidían; no fue necesario realizar cambios."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "The cover could not be downloaded; the existing cover was kept."
+msgstr "No se pudo descargar la portada; se conservó la portada existente."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "This Open Library author ID is already assigned to another local author."
+msgstr "Este identificador de autor de Open Library ya está asignado a otro autor local."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+#: code:addons/library_manager/models/author.py:0
+#, python-format
+msgid "Open Library lookup failed: %s"
+msgstr "Falló la consulta a Open Library: %s"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "Open Library did not return usable author details."
+msgstr "Open Library no devolvió datos utilizables del autor."

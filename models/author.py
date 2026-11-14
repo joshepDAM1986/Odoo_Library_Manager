@@ -1,3 +1,4 @@
+import html
 import logging
 import re
 import unicodedata
@@ -20,6 +21,7 @@ OPEN_LIBRARY_TIMEOUT = 30
 class LibraryAuthor(models.Model):
     _name = 'library.author'
     _description = 'Library Author'
+    _inherit = ['mail.thread']
     _order = 'name'
 
     name = fields.Char(string='Author Name', required=True, index=True)
@@ -182,6 +184,95 @@ class LibraryAuthor(models.Model):
             value = value.get('value')
         return value.strip() if isinstance(value, str) and value.strip() else False
 
+    def _apply_openlibrary_data(
+        self, author_key, author_data, fallback_name=False, source_error=False,
+    ):
+        """Overwrite available author metadata and log unavailable local data."""
+        self.ensure_one()
+        author_data = author_data if isinstance(author_data, dict) else {}
+        values = {}
+        available = set()
+
+        remote_name = (author_data.get('name') or fallback_name or '').strip()
+        if remote_name:
+            available.add('name')
+            if remote_name != self.name:
+                collision = self.search([
+                    ('name', '=ilike', remote_name),
+                    ('id', '!=', self.id),
+                ], limit=1)
+                if collision:
+                    raise UserError(_(
+                        "Open Library author '%s' conflicts with another local "
+                        'author. Resolve the duplicate and retry.'
+                    ) % remote_name)
+                values['name'] = remote_name
+
+        if author_key:
+            available.add('openlibrary_key')
+            collision = self.search([
+                ('openlibrary_key', '=', author_key),
+                ('id', '!=', self.id),
+            ], limit=1)
+            if collision:
+                raise UserError(_(
+                    "This Open Library author ID is already assigned to another local author."
+                ))
+            if self.openlibrary_key != author_key:
+                values['openlibrary_key'] = author_key
+
+        birth_date = self._openlibrary_birth_date(
+            author_data.get('birth_date')
+        )
+        if birth_date:
+            available.add('birth_date')
+            if fields.Date.to_string(self.birth_date) != birth_date:
+                values['birth_date'] = birth_date
+
+        bio = self._openlibrary_bio(author_data.get('bio'))
+        if bio:
+            available.add('bio')
+            if (self.bio or '') != bio:
+                values['bio'] = bio
+
+        labels = {
+            'name': _('name'),
+            'openlibrary_key': _('Open Library ID'),
+            'birth_date': _('birth date'),
+            'bio': _('biography'),
+        }
+        local = {
+            'name': bool(self.name),
+            'openlibrary_key': bool(self.openlibrary_key),
+            'birth_date': bool(self.birth_date),
+            'bio': bool(self.bio),
+        }
+        retained = [
+            labels[field_name]
+            for field_name, has_value in local.items()
+            if has_value and field_name not in available
+        ]
+        changed = [labels[field_name] for field_name in values]
+        if values:
+            self.write(values)
+
+        messages = [_('Open Library metadata check completed.')]
+        if changed:
+            messages.append(_('Updated fields: %s') % ', '.join(changed))
+        if retained:
+            messages.append(_(
+                'Kept existing local values because Open Library did not provide usable data: %s'
+            ) % ', '.join(retained))
+        elif not changed and not source_error:
+            messages.append(_('All available values already matched; no changes were needed.'))
+        if source_error:
+            messages.append(_('Open Library lookup failed: %s') % source_error)
+        body = ''.join(
+            '<p>%s</p>' % html.escape(message) for message in messages
+        )
+        self.message_post(body=body, subtype_xmlid='mail.mt_note')
+        return changed, retained, ' '.join(messages)
+
     def action_fill_from_openlibrary(self):
         self.ensure_one()
         if not self.env.su and not self.env.user.has_group(
@@ -189,49 +280,36 @@ class LibraryAuthor(models.Model):
         ):
             raise AccessError(_('Only librarians can use author autofill.'))
 
-        author_key = self._openlibrary_author_key(self.openlibrary_key)
-        if not author_key:
-            author_key = self._search_open_library_author_key(self.name)
+        try:
+            author_key = self._openlibrary_author_key(self.openlibrary_key)
+            if not author_key:
+                author_key = self._search_open_library_author_key(self.name)
+        except UserError as error:
+            if self.env.context.get('openlibrary_bulk_refresh'):
+                raise
+            result = self._apply_openlibrary_data(
+                False, {}, source_error=str(error)
+            )
+            message = result[2]
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Author Autofill'),
+                    'message': message,
+                    'type': 'warning',
+                    'sticky': True,
+                },
+            }
         author_data = self._fetch_open_library_author(author_key)
-        if not author_data:
-            raise UserError(_(
-                'Open Library did not return data for author ID %s.'
-            ) % author_key)
-
-        values = {'openlibrary_key': author_key}
-        remote_name = (author_data.get('name') or '').strip()
-        if remote_name and remote_name != self.name:
-            collision = self.search([
-                ('name', '=ilike', remote_name),
-                ('id', '!=', self.id),
-            ], limit=1)
-            if collision:
-                raise UserError(_(
-                    "Open Library author '%s' conflicts with another local "
-                    'author. Resolve the duplicate and retry.'
-                ) % remote_name)
-            values['name'] = remote_name
-
-        birth_date = self._openlibrary_birth_date(
-            author_data.get('birth_date')
+        source_error = (
+            _('Open Library did not return usable author details.')
+            if not author_data else False
         )
-        if birth_date:
-            values['birth_date'] = birth_date
-        bio = self._openlibrary_bio(author_data.get('bio'))
-        if bio:
-            values['bio'] = bio
-        self.write(values)
-
-        updated = []
-        if 'name' in values:
-            updated.append(_('name'))
-        if 'birth_date' in values:
-            updated.append(_('birth date'))
-        if 'bio' in values:
-            updated.append(_('biography'))
-        message = (
-            _('Updated from Open Library: %s.') % ', '.join(updated)
-            if updated else _('Open Library ID saved; no new author details were available.')
+        if source_error and self.env.context.get('openlibrary_bulk_refresh'):
+            raise UserError(source_error)
+        changed, retained, message = self._apply_openlibrary_data(
+            author_key, author_data, source_error=source_error
         )
         return {
             'type': 'ir.actions.client',
@@ -239,7 +317,9 @@ class LibraryAuthor(models.Model):
             'params': {
                 'title': _('Author Autofill'),
                 'message': message,
-                'type': 'success' if updated else 'warning',
+                'type': 'warning' if (retained or source_error) else (
+                    'success' if changed else 'info'
+                ),
                 'sticky': False,
             },
         }

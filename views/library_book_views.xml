@@ -21,7 +21,7 @@
                 <field name="author_id"/>
                 <field name="publication_year" options="{'format': false}"/>
                 <field name="pages" optional="hide"/>
-                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="category_ids" widget="many2many_tags"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'available'"
                        decoration-warning="state == 'borrowed'"
@@ -84,7 +84,7 @@
                                     </div>
 
                                     <div class="mt-2">
-                                        <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                        <field name="category_ids" widget="many2many_tags"/>
                                     </div>
 
                                     <!-- Estado: al no haber columnas, se muestra en la tarjeta -->
@@ -147,7 +147,7 @@
                             <field name="openlibrary_key" placeholder="e.g. OL7353617M"/>
                             <field name="category_ids"
                                 widget="many2many_tags"
-                                options="{'color_field': 'color', 'no_create_edit': True}"/>
+                                options="{'no_create_edit': True}"/>
                         </group>
                         <group string="Publication Details">
                             <field name="publication_year" options="{'format': false}"/>
