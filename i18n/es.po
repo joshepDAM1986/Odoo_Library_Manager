@@ -209,6 +209,55 @@ msgid "Author Name"
 msgstr "Nombre del autor"
 
 #. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__photo
+msgid "Author Photo"
+msgstr "Foto del autor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__photo_128
+msgid "Author Photo Thumbnail"
+msgstr "Miniatura de la foto del autor"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__death_date
+msgid "Death Date"
+msgstr "Fecha de fallecimiento"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__alternate_names
+msgid "Alternate Names"
+msgstr "Nombres alternativos"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__external_links
+msgid "External Links"
+msgstr "Enlaces externos"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "death date"
+msgstr "fecha de fallecimiento"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "alternate names"
+msgstr "nombres alternativos"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "external links"
+msgstr "enlaces externos"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/author.py:0
+msgid "photo"
+msgstr "foto"
+
+#. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_author__openlibrary_key
 msgid "Open Library ID"
 msgstr "ID de Open Library"
@@ -994,6 +1043,78 @@ msgstr "Fecha de alta"
 #: model:ir.model.fields,field_description:library_manager.field_library_member__lang
 msgid "Language"
 msgstr "Idioma"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__first_publication_year
+msgid "First Publication Year"
+msgstr "Año de primera publicación"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__publisher
+msgid "Publisher"
+msgstr "Editorial"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__publication_place
+msgid "Publication Place"
+msgstr "Lugar de publicación"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__physical_format
+msgid "Physical Format"
+msgstr "Formato físico"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__dewey_decimal_class
+msgid "Dewey Decimal Class"
+msgstr "Clasificación decimal Dewey"
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_book__lc_classification
+msgid "Library of Congress Classification"
+msgstr "Clasificación de la Biblioteca del Congreso"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "first publication year"
+msgstr "año de primera publicación"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "publisher"
+msgstr "editorial"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "publication place"
+msgstr "lugar de publicación"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "language"
+msgstr "idioma"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "physical format"
+msgstr "formato físico"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Dewey Decimal classification"
+msgstr "clasificación decimal Dewey"
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/book.py:0
+msgid "Library of Congress classification"
+msgstr "clasificación de la Biblioteca del Congreso"
 
 #. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_author__write_uid

@@ -1,3 +1,4 @@
+import base64
 import html
 import logging
 import re
@@ -16,6 +17,7 @@ _logger = logging.getLogger(__name__)
 OPEN_LIBRARY_AUTHOR_URL = 'https://openlibrary.org/authors/%s.json'
 OPEN_LIBRARY_AUTHOR_SEARCH_URL = 'https://openlibrary.org/search/authors.json'
 OPEN_LIBRARY_TIMEOUT = 30
+MAX_AUTHOR_PHOTO_BYTES = 5 * 1024 * 1024
 
 
 class LibraryAuthor(models.Model):
@@ -33,7 +35,18 @@ class LibraryAuthor(models.Model):
              'manually to link an existing author when their name differs.',
     )
     birth_date = fields.Date(string='Birth Date')
+    death_date = fields.Char(string='Death Date')
     bio = fields.Text(string='Biography')
+    alternate_names = fields.Text(string='Alternate Names')
+    external_links = fields.Text(string='External Links')
+    photo = fields.Image(string='Author Photo')
+    photo_128 = fields.Image(
+        string='Author Photo Thumbnail',
+        related='photo',
+        max_width=128,
+        max_height=128,
+        store=True,
+    )
 
     # One2many relacion con los libros
     book_ids = fields.One2many(
@@ -114,6 +127,38 @@ class LibraryAuthor(models.Model):
                 exc_info=True,
             )
             return {}
+
+    @api.model
+    def _fetch_open_library_author_photo(self, author_key):
+        if not author_key:
+            return False
+        url = (
+            'https://covers.openlibrary.org/a/olid/%s-M.jpg?default=false'
+            % author_key
+        )
+        try:
+            if self.env.context.get('openlibrary_bulk_refresh'):
+                time.sleep(1)
+            response = requests.get(url, timeout=OPEN_LIBRARY_TIMEOUT)
+        except requests.exceptions.RequestException:
+            _logger.warning(
+                'Could not download Open Library author photo for %s',
+                author_key,
+                exc_info=True,
+            )
+            return False
+
+        if not response.ok:
+            return False
+        content = response.content or b''
+        content_type = (response.headers or {}).get('Content-Type', '')
+        if (
+            not content
+            or len(content) > MAX_AUTHOR_PHOTO_BYTES
+            or (content_type and not content_type.startswith('image/'))
+        ):
+            return False
+        return base64.b64encode(content).decode('ascii')
 
     @api.model
     def _search_open_library_author_key(self, name):
@@ -235,17 +280,66 @@ class LibraryAuthor(models.Model):
             if (self.bio or '') != bio:
                 values['bio'] = bio
 
+        death_date = author_data.get('death_date')
+        if isinstance(death_date, str) and death_date.strip():
+            death_date = death_date.strip()
+            available.add('death_date')
+            if (self.death_date or '') != death_date:
+                values['death_date'] = death_date
+
+        alternate_names = author_data.get('alternate_names') or []
+        if isinstance(alternate_names, str):
+            alternate_names = [alternate_names]
+        alternate_names = list(dict.fromkeys(
+            name.strip() for name in alternate_names
+            if isinstance(name, str) and name.strip()
+        ))
+        if alternate_names:
+            aliases_text = '\n'.join(alternate_names)
+            available.add('alternate_names')
+            if (self.alternate_names or '') != aliases_text:
+                values['alternate_names'] = aliases_text
+
+        links = []
+        for link in author_data.get('links') or []:
+            if not isinstance(link, dict):
+                continue
+            url = (link.get('url') or '').strip()
+            if not url.startswith(('https://', 'http://')):
+                continue
+            title = (link.get('title') or '').strip()
+            links.append(f'{title}: {url}' if title else url)
+        if links:
+            links_text = '\n'.join(dict.fromkeys(links))
+            available.add('external_links')
+            if (self.external_links or '') != links_text:
+                values['external_links'] = links_text
+
+        photo = self._fetch_open_library_author_photo(author_key)
+        if photo:
+            available.add('photo')
+            if (self.photo or '') != photo:
+                values['photo'] = photo
+
         labels = {
             'name': _('name'),
             'openlibrary_key': _('Open Library ID'),
             'birth_date': _('birth date'),
+            'death_date': _('death date'),
             'bio': _('biography'),
+            'alternate_names': _('alternate names'),
+            'external_links': _('external links'),
+            'photo': _('photo'),
         }
         local = {
             'name': bool(self.name),
             'openlibrary_key': bool(self.openlibrary_key),
             'birth_date': bool(self.birth_date),
+            'death_date': bool(self.death_date),
             'bio': bool(self.bio),
+            'alternate_names': bool(self.alternate_names),
+            'external_links': bool(self.external_links),
+            'photo': bool(self.photo),
         }
         retained = [
             labels[field_name]
@@ -306,8 +400,6 @@ class LibraryAuthor(models.Model):
             _('Open Library did not return usable author details.')
             if not author_data else False
         )
-        if source_error and self.env.context.get('openlibrary_bulk_refresh'):
-            raise UserError(source_error)
         changed, retained, message = self._apply_openlibrary_data(
             author_key, author_data, source_error=source_error
         )

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Module** | `library_manager` |
-| **Version described** | 17.0.2.16.0 |
+| **Version described** | 17.0.2.18.0 |
 | **Platform** | Odoo 17.0 (Community), PostgreSQL |
 | **Dependencies** | `base`, `mail`; Python library `requests` |
 | **License** | LGPL-3 |
@@ -88,7 +88,7 @@ erDiagram
 | Model | Technical name | Notes |
 |---|---|---|
 | Book | `library.book` | With chatter (`mail.thread`). Ordered by title. |
-| Author | `library.author` | With chatter (`mail.thread`). Ordered by name; optional unique Open Library ID. |
+| Author | `library.author` | With chatter (`mail.thread`) and photo. Ordered by name; optional unique Open Library ID. |
 | Category | `library.category` | Name and description; displayed as an uncoloured tag. |
 | Member | `library.member` | Delegation inheritance (`_inherits`) from `res.partner`. With chatter. |
 | Loan | `library.loan` | With chatter. Ordered by loan date, newest first. |
@@ -105,7 +105,7 @@ erDiagram
 
 ### 4.1 Data
 
-Title (required), ISBN, optional Open Library ID (work `OL…W` or edition `OL…M`), publication year, pages, description, cover image (max. 1024 px, with a 128 px thumbnail), author, categories and status.
+Title (required), ISBN, optional Open Library ID (work `OL…W` or edition `OL…M`), edition publication year, first publication year, publisher, publication place, language code, physical format, Dewey and Library of Congress classifications, pages, description, cover image (max. 1024 px, with a 128 px thumbnail), author, categories and status.
 
 - **RF-LIB-01** The ISBN is unique across the whole catalogue.
 - **RF-LIB-02** The same author cannot have two books with the same title.
@@ -147,13 +147,13 @@ The *Autofill from ISBN or Open Library ID* button in the book form header compl
 - **RF-ISBN-02** ISBN lookup normalises spaces and hyphens and uppercases X, then validates the ISBN-10 or ISBN-13 check digit. Alternatively, lookup accepts a work ID (`OL…W`) or edition ID (`OL…M`) and rejects malformed IDs before calling the API.
 - **RF-ISBN-03** An ISBN that already belongs to another book is rejected before calling the API, with the title of the existing book. The normalised ISBN is what gets stored.
 - **RF-ISBN-04** The action refreshes every supported bibliographic field for which Open Library returns a usable value, overwriting differing local values and making no write when they match. If Open Library has no usable value for a populated local field, it keeps that value and lists the field in a chatter note.
-- **RF-ISBN-05** It refreshes the title (including subtitle when available), ISBN, Open Library ID, author, publication year, pages, description, cover and up to three categories from the returned subjects. Existing categories are matched by normalized name; missing categories are created and linked. The selected subject set replaces the book's previous categories. Since the title is required, pressing the button on an unsaved book creates it with the returned data and reopens the form. It does not alter circulation status.
+- **RF-ISBN-05** It refreshes the title (including subtitle when available), ISBN, Open Library ID, author, edition and first publication years, publisher, publication place, language code, physical format, classification, pages, description, cover and up to three categories from the returned subjects. Existing categories are matched by normalized name; missing categories are created and linked. The selected subject set replaces the book's previous categories. Since the title is required, pressing the button on an unsaved book creates it with the returned data and reopens the form. It does not alter circulation status.
 - **RF-ISBN-06** The author is reused when a name matches ignoring case, and created otherwise. Only the first author is used, because the model stores one.
 - **RF-ISBN-07** The cover is downloaded from the medium, large or small URL (in that order) and is skipped when it is empty, not an image or larger than 5 MB. A cover failure never blocks the rest of the fields; the notification then warns about it.
 - **RF-ISBN-08** Timeouts (30 s), connection errors, HTTP errors and ISBNs without data are reported as clear messages, never as a traceback.
 - **RF-ISBN-09** A notification and chatter note list changed fields, retained local values and applicable conflicts or download errors; unchanged values are not written.
 - **RF-ISBN-10** When the book response provides an author key, the module fetches that author's record and stores the key uniquely on `library.author`. Existing authors are matched by key first, then by normalized name and aliases; multiple possible matches stop autofill with an explanation rather than creating a duplicate.
-- **RF-ISBN-11** The matching author's name, birth date and biography are overwritten with non-empty values returned by Open Library. Unparseable or year-only birth dates are ignored; an unavailable author record does not prevent the book metadata from being filled.
+- **RF-ISBN-11** The matching author's name, birth and death dates, biography, alternate names, external links and photo are refreshed when Open Library supplies usable values. Unparseable birth dates are ignored; an unavailable author record does not prevent the book metadata from being filled.
 - **RF-ISBN-12** An Open Library work ID is fetched from the Works API; an edition ID is fetched from the Editions API. Edition lookup uses its parent work for author and subject data when needed. When both identifiers are present, the ISBN result is primary and the matching Open Library record supplements missing fields; a missing ISBN result falls back to the saved ID.
 - **RF-ISBN-13** Open Library IDs are stored on books but are not unique: several physical copies may refer to the same work. A work or edition lookup can fill title, author, year, pages, cover and description when supplied. An edition lookup also stores its valid ISBN when available and not assigned to another local book; work IDs do not select an arbitrary ISBN from their many editions.
 - **RF-ISBN-14** Librarians can select books in the list and queue a metadata refresh, including selecting all books when a full refresh is needed. Books without an ISBN or Open Library ID are skipped; refresh jobs overwrite local fields when Open Library supplies values.
@@ -164,13 +164,13 @@ The ISBN endpoint (`/api/books?bibkeys=ISBN:...&format=json&jscmd=data`) does no
 
 ## 5. Authors and categories
 
-**Authors**: name (required), birth date, biography, optional unique Open Library ID and their books. ISBN autofill refreshes the name, birth date and biography from the linked Open Library author record when those values are available.
+**Authors**: name (required), photo, birth and death dates, biography, alternate names, external links, optional unique Open Library ID and their books. Autofill refreshes available author details and downloads the linked Open Library photo when present. List, kanban and form views display or edit the photo.
 
 - **RF-AUT-01** The author's name is unique.
 - **RF-AUT-02** The birth date cannot be in the future.
 - **RF-AUT-03** The author shows how many books they have (with direct access to the list) and the total pages written, which is recalculated whenever the pages of any of their books change.
 - **RF-AUT-04** The author's PDF report is printed from the author form (see section 12).
-- **RF-AUT-05** Librarians can use *Autofill from Open Library* in the author form. It uses the stored Open Library ID or searches by exact normalized name/alias, rejects missing or ambiguous matches, and refreshes the name, Open Library ID, birth date and biography with usable values from Open Library.
+- **RF-AUT-05** Librarians can use *Autofill from Open Library* in the author form. It uses the stored Open Library ID or searches by exact normalized name/alias, rejects missing or ambiguous matches, and refreshes the name, Open Library ID, birth and death dates, biography, alternate names, external links and author photo when available.
 - **RF-AUT-06** Librarians can select authors in the list and queue background refreshes. Existing author fields are overwritten when Open Library returns values, and job results appear with book refreshes under *Library > Configuration > Open Library Refreshes*.
 - **RF-AUT-07** Individual and queued author refreshes share the same overwrite rules. Authors have a chatter, where each check records updated fields and existing local fields retained because Open Library had no usable value.
 
@@ -372,7 +372,7 @@ First tab of the menu (*Home*). OWL component that shows grouped counters:
 - **RNF-01 Compatibility.** Odoo 17.0. View syntax is that of this version (`<tree>`, `invisible="…"` without `attrs`); operation on other versions is not guaranteed.
 - **RNF-02 Language.** Source texts are in English and translatable. A Spanish translation is included (`i18n/es.po`).
 - **RNF-03 Testing.** The module includes automated tests (`TransactionCase`) covering books, authors, members, contacts, loans, settings, statistics, the Gemini integration and the Open Library integration (both external APIs mocked). Every behaviour change must come with its tests, and the suite must finish with `0 failed, 0 error(s)`.
-- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds ISBN autofill; version 17.0.2.4.0 adds the author key; version 17.0.2.5.0 adds author-form autofill; version 17.0.2.6.0 adapts book lookup to ISBN or Open Library ID; version 17.0.2.7.0 adds background bulk refreshes; version 17.0.2.8.0 adds member DNI/NIF uniqueness; version 17.0.2.9.0 adds ISBN autofill from an edition ID; version 17.0.2.10.0 fills empty DNI values on existing demo members; version 17.0.2.11.0 adds ISBN retrieval from an edition ID; version 17.0.2.12.0 adds overwrite rules and chatter logs; version 17.0.2.13.0 combines ISBN and Open Library ID lookup; version 17.0.2.14.0 creates missing library categories for Open Library subjects during autofill; version 17.0.2.15.0 removes category colors; version 17.0.2.16.0 adds estimated processing times to refresh jobs.
+- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds ISBN autofill; version 17.0.2.4.0 adds the author key; version 17.0.2.5.0 adds author-form autofill; version 17.0.2.6.0 adapts book lookup to ISBN or Open Library ID; version 17.0.2.7.0 adds background bulk refreshes; version 17.0.2.8.0 adds member DNI/NIF uniqueness; version 17.0.2.9.0 adds ISBN autofill from an edition ID; version 17.0.2.10.0 fills empty DNI values on existing demo members; version 17.0.2.11.0 adds ISBN retrieval from an edition ID; version 17.0.2.12.0 adds overwrite rules and chatter logs; version 17.0.2.13.0 combines ISBN and Open Library ID lookup; version 17.0.2.14.0 creates missing library categories for Open Library subjects during autofill; version 17.0.2.15.0 removes category colors; version 17.0.2.16.0 adds estimated processing times to refresh jobs; version 17.0.2.17.0 adds author photos from Open Library and a kanban view; version 17.0.2.18.0 imports additional author and edition metadata.
 - **RNF-05 Demo data.** Categories, authors, books, members and about 60 historical loans, loaded only in databases created with demo data.
 - **RNF-06 Secrets.** Neither the Gemini key nor `odoo.conf` is stored in the repository.
 - **RNF-07 Performance.** Counters (loans per book and per member, books per author, memberships per contact) are computed with one grouped query per batch, not one query per record.

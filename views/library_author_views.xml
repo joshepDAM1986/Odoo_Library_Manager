@@ -5,7 +5,7 @@
         <field name="name">library.author.tree</field>
         <field name="model">library.author</field>
         <field name="arch" type="xml">
-            <tree string="Authors">
+            <tree string="Authors" sample="1">
                 <header>
                     <button name="action_queue_openlibrary_refresh"
                             string="Queue Open Library Refresh" type="object"
@@ -13,12 +13,82 @@
                             icon="fa-refresh"
                             groups="library_manager.group_library_manager"/>
                 </header>
+                <field name="photo_128" widget="image" class="avatar me-2"
+                       options="{'size': [40, 40]}" optional="show"/>
                 <field name="name"/>
                 <field name="openlibrary_key"/>
                 <field name="birth_date"/>
+                <field name="death_date" optional="hide"/>
                 <field name="book_count"/>
                 <field name="total_pages"/>
             </tree>
+        </field>
+    </record>
+
+    <!-- Vista kanban de autores con fotografía -->
+    <record id="view_library_author_kanban" model="ir.ui.view">
+        <field name="name">library.author.kanban</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="photo_128"/>
+                <field name="openlibrary_key"/>
+                <field name="birth_date"/>
+                <field name="death_date"/>
+                <field name="book_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a role="button" class="dropdown-toggle o-no-caret btn btn-sm btn-link text-muted" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                                    <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 flex-shrink-0">
+                                    <t t-if="record.photo_128.raw_value">
+                                        <img t-att-src="kanban_image('library.author', 'photo_128', record.id.raw_value)"
+                                             alt="Author photo" class="rounded-circle border"
+                                             style="width: 72px; height: 72px; object-fit: cover;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="rounded-circle border bg-light d-flex align-items-center justify-content-center text-muted"
+                                             style="width: 72px; height: 72px;">
+                                            <i class="fa fa-user fa-2x" title="Author"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="flex-grow-1" style="min-width: 0;">
+                                    <strong class="o_kanban_record_title fs-6 text-primary d-block text-truncate">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div t-if="record.birth_date.raw_value" class="text-muted small mt-1">
+                                        <i class="fa fa-calendar me-1" title="Birth Date"/>
+                                        <field name="birth_date"/>
+                                    </div>
+                                    <div t-if="record.death_date.raw_value" class="text-muted small">
+                                        <i class="fa fa-calendar-times-o me-1" title="Death Date"/>
+                                        <field name="death_date"/>
+                                    </div>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fa fa-book me-1" title="Books"/>
+                                        <field name="book_count"/> books
+                                    </div>
+                                    <div t-if="record.openlibrary_key.raw_value" class="text-muted small text-truncate">
+                                        <field name="openlibrary_key"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -37,6 +107,8 @@
                         class="btn-primary" icon="fa-print"/>
             </header>
                 <sheet>
+                    <field name="photo" widget="image" class="oe_avatar"
+                           options="{'size': [110, 110]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_author_books" 
                                 type="object" 
@@ -45,16 +117,26 @@
                             <field name="book_count" widget="statinfo" string="Books"/>
                         </button>
                     </div>
+                    <div class="oe_title">
+                        <label for="name" string="Author Name"/>
+                        <h1><field name="name" placeholder="e.g. Miguel de Cervantes"/></h1>
+                    </div>
                     <group>
                         <group>
-                            <field name="name"/>
                             <field name="birth_date"/>
+                            <field name="death_date"/>
                             <field name="openlibrary_key"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Biography">
                             <field name="bio" placeholder="Write a brief biography..."/>
+                        </page>
+                        <page string="Other Names and Links">
+                            <group>
+                                <field name="alternate_names" placeholder="One alternate name per line"/>
+                                <field name="external_links" placeholder="External references from Open Library"/>
+                            </group>
                         </page>
                         <page string="Books">
                             <field name="book_ids"/>
@@ -73,7 +155,7 @@
     <record id="action_library_author" model="ir.actions.act_window">
         <field name="name">Authors</field>
         <field name="res_model">library.author</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
     <!-- Vista de busqueda de autores -->
@@ -84,6 +166,8 @@
             <search string="Authors">
                 <field name="name"/>
                 <field name="bio"/>
+                <field name="alternate_names"/>
+                <field name="openlibrary_key"/>
             </search>
         </field>
     </record>

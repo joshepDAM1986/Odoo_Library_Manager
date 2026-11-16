@@ -20,6 +20,9 @@
                 <field name="openlibrary_key"/>
                 <field name="author_id"/>
                 <field name="publication_year" options="{'format': false}"/>
+                <field name="first_publication_year" options="{'format': false}" optional="hide"/>
+                <field name="publisher" optional="hide"/>
+                <field name="language" optional="hide"/>
                 <field name="pages" optional="hide"/>
                 <field name="category_ids" widget="many2many_tags"/>
                 <field name="state" widget="badge"
@@ -42,6 +45,8 @@
                 <field name="state"/>
                 <field name="cover_image_128"/>
                 <field name="publication_year"/>
+                <field name="publisher"/>
+                <field name="language"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border">
@@ -81,6 +86,12 @@
 
                                     <div t-if="record.publication_year.raw_value" class="text-muted small">
                                         <i class="fa fa-calendar me-1" title="Year"/> <field name="publication_year" options="{'format': false}"/>
+                                    </div>
+                                    <div t-if="record.publisher.raw_value" class="text-muted small text-truncate">
+                                        <i class="fa fa-building me-1" title="Publisher"/> <field name="publisher"/>
+                                    </div>
+                                    <div t-if="record.language.raw_value" class="text-muted small">
+                                        <i class="fa fa-language me-1" title="Language"/> <field name="language"/>
                                     </div>
 
                                     <div class="mt-2">
@@ -151,7 +162,14 @@
                         </group>
                         <group string="Publication Details">
                             <field name="publication_year" options="{'format': false}"/>
+                            <field name="first_publication_year" options="{'format': false}"/>
+                            <field name="publisher"/>
+                            <field name="publication_place"/>
+                            <field name="language"/>
+                            <field name="physical_format"/>
                             <field name="pages"/>
+                            <field name="dewey_decimal_class"/>
+                            <field name="lc_classification"/>
                         </group>
                     </group>
 

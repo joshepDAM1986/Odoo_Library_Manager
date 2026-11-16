@@ -55,6 +55,20 @@ class LibraryBook(models.Model):
         string="Publication Year",
     )
 
+    first_publication_year = fields.Integer(string="First Publication Year")
+
+    publisher = fields.Char(string="Publisher")
+
+    publication_place = fields.Char(string="Publication Place")
+
+    language = fields.Char(string="Language")
+
+    physical_format = fields.Char(string="Physical Format")
+
+    dewey_decimal_class = fields.Char(string="Dewey Decimal Class")
+
+    lc_classification = fields.Char(string="Library of Congress Classification")
+
     pages = fields.Integer(
         string="Pages",
     )
@@ -576,6 +590,16 @@ class LibraryBook(models.Model):
                 or record.get("first_publish_date")
                 or work_record.get("first_publish_date")
             ),
+            "first_publish_date": (
+                record.get("first_publish_date")
+                or work_record.get("first_publish_date")
+            ),
+            "publishers": record.get("publishers") or [],
+            "publish_places": record.get("publish_places") or [],
+            "languages": record.get("languages") or [],
+            "physical_format": record.get("physical_format") or "",
+            "dewey_decimal_class": record.get("dewey_decimal_class") or [],
+            "lc_classifications": record.get("lc_classifications") or [],
             "number_of_pages": record.get("number_of_pages"),
             "cover": cover,
             "description": description,
@@ -717,6 +741,56 @@ class LibraryBook(models.Model):
             available.add("publication_year")
             values["publication_year"] = year
 
+        first_year = self._extract_publication_year(
+            data.get("first_publish_date")
+        )
+        if first_year:
+            available.add("first_publication_year")
+            values["first_publication_year"] = first_year
+
+        def metadata_text(value):
+            if isinstance(value, str):
+                text = value.strip()
+                if text.startswith('/languages/'):
+                    return text.rsplit('/', 1)[-1]
+                return text
+            if isinstance(value, dict):
+                return metadata_text(value.get('name') or value.get('key') or '')
+            if isinstance(value, (list, tuple)):
+                items = [metadata_text(item) for item in value]
+                return ', '.join(dict.fromkeys(item for item in items if item))
+            return ''
+
+        for source_name, field_name in (
+            ('publishers', 'publisher'),
+            ('publish_places', 'publication_place'),
+            ('languages', 'language'),
+            ('physical_format', 'physical_format'),
+        ):
+            text = metadata_text(data.get(source_name))
+            if text:
+                available.add(field_name)
+                values[field_name] = text
+
+        classifications = data.get('classifications') or {}
+        if not isinstance(classifications, dict):
+            classifications = {}
+        for source_names, field_name in (
+            (('dewey_decimal_class', 'dewey'), 'dewey_decimal_class'),
+            (('lc_classifications', 'lc_classification'), 'lc_classification'),
+        ):
+            classification_values = []
+            for source_name in source_names:
+                raw_value = data.get(source_name) or classifications.get(source_name)
+                if isinstance(raw_value, (list, tuple)):
+                    classification_values.extend(raw_value)
+                elif raw_value:
+                    classification_values.append(raw_value)
+            text = metadata_text(classification_values)
+            if text:
+                available.add(field_name)
+                values[field_name] = text
+
         if data.get("number_of_pages"):
             try:
                 pages = int(data.get("number_of_pages") or 0)
@@ -829,6 +903,13 @@ class LibraryBook(models.Model):
             'openlibrary_key': _('Open Library ID'),
             'author_id': _('author'),
             'publication_year': _('publication year'),
+            'first_publication_year': _('first publication year'),
+            'publisher': _('publisher'),
+            'publication_place': _('publication place'),
+            'language': _('language'),
+            'physical_format': _('physical format'),
+            'dewey_decimal_class': _('Dewey Decimal classification'),
+            'lc_classification': _('Library of Congress classification'),
             'pages': _('pages'),
             'description': _('description'),
             'cover_image': _('cover'),
@@ -840,6 +921,13 @@ class LibraryBook(models.Model):
             'openlibrary_key': self.openlibrary_key,
             'author_id': self.author_id,
             'publication_year': self.publication_year,
+            'first_publication_year': self.first_publication_year,
+            'publisher': self.publisher,
+            'publication_place': self.publication_place,
+            'language': self.language,
+            'physical_format': self.physical_format,
+            'dewey_decimal_class': self.dewey_decimal_class,
+            'lc_classification': self.lc_classification,
             'pages': self.pages,
             'description': self.description,
             'cover_image': self.cover_image,
@@ -863,6 +951,13 @@ class LibraryBook(models.Model):
                 'openlibrary_key': _('Open Library ID'),
                 'author_id': _('author'),
                 'publication_year': _('publication year'),
+                'first_publication_year': _('first publication year'),
+                'publisher': _('publisher'),
+                'publication_place': _('publication place'),
+                'language': _('language'),
+                'physical_format': _('physical format'),
+                'dewey_decimal_class': _('Dewey Decimal classification'),
+                'lc_classification': _('Library of Congress classification'),
                 'pages': _('pages'), 'description': _('description'),
                 'cover_image': _('cover'),
                 'category_ids': _('Categories'),
@@ -997,6 +1092,13 @@ class LibraryBook(models.Model):
                 "openlibrary_key": self.openlibrary_key or False,
                 "author_id": self.author_id.id or False,
                 "publication_year": self.publication_year or False,
+                "first_publication_year": self.first_publication_year or False,
+                "publisher": self.publisher or False,
+                "publication_place": self.publication_place or False,
+                "language": self.language or False,
+                "physical_format": self.physical_format or False,
+                "dewey_decimal_class": self.dewey_decimal_class or False,
+                "lc_classification": self.lc_classification or False,
                 "pages": self.pages or False,
                 "description": self.description or False,
                 "cover_image": self.cover_image or False,
@@ -1029,6 +1131,20 @@ class LibraryBook(models.Model):
             filled.append(_("author"))
         if "publication_year" in changed_values:
             filled.append(_("publication year"))
+        if "first_publication_year" in changed_values:
+            filled.append(_("first publication year"))
+        if "publisher" in changed_values:
+            filled.append(_("publisher"))
+        if "publication_place" in changed_values:
+            filled.append(_("publication place"))
+        if "language" in changed_values:
+            filled.append(_("language"))
+        if "physical_format" in changed_values:
+            filled.append(_("physical format"))
+        if "dewey_decimal_class" in changed_values:
+            filled.append(_("Dewey Decimal classification"))
+        if "lc_classification" in changed_values:
+            filled.append(_("Library of Congress classification"))
         if "pages" in changed_values:
             filled.append(_("pages"))
         if "cover_image" in changed_values:
