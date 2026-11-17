@@ -1,0 +1,152 @@
+.o_kanban_view.o_library_book_kanban,
+.o_kanban_view.o_library_author_kanban,
+.o_kanban_view.o_library_member_kanban {
+    --lm-view-border: var(--bs-border-color, #e5dfd1);
+    --lm-view-surface: var(--bs-body-bg, #fffdf8);
+    --lm-view-ink: var(--bs-body-color, #25332c);
+    --lm-view-muted: var(--bs-secondary-color, #6b756f);
+
+    .o_library_book_card,
+    .o_library_author_card,
+    .o_library_member_card {
+        overflow: hidden;
+        border: 1px solid var(--lm-view-border) !important;
+        border-radius: 0.8rem !important;
+        color: var(--lm-view-ink);
+        background: var(--lm-view-surface);
+        box-shadow: 0 4px 16px rgba(35, 43, 36, 0.07) !important;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 26px rgba(35, 43, 36, 0.13) !important;
+        }
+    }
+
+    .o_library_book_card {
+        min-height: 168px;
+        padding: 0.45rem !important;
+        border-top: 3px solid #557b5d !important;
+    }
+
+    .o_library_book_card img {
+        box-shadow: 2px 4px 10px rgba(28, 34, 29, 0.2);
+    }
+
+    .o_library_book_card .o_kanban_record_title,
+    .o_library_author_card .o_kanban_record_title {
+        color: var(--lm-view-ink) !important;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+
+    .o_library_book_card .o_kanban_record_title {
+        font-size: 1rem !important;
+        line-height: 1.2;
+    }
+
+    .o_library_author_card {
+        min-height: 116px;
+        padding: 0.4rem !important;
+        border-top: 3px solid #b18a45 !important;
+    }
+
+    .o_library_member_card {
+        min-height: 130px;
+        padding: 0.4rem !important;
+        border-top: 3px solid #7662a8 !important;
+    }
+
+    .o_library_member_card .o_kanban_record_title {
+        color: var(--lm-view-ink) !important;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+
+    .o_library_member_card img {
+        border: 2px solid var(--lm-view-surface) !important;
+        box-shadow: 0 2px 10px rgba(28, 34, 29, 0.16);
+    }
+
+    .o_library_author_card img {
+        border: 2px solid var(--lm-view-surface) !important;
+        box-shadow: 0 2px 10px rgba(28, 34, 29, 0.16);
+    }
+
+    .text-muted {
+        color: var(--lm-view-muted) !important;
+    }
+}
+
+.o_form_view.o_library_form {
+    --lm-form-border: var(--bs-border-color, #e5dfd1);
+    --lm-form-surface: var(--bs-body-bg, #fffdf8);
+    --lm-form-ink: var(--bs-body-color, #25332c);
+
+    .o_form_sheet_bg {
+        background: color-mix(in srgb, var(--bs-body-bg, #fffdf8), #d9cba9 13%);
+    }
+
+    .o_form_sheet {
+        border: 1px solid var(--lm-form-border);
+        border-radius: 0.8rem;
+        background: var(--lm-form-surface);
+        box-shadow: 0 8px 26px rgba(35, 43, 36, 0.06);
+    }
+
+    .oe_title h1 {
+        color: var(--lm-form-ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+    }
+
+    .o_notebook .nav-link.active {
+        border-bottom: 2px solid #557b5d;
+    }
+}
+
+.o_list_view.o_library_list,
+.o_list_view .o_list_table.o_library_list,
+.o_list_view table.o_library_list,
+.o_list_table.o_library_list,
+.o_library_list .o_list_table {
+    --lm-list-border: var(--bs-border-color, #e5dfd1);
+
+    .o_list_table thead th,
+    thead th {
+        border-bottom: 2px solid #557b5d !important;
+        background: color-mix(in srgb, #557b5d 8%, var(--bs-body-bg, #fffdf8));
+        color: var(--bs-secondary-color, #68736c);
+        font-size: 0.76rem;
+        font-weight: 650;
+        letter-spacing: 0.035em;
+    }
+
+    .o_list_table tbody td,
+    tbody td {
+        padding-top: 0.65rem !important;
+        padding-bottom: 0.65rem !important;
+        border-bottom-color: var(--lm-list-border);
+    }
+
+    .o_list_table tbody tr:hover > *,
+    tbody tr:hover > * {
+        background-color: color-mix(in srgb, #557b5d 7%, var(--bs-body-bg, #fff));
+    }
+
+    img {
+        border-radius: 0.3rem;
+        box-shadow: 0 2px 7px rgba(28, 34, 29, 0.16);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_kanban_view.o_library_book_kanban .o_library_book_card,
+    .o_kanban_view.o_library_author_kanban .o_library_author_card,
+    .o_kanban_view.o_library_member_kanban .o_library_member_card {
+        transition: none;
+    }
+}

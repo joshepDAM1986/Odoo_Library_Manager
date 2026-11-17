@@ -19,7 +19,16 @@ export class LibraryDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
-        this.state = useState({ sections: [], canCreateLoan: false, canCreateBook: false });
+        this.state = useState({
+            sections: [],
+            canCreateLoan: false,
+            canCreateBook: false,
+            heroTitle: _t("Your library, in good company."),
+            heroSubtitle: _t("A thoughtful overview of books, readers and loans."),
+            heroKicker: _t("A library in motion"),
+            heroMessage: _t("Good stories always find their next reader."),
+            heroDetail: _t("Your collection, members and everyday activity — at a glance."),
+        });
         onWillStart(() => this.loadStats());
     }
 

@@ -1,6 +1,6 @@
 {
     'name': 'Library Manager',
-    'version': '17.0.2.18.0',
+    'version': '17.0.2.20.0',
     'category': 'Services/Library',
     'summary': 'Books, authors, categories, members and loans',
     'description': 'Books, authors, categories, members, loans, statistics and a PDF report.',
@@ -40,6 +40,7 @@
             'library_manager/static/src/dashboard/dashboard.js',
             'library_manager/static/src/dashboard/dashboard.xml',
             'library_manager/static/src/dashboard/dashboard.scss',
+            'library_manager/static/src/scss/library_theme.scss',
         ],
     },
     'installable': True,

@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from odoo import _, api, fields, models
+from odoo import SUPERUSER_ID, _, api, fields, models
 
 
 _logger = logging.getLogger(__name__)
@@ -99,16 +99,43 @@ class LibraryMetadataRefresh(models.Model):
     @api.model
     def _cron_process_pending(self):
         """Process a small queue batch so metadata refreshes do not block users."""
+        stale_cutoff = fields.Datetime.now() - timedelta(minutes=10)
+        stale_jobs = self.sudo().search([
+            ('state', '=', 'processing'),
+            '|', ('started_at', '=', False), ('started_at', '<', stale_cutoff),
+        ])
+        if stale_jobs:
+            stale_jobs.write({
+                'state': 'queued',
+                'started_at': False,
+                'message': _('Requeued after a refresh job stopped responding.'),
+            })
+
         jobs = self.sudo().search(
-            [('state', '=', 'queued')], order='id', limit=10
+            [('state', '=', 'queued')], order='id', limit=REFRESH_BATCH_SIZE
         )
-        for job in jobs:
+        for job_id in jobs.ids:
+            self._process_refresh_job(job_id)
+
+    @api.model
+    def _process_refresh_job(self, job_id):
+        """Process and commit one queue item so progress is visible immediately."""
+        with self.env.registry.cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
+            job = env[self._name].browse(job_id).exists()
+            if not job or job.state != 'queued':
+                return
+
+            job.write({
+                'state': 'processing',
+                'started_at': fields.Datetime.now(),
+            })
+            # This cursor was created locally; commit the claim before making
+            # slow external requests so the UI can show this job as processing.
+            cr.commit()
+
             try:
-                with self.env.cr.savepoint():
-                    job.write({
-                        'state': 'processing',
-                        'started_at': fields.Datetime.now(),
-                    })
+                with cr.savepoint():
                     context = {
                         'openlibrary_bulk_refresh': True,
                     }
@@ -166,3 +193,4 @@ class LibraryMetadataRefresh(models.Model):
                     'message': message,
                     'processed_at': fields.Datetime.now(),
                 })
+            cr.commit()

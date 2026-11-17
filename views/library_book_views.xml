@@ -6,7 +6,7 @@
         <field name="name">library.book.tree</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-            <tree string="Books" sample="1">
+            <tree string="Books" sample="1" class="o_library_list">
                 <header>
                     <button name="action_queue_openlibrary_refresh"
                             string="Queue Open Library Refresh" type="object"
@@ -38,7 +38,7 @@
         <field name="name">library.book.kanban</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_small_column" sample="1">
+            <kanban class="o_kanban_small_column o_library_book_kanban" sample="1">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="author_id"/>
@@ -49,7 +49,7 @@
                 <field name="language"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border o_library_book_card">
                             <div class="o_dropdown_kanban dropdown">
                                 <a role="button" class="dropdown-toggle o-no-caret btn btn-sm btn-link text-muted" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
@@ -117,7 +117,7 @@
         <field name="name">library.book.form</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-            <form string="Book">
+            <form string="Book" class="o_library_form">
                 <header>
                     <button name="action_mark_lost" string="Mark as Lost" type="object"
                             class="btn-outline-danger"
@@ -218,7 +218,7 @@
     <record id="action_library_book" model="ir.actions.act_window">
         <field name="name">Books</field>
         <field name="res_model">library.book</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="search_view_id" ref="view_library_book_search"/>
     </record>
 

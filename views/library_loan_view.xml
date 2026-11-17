@@ -5,7 +5,7 @@
         <field name="name">library.loan.tree</field>
         <field name="model">library.loan</field>
         <field name="arch" type="xml">
-            <tree string="Library Loans"
+            <tree string="Library Loans" class="o_library_list"
                   decoration-danger="state == 'ongoing' and days_overdue &gt; 0"
                   decoration-muted="state == 'cancelled'">
                 <field name="name"/>
@@ -29,7 +29,7 @@
         <field name="name">library.loan.form</field>
         <field name="model">library.loan</field>
         <field name="arch" type="xml">
-            <form string="Library Loan">
+            <form string="Library Loan" class="o_library_form">
                 <header>
                     <button name="action_confirm" string="Confirm" type="object"
                             class="btn-primary"

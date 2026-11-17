@@ -5,7 +5,7 @@
         <field name="name">library.author.tree</field>
         <field name="model">library.author</field>
         <field name="arch" type="xml">
-            <tree string="Authors" sample="1">
+            <tree string="Authors" sample="1" class="o_library_list">
                 <header>
                     <button name="action_queue_openlibrary_refresh"
                             string="Queue Open Library Refresh" type="object"
@@ -30,7 +30,7 @@
         <field name="name">library.author.kanban</field>
         <field name="model">library.author</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_small_column" sample="1">
+            <kanban class="o_kanban_small_column o_library_author_kanban" sample="1">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="photo_128"/>
@@ -40,7 +40,7 @@
                 <field name="book_count"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border o_library_author_card">
                             <div class="o_dropdown_kanban dropdown">
                                 <a role="button" class="dropdown-toggle o-no-caret btn btn-sm btn-link text-muted" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
@@ -97,7 +97,7 @@
         <field name="name">library.author.form</field>
         <field name="model">library.author</field>
         <field name="arch" type="xml">
-            <form string="Author">
+            <form string="Author" class="o_library_form">
             <header>
                 <button name="action_fill_from_openlibrary"
                         string="Autofill from Open Library" type="object"
@@ -155,7 +155,7 @@
     <record id="action_library_author" model="ir.actions.act_window">
         <field name="name">Authors</field>
         <field name="res_model">library.author</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <!-- Vista de busqueda de autores -->

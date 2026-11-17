@@ -2,12 +2,13 @@
 <templates xml:space="preserve">
     <t t-name="library_manager.Dashboard">
         <div class="o_library_dashboard container-fluid p-4 overflow-auto">
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="mb-1">Library Manager</h1>
-                    <p class="text-muted mb-0">Overview of your library</p>
+            <div class="o_library_dashboard_header d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div class="o_library_dashboard_heading">
+                    <div class="o_library_eyebrow"><i class="fa fa-book me-2"/>Library Manager</div>
+                    <h1 class="mb-1" t-esc="state.heroTitle"/>
+                    <p class="text-muted mb-0" t-esc="state.heroSubtitle"/>
                 </div>
-                <div class="mt-2 mt-md-0">
+                <div class="o_library_dashboard_actions mt-2 mt-md-0">
                     <button t-if="state.canCreateLoan" class="btn btn-primary me-2" t-on-click="newLoan">
                         <i class="fa fa-plus me-1"/>New loan
                     </button>
@@ -20,21 +21,38 @@
                 </div>
             </div>
 
-            <t t-foreach="state.sections" t-as="section" t-key="section.title">
-                <div class="o_library_section_title mt-4 mb-3">
-                    <i t-attf-class="fa {{section.icon}} me-2"/><t t-esc="section.title"/>
+            <section class="o_library_hero mb-4">
+                <div class="o_library_hero_copy">
+                    <span class="o_library_hero_kicker" t-esc="state.heroKicker"/>
+                    <h2 t-esc="state.heroMessage"/>
+                    <p t-esc="state.heroDetail"/>
                 </div>
-                <div class="row">
+                <div class="o_library_hero_shelf" aria-hidden="true">
+                    <div class="o_library_hero_book o_library_hero_book--one"><span>DON QUIJOTE</span><small>CERVANTES</small></div>
+                    <div class="o_library_hero_book o_library_hero_book--two"><span>CIEN AÑOS<br/>DE SOLEDAD</span><small>GARCÍA MÁRQUEZ</small></div>
+                    <div class="o_library_hero_book o_library_hero_book--three"><span>LA CASA DE<br/>LOS ESPÍRITUS</span><small>ISABEL ALLENDE</small></div>
+                </div>
+            </section>
+
+            <t t-foreach="state.sections" t-as="section" t-key="section.title">
+                <div class="o_library_section_heading mt-4 mb-3">
+                    <div class="o_library_section_title">
+                        <i t-attf-class="fa {{section.icon}} me-2"/><t t-esc="section.title"/>
+                    </div>
+                </div>
+                <div class="o_library_stat_grid" t-attf-style="--lm-columns: {{section.cards.length}}">
                     <t t-foreach="section.cards" t-as="card" t-key="card.label">
-                        <div class="col-6 col-md-4 col-xl-3 mb-3">
-                            <div t-attf-class="card o_library_card o_library_card--{{card.color}} shadow-sm h-100"
+                        <div class="o_library_stat_grid_item">
+                            <div t-attf-class="card o_library_card o_library_card--{{card.color}} h-100"
                                  t-on-click="() => this.openCard(card)">
                                 <div class="card-body d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div t-attf-class="o_library_card_count text-{{card.color}}" t-esc="card.count"/>
-                                        <div class="text-muted mt-1" t-esc="card.label"/>
+                                        <div class="o_library_card_label" t-esc="card.label"/>
+                                        <div class="o_library_card_count" t-esc="card.count"/>
                                     </div>
-                                    <i t-attf-class="fa {{card.icon}} o_library_card_icon"/>
+                                    <div t-attf-class="o_library_card_icon o_library_card_icon--{{card.color}}">
+                                        <i t-attf-class="fa {{card.icon}}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@
         <field name="name">library.member.tree</field>
         <field name="model">library.member</field>
         <field name="arch" type="xml">
-            <tree string="Members"
+            <tree string="Members" class="o_library_list"
                   decoration-muted="state == 'suspended'">
                 <field name="member_number"/>
                 <field name="name"/>
@@ -20,12 +20,88 @@
         </field>
     </record>
 
+    <!-- Kanban de socios siguiendo las tarjetas de autores y libros -->
+    <record id="view_library_member_kanban" model="ir.ui.view">
+        <field name="name">library.member.kanban</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column o_library_member_kanban" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="image_128"/>
+                <field name="member_number"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="vat"/>
+                <field name="join_date"/>
+                <field name="state"/>
+                <field name="loan_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2 shadow-sm rounded border o_library_member_card">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a role="button" class="dropdown-toggle o-no-caret btn btn-sm btn-link text-muted" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                                    <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 flex-shrink-0">
+                                    <t t-if="record.image_128.raw_value">
+                                        <img t-att-src="kanban_image('library.member', 'image_128', record.id.raw_value)"
+                                             alt="Member photo" class="rounded-circle border"
+                                             style="width: 72px; height: 72px; object-fit: cover;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="rounded-circle border bg-light d-flex align-items-center justify-content-center text-muted"
+                                             style="width: 72px; height: 72px;">
+                                            <i class="fa fa-user fa-2x" title="Member"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="flex-grow-1" style="min-width: 0;">
+                                    <strong class="o_kanban_record_title fs-6 text-primary d-block text-truncate">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fa fa-id-card-o me-1" title="Member number"/>
+                                        <field name="member_number"/>
+                                    </div>
+                                    <div t-if="record.email.raw_value" class="text-muted small text-truncate">
+                                        <i class="fa fa-envelope me-1" title="Email"/>
+                                        <field name="email"/>
+                                    </div>
+                                    <div t-if="record.phone.raw_value" class="text-muted small">
+                                        <i class="fa fa-phone me-1" title="Phone"/>
+                                        <field name="phone"/>
+                                    </div>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fa fa-exchange me-1" title="Loans"/>
+                                        <field name="loan_count"/> loans
+                                    </div>
+                                    <div class="mt-1">
+                                        <field name="state" widget="badge"
+                                               decoration-success="state == 'active'"
+                                               decoration-danger="state == 'suspended'"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <!-- Formulario -->
     <record id="view_library_member_form" model="ir.ui.view">
         <field name="name">library.member.form</field>
         <field name="model">library.member</field>
         <field name="arch" type="xml">
-            <form string="Member">
+            <form string="Member" class="o_library_form">
                 <header>
                     <button name="action_suspend" string="Suspend" type="object"
                             invisible="state != 'active'"
@@ -97,6 +173,6 @@
     <record id="action_library_member" model="ir.actions.act_window">
         <field name="name">Members</field>
         <field name="res_model">library.member</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 </odoo>

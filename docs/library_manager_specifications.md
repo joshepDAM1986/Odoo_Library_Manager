@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Module** | `library_manager` |
-| **Version described** | 17.0.2.18.0 |
+| **Version described** | 17.0.2.20.0 |
 | **Platform** | Odoo 17.0 (Community), PostgreSQL |
 | **Dependencies** | `base`, `mail`; Python library `requests` |
 | **License** | LGPL-3 |
@@ -157,7 +157,7 @@ The *Autofill from ISBN or Open Library ID* button in the book form header compl
 - **RF-ISBN-12** An Open Library work ID is fetched from the Works API; an edition ID is fetched from the Editions API. Edition lookup uses its parent work for author and subject data when needed. When both identifiers are present, the ISBN result is primary and the matching Open Library record supplements missing fields; a missing ISBN result falls back to the saved ID.
 - **RF-ISBN-13** Open Library IDs are stored on books but are not unique: several physical copies may refer to the same work. A work or edition lookup can fill title, author, year, pages, cover and description when supplied. An edition lookup also stores its valid ISBN when available and not assigned to another local book; work IDs do not select an arbitrary ISBN from their many editions.
 - **RF-ISBN-14** Librarians can select books in the list and queue a metadata refresh, including selecting all books when a full refresh is needed. Books without an ISBN or Open Library ID are skipped; refresh jobs overwrite local fields when Open Library supplies values.
-- **RF-ISBN-15** Refresh jobs run in the background in batches of up to ten per minute. Their state, result and estimated processing time are available under *Library > Configuration > Open Library Refreshes*. The estimate uses queue position, the next scheduled cron run and recent average processing duration.
+- **RF-ISBN-15** Refresh jobs run in the background in batches of up to ten per minute, with each job's start and result committed separately so progress remains visible. Their state, result and estimated processing time are available under *Library > Configuration > Open Library Refreshes*. The estimate uses queue position, the next scheduled cron run and recent average processing duration. Jobs left in progress for more than ten minutes are requeued automatically.
 - **RF-ISBN-16** Individual and queued book refreshes use the same field mapping and overwrite rules. They record changed fields, locally retained fields without a usable Open Library value, ISBN conflicts and cover-download failures in the book chatter.
 
 The ISBN endpoint (`/api/books?bibkeys=ISBN:...&format=json&jscmd=data`) does not return the description. Work and edition records may include it. Data quality and availability depend on Open Library, a free service without an SLA.
@@ -333,7 +333,7 @@ Configured in *Settings > Library* (see section 8.3) and stored as system parame
 
 ## 10. Home dashboard
 
-First tab of the menu (*Home*). OWL component that shows grouped counters:
+First tab of the menu (*Home*). An editorial-style OWL dashboard with a book-shelf hero, grouped counters and shortcuts. Book and author kanban views emphasize their cover/photo, while forms share a warm, theme-aware visual treatment. The dashboard shows these counters:
 
 | Section | Cards |
 |---|---|
@@ -372,7 +372,7 @@ First tab of the menu (*Home*). OWL component that shows grouped counters:
 - **RNF-01 Compatibility.** Odoo 17.0. View syntax is that of this version (`<tree>`, `invisible="…"` without `attrs`); operation on other versions is not guaranteed.
 - **RNF-02 Language.** Source texts are in English and translatable. A Spanish translation is included (`i18n/es.po`).
 - **RNF-03 Testing.** The module includes automated tests (`TransactionCase`) covering books, authors, members, contacts, loans, settings, statistics, the Gemini integration and the Open Library integration (both external APIs mocked). Every behaviour change must come with its tests, and the suite must finish with `0 failed, 0 error(s)`.
-- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds ISBN autofill; version 17.0.2.4.0 adds the author key; version 17.0.2.5.0 adds author-form autofill; version 17.0.2.6.0 adapts book lookup to ISBN or Open Library ID; version 17.0.2.7.0 adds background bulk refreshes; version 17.0.2.8.0 adds member DNI/NIF uniqueness; version 17.0.2.9.0 adds ISBN autofill from an edition ID; version 17.0.2.10.0 fills empty DNI values on existing demo members; version 17.0.2.11.0 adds ISBN retrieval from an edition ID; version 17.0.2.12.0 adds overwrite rules and chatter logs; version 17.0.2.13.0 combines ISBN and Open Library ID lookup; version 17.0.2.14.0 creates missing library categories for Open Library subjects during autofill; version 17.0.2.15.0 removes category colors; version 17.0.2.16.0 adds estimated processing times to refresh jobs; version 17.0.2.17.0 adds author photos from Open Library and a kanban view; version 17.0.2.18.0 imports additional author and edition metadata.
+- **RNF-04 Migrations.** Data changes between versions are done with scripts in `migrations/`. Version 17.0.2.1.0 moves the ongoing loans of books that were already marked as lost to `lost`. Version 17.0.2.2.0 adds the settings screen; it needs no data migration because it reuses the existing parameter keys. Version 17.0.2.3.0 adds ISBN autofill; version 17.0.2.4.0 adds the author key; version 17.0.2.5.0 adds author-form autofill; version 17.0.2.6.0 adapts book lookup to ISBN or Open Library ID; version 17.0.2.7.0 adds background bulk refreshes; version 17.0.2.8.0 adds member DNI/NIF uniqueness; version 17.0.2.9.0 adds ISBN autofill from an edition ID; version 17.0.2.10.0 fills empty DNI values on existing demo members; version 17.0.2.11.0 adds ISBN retrieval from an edition ID; version 17.0.2.12.0 adds overwrite rules and chatter logs; version 17.0.2.13.0 combines ISBN and Open Library ID lookup; version 17.0.2.14.0 creates missing library categories for Open Library subjects during autofill; version 17.0.2.15.0 removes category colors; version 17.0.2.16.0 adds estimated processing times to refresh jobs; version 17.0.2.17.0 adds author photos from Open Library and a kanban view; version 17.0.2.18.0 imports additional author and edition metadata; version 17.0.2.19.0 commits refresh progress per job and requeues stale jobs; version 17.0.2.20.0 refreshes the dashboard and catalogue visual style.
 - **RNF-05 Demo data.** Categories, authors, books, members and about 60 historical loans, loaded only in databases created with demo data.
 - **RNF-06 Secrets.** Neither the Gemini key nor `odoo.conf` is stored in the repository.
 - **RNF-07 Performance.** Counters (loans per book and per member, books per author, memberships per contact) are computed with one grouped query per batch, not one query per record.

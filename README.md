@@ -18,7 +18,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 ## Features
 
 - **Books**: title, ISBN, optional Open Library work/edition ID, publication year and first publication year, publisher, publication place, language, physical format, Dewey / Library of Congress classification, pages, author, categories, cover image and status (available / borrowed / lost).
-  - Catalog-style kanban view (cards with cover thumbnails and a colour status label), plus list and form views.
+  - Editorial-style kanban view with cover-led cards and a colour status label, plus refined list and form views.
   - Side filter panel (status and categories, with counters) to browse large catalogs.
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
@@ -88,7 +88,7 @@ library_manager/
 
 From an author form, librarians can use **Autofill from Open Library** in the header to refresh the author's name, birth and death dates, biography, alternate names, external links and photo when available. It uses the saved Open Library ID or searches for an exact normalized author name or alias; if the search is ambiguous, enter the correct ID on the author record and retry.
 
-To refresh existing records, select books or authors in their list views and use **Queue Open Library Refresh**. You can select all books from the list view. The background job processes up to ten records per minute; results and failures appear under **Library > Configuration > Open Library Refreshes**, along with an estimated processing time for queued jobs. The estimate uses the cron's next run, queue position, and recent average processing duration, so it can change with network and API response times. Book and author refreshes replace changed local metadata whenever Open Library returns a value, and make no write when the value already matches. Existing values are kept when Open Library has no usable value; the refresh records those fields in the record chatter. Books without an ISBN or Open Library ID are skipped.
+To refresh existing records, select books or authors in their list views and use **Queue Open Library Refresh**. You can select all books from the list view. The background job processes up to ten records per minute and saves each job's progress independently, so the current record appears as **Processing** while its Open Library requests run. Results and failures appear under **Library > Configuration > Open Library Refreshes**, along with an estimated processing time for queued jobs. The estimate uses the cron's next run, queue position, and recent average processing duration, so it can change with network and API response times. Jobs that remain in progress for over ten minutes are automatically requeued. Book and author refreshes replace changed local metadata whenever Open Library returns a value, and make no write when the value already matches. Existing values are kept when Open Library has no usable value; the refresh records those fields in the record chatter. Books without an ISBN or Open Library ID are skipped.
 
 ## Installation and development
 

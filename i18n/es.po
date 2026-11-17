@@ -1703,6 +1703,41 @@ msgid "Overview of your library"
 msgstr "Resumen de tu biblioteca"
 
 #. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "Your library, in good company."
+msgstr "Tu biblioteca, en buena compañía."
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "A thoughtful overview of books, readers and loans."
+msgstr "Una vista cuidada de libros, lectores y préstamos."
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "A library in motion"
+msgstr "Una biblioteca en movimiento"
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "Good stories always find their next reader."
+msgstr "Las buenas historias siempre encuentran a su próximo lector."
+
+#. module: library_manager
+#. odoo-javascript
+#: code:addons/library_manager/static/src/dashboard/dashboard.js:0
+#, python-format
+msgid "Your collection, members and everyday activity — at a glance."
+msgstr "Tu catálogo, tus socios y la actividad diaria, de un vistazo."
+
+#. module: library_manager
 #: model:ir.model.fields,field_description:library_manager.field_library_book__pages
 #: model_terms:ir.ui.view,arch_db:library_manager.report_library_author_document
 msgid "Pages"
@@ -2496,6 +2531,12 @@ msgstr "Se han actualizado los datos del autor."
 #: code:addons/library_manager/models/metadata_refresh.py:0
 msgid "Unexpected error. See the server log."
 msgstr "Error inesperado. Consulta el registro del servidor."
+
+#. module: library_manager
+#. odoo-python
+#: code:addons/library_manager/models/metadata_refresh.py:0
+msgid "Requeued after a refresh job stopped responding."
+msgstr "Se volvió a poner en cola porque una actualización dejó de responder."
 
 #. module: library_manager
 #: model:ir.ui.view,arch_db:library_manager.view_library_metadata_refresh_tree
