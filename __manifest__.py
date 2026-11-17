@@ -31,7 +31,8 @@
         'views/library_menus.xml',
     ],
     'demo': [
-        'data/library_demo_data.xml',
+        'data/library_author_demo.xml',
+        'data/library_book_demo.xml',
         'data/library_member_demo.xml',
         'data/library_loan_demo.xml',
     ],

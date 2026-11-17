@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+    <record id="book_ol32895958m" model="library.book">
+        <field name="name">1Q84</field>
+        <field name="isbn">9780307593313</field>
+        <field name="openlibrary_key">OL32895958M</field>
+        <field name="author_id" ref="author_ol382524a" />
+    </record>
+    <record id="book_ol26876025m" model="library.book">
+        <field name="name">Adiós a las armas</field>
+        <field name="isbn">847530124X</field>
+        <field name="openlibrary_key">OL26876025M</field>
+        <field name="author_id" ref="author_ol13640a" />
+    </record>
+    <record id="book_ol13241589m" model="library.book">
+        <field name="name">Arquitectura Paleocristiana Y Bizantina (Manuales Arte Catedra)</field>
+        <field name="isbn">9788437604954</field>
+        <field name="openlibrary_key">OL13241589M</field>
+        <field name="author_id" ref="author_ol910511a" />
+    </record>
+    <record id="book_ol24730107m" model="library.book">
+        <field name="name">Baudolino</field>
+        <field name="isbn">0151006903</field>
+        <field name="openlibrary_key">OL24730107M</field>
+        <field name="author_id" ref="author_ol20735a" />
+    </record>
+    <record id="book_ol6884672m" model="library.book">
+        <field name="name">Buenos días, La Habana</field>
+        <field name="isbn">9788488455819</field>
+        <field name="openlibrary_key">OL6884672M</field>
+        <field name="author_id" ref="author_ol631719a" />
+    </record>
+    <record id="book_ol45612824m" model="library.book">
+        <field name="name">Bữa sáng ở Tiffany's</field>
+        <field name="isbn">9786041003453</field>
+        <field name="openlibrary_key">OL45612824M</field>
+        <field name="author_id" ref="author_ol239800a" />
+    </record>
+    <record id="book_ol1878713m" model="library.book">
+        <field name="name">Canto general</field>
+        <field name="isbn">0520054334</field>
+        <field name="openlibrary_key">OL1878713M</field>
+        <field name="author_id" ref="author_ol89930a" />
+    </record>
+    <record id="book_ol12989845m" model="library.book">
+        <field name="name">Cartas al padre</field>
+        <field name="isbn">9788476726952</field>
+        <field name="openlibrary_key">OL12989845M</field>
+        <field name="author_id" ref="author_ol33146a" />
+    </record>
+    <record id="book_ol26575304m" model="library.book">
+        <field name="name">Cien años de soledad: una interpretación</field>
+        <field name="isbn">950251307X</field>
+        <field name="openlibrary_key">OL26575304M</field>
+        <field name="author_id" ref="author_ol66624a" />
+    </record>
+    <record id="book_ol36151968m" model="library.book">
+        <field name="name">Clint Eastwood</field>
+        <field name="isbn">9788437615004</field>
+        <field name="openlibrary_key">OL36151968M</field>
+        <field name="author_id" ref="author_ol82609a" />
+    </record>
+    <record id="book_ol9724283m" model="library.book">
+        <field name="name">Crónica de una muerte anunciada</field>
+        <field name="isbn">0801315891</field>
+        <field name="openlibrary_key">OL9724283M</field>
+        <field name="author_id" ref="author_ol27363a" />
+    </record>
+    <record id="book_ol47151946m" model="library.book">
+        <field name="name">Cuentos completos 1</field>
+        <field name="isbn">9788466332446</field>
+        <field name="openlibrary_key">OL47151946M</field>
+        <field name="author_id" ref="author_ol135127a" />
+    </record>
+    <record id="book_ol13355288m" model="library.book">
+        <field name="name">De la Tierra a la Luna</field>
+        <field name="isbn">9788495407887</field>
+        <field name="openlibrary_key">OL13355288M</field>
+        <field name="author_id" ref="author_ol113611a" />
+    </record>
+    <record id="book_ol47394363m" model="library.book">
+        <field name="name">Don Quijote de la Mancha</field>
+        <field name="isbn">9788417958596</field>
+        <field name="openlibrary_key">OL47394363M</field>
+        <field name="author_id" ref="author_ol66452a" />
+    </record>
+    <record id="book_ol47476144m" model="library.book">
+        <field name="name">EL GRAN GASTBY / A ESTE LADO DEL PARAÍSO</field>
+        <field name="isbn">9788497945479</field>
+        <field name="openlibrary_key">OL47476144M</field>
+        <field name="author_id" ref="author_ol27349a" />
+    </record>
+    <record id="book_ol9889988m" model="library.book">
+        <field name="name">El Asesinato de Roger Ackroyd</field>
+        <field name="isbn">9788427285071</field>
+        <field name="openlibrary_key">OL9889988M</field>
+        <field name="author_id" ref="author_ol27695a" />
+    </record>
+    <record id="book_ol13189123m" model="library.book">
+        <field name="name">El Coran</field>
+        <field name="isbn">8408047841</field>
+        <field name="openlibrary_key">OL13189123M</field>
+        <field name="author_id" ref="author_ol3214503a" />
+    </record>
+    <record id="book_ol13268197m" model="library.book">
+        <field name="name">El Cuerno de Caza</field>
+        <field name="isbn">9788445071908</field>
+        <field name="openlibrary_key">OL13268197M</field>
+        <field name="author_id" ref="author_ol1223555a" />
+    </record>
+    <record id="book_ol33148613m" model="library.book">
+        <field name="name">El Cuervo</field>
+        <field name="openlibrary_key">OL33148613M</field>
+        <field name="author_id" ref="author_ol28127a" />
+    </record>
+    <record id="book_ol31935416m" model="library.book">
+        <field name="name">El Hobbit</field>
+        <field name="isbn">9788445076736</field>
+        <field name="openlibrary_key">OL31935416M</field>
+        <field name="author_id" ref="author_ol26320a" />
+    </record>
+    <record id="book_ol9666447m" model="library.book">
+        <field name="name">El Hombre En El Castillo</field>
+        <field name="isbn">8445075616</field>
+        <field name="openlibrary_key">OL9666447M</field>
+        <field name="author_id" ref="author_ol274606a" />
+    </record>
+    <record id="book_ol9137998m" model="library.book">
+        <field name="name">El Señor de los Anillos: I: La comunidad del anillo</field>
+        <field name="isbn">9789505470679</field>
+        <field name="openlibrary_key">OL9137998M</field>
+        <field name="author_id" ref="author_ol26320a" />
+    </record>
+    <record id="book_ol13192371m" model="library.book">
+        <field name="name">El Violin De Rothschild Y Otros Relatos (El Libro De Bolsillo)</field>
+        <field name="isbn">9788420655208</field>
+        <field name="openlibrary_key">OL13192371M</field>
+        <field name="author_id" ref="author_ol19677a" />
+    </record>
+    <record id="book_ol60608500m" model="library.book">
+        <field name="name">El castillo</field>
+        <field name="isbn">8437616093</field>
+        <field name="openlibrary_key">OL60608500M</field>
+        <field name="author_id" ref="author_ol33146a" />
+    </record>
+    <record id="book_ol110968w" model="library.book">
+        <field name="name">El hacedor</field>
+        <field name="openlibrary_key">OL110968W</field>
+        <field name="author_id" ref="author_ol18928a" />
+    </record>
+    <record id="book_ol25930507m" model="library.book">
+        <field name="name">El idiota</field>
+        <field name="isbn">9788437635675</field>
+        <field name="openlibrary_key">OL25930507M</field>
+        <field name="author_id" ref="author_ol22242a" />
+    </record>
+    <record id="book_ol24962011m" model="library.book">
+        <field name="name">El péndulo de Foucault</field>
+        <field name="isbn">9789683903082</field>
+        <field name="openlibrary_key">OL24962011M</field>
+        <field name="author_id" ref="author_ol20735a" />
+    </record>
+    <record id="book_ol25891386m" model="library.book">
+        <field name="name">El reino de los animales</field>
+        <field name="isbn">9788420674506</field>
+        <field name="openlibrary_key">OL25891386M</field>
+        <field name="author_id" ref="author_ol340606a" />
+    </record>
+    <record id="book_ol37039928m" model="library.book">
+        <field name="name">El símbolo perdido</field>
+        <field name="isbn">9788408175759</field>
+        <field name="openlibrary_key">OL37039928M</field>
+        <field name="author_id" ref="author_ol39307a" />
+    </record>
+    <record id="book_ol37812648m" model="library.book">
+        <field name="name">Emma</field>
+        <field name="isbn">9788401463112</field>
+        <field name="openlibrary_key">OL37812648M</field>
+        <field name="author_id" ref="author_ol21594a" />
+    </record>
+    <record id="book_ol292866m" model="library.book">
+        <field name="name">España romana</field>
+        <field name="isbn">9788437614601</field>
+        <field name="openlibrary_key">OL292866M</field>
+        <field name="author_id" ref="author_ol83711a" />
+    </record>
+    <record id="book_ol9522104m" model="library.book">
+        <field name="name">Evaristo Carriego</field>
+        <field name="isbn">9788420633459</field>
+        <field name="openlibrary_key">OL9522104M</field>
+        <field name="author_id" ref="author_ol18928a" />
+    </record>
+    <record id="book_ol9128878m" model="library.book">
+        <field name="name">Exhibicion Impudica</field>
+        <field name="isbn">9788433920355</field>
+        <field name="openlibrary_key">OL9128878M</field>
+        <field name="author_id" ref="author_ol1033275a" />
+    </record>
+    <record id="book_ol25662728m" model="library.book">
+        <field name="name">Festín de cuervos: Canción de hielo y fuego / 4</field>
+        <field name="isbn">9788496208995</field>
+        <field name="openlibrary_key">OL25662728M</field>
+        <field name="author_id" ref="author_ol234664a" />
+    </record>
+    <record id="book_ol27506465m" model="library.book">
+        <field name="name">Harry Potter &amp; the Chamber of Secrets</field>
+        <field name="isbn">9781408865408</field>
+        <field name="openlibrary_key">OL27506465M</field>
+        <field name="author_id" ref="author_ol23919a" />
+    </record>
+    <record id="book_ol30621390m" model="library.book">
+        <field name="name">Harry Potter and the Sorcerer's Stone</field>
+        <field name="isbn">9780545582889</field>
+        <field name="openlibrary_key">OL30621390M</field>
+        <field name="author_id" ref="author_ol23919a" />
+    </record>
+    <record id="book_ol26384784m" model="library.book">
+        <field name="name">Inferno</field>
+        <field name="isbn">9789584235091</field>
+        <field name="openlibrary_key">OL26384784M</field>
+        <field name="author_id" ref="author_ol39307a" />
+    </record>
+    <record id="book_ol35630649m" model="library.book">
+        <field name="name">Kafka En La Orilla</field>
+        <field name="isbn">9789871544189</field>
+        <field name="openlibrary_key">OL35630649M</field>
+        <field name="author_id" ref="author_ol382524a" />
+    </record>
+    <record id="book_ol32370806m" model="library.book">
+        <field name="name">L'amore ai tempi del colera</field>
+        <field name="isbn">9788804320210</field>
+        <field name="openlibrary_key">OL32370806M</field>
+        <field name="author_id" ref="author_ol27363a" />
+    </record>
+    <record id="book_ol878232m" model="library.book">
+        <field name="name">La Galatea</field>
+        <field name="isbn">8437613159</field>
+        <field name="openlibrary_key">OL878232M</field>
+        <field name="author_id" ref="author_ol66452a" />
+    </record>
+    <record id="book_ol58656056m" model="library.book">
+        <field name="name">La casa de los espíritus</field>
+        <field name="openlibrary_key">OL58656056M</field>
+        <field name="author_id" ref="author_ol228079a" />
+    </record>
+    <record id="book_ol17147642m" model="library.book">
+        <field name="name">La ciudad de las bestias</field>
+        <field name="isbn">0060510315</field>
+        <field name="openlibrary_key">OL17147642M</field>
+        <field name="author_id" ref="author_ol228079a" />
+    </record>
+    <record id="book_ol12986660m" model="library.book">
+        <field name="name">La ciudad y los perros</field>
+        <field name="isbn">8432220639</field>
+        <field name="openlibrary_key">OL12986660M</field>
+        <field name="author_id" ref="author_ol74490a" />
+    </record>
+    <record id="book_ol25773986m" model="library.book">
+        <field name="name">La joya de las siete estrellas</field>
+        <field name="isbn">8466626476</field>
+        <field name="openlibrary_key">OL25773986M</field>
+        <field name="author_id" ref="author_ol10316489a" />
+    </record>
+    <record id="book_ol26956623m" model="library.book">
+        <field name="name">La llamada de la tribu</field>
+        <field name="isbn">9781947783393</field>
+        <field name="openlibrary_key">OL26956623M</field>
+        <field name="author_id" ref="author_ol74490a" />
+    </record>
+    <record id="book_ol47267791m" model="library.book">
+        <field name="name">La madriguera del Gusano Blanco</field>
+        <field name="isbn">9788477023371</field>
+        <field name="openlibrary_key">OL47267791M</field>
+        <field name="author_id" ref="author_ol10316489a" />
+    </record>
+    <record id="book_ol20925793m" model="library.book">
+        <field name="name">La mitología en la pintura española del Siglo de Oro</field>
+        <field name="isbn">9788437605005</field>
+        <field name="openlibrary_key">OL20925793M</field>
+        <field name="author_id" ref="author_ol6164173a" />
+    </record>
+    <record id="book_ol47410909m" model="library.book">
+        <field name="name">La sombra sobre Innsmouth</field>
+        <field name="isbn">9788412131550</field>
+        <field name="openlibrary_key">OL47410909M</field>
+        <field name="author_id" ref="author_ol22161a" />
+    </record>
+    <record id="book_ol47548249m" model="library.book">
+        <field name="name">Los trabajos de Persiles y Sigismunda</field>
+        <field name="isbn">9788497408905</field>
+        <field name="openlibrary_key">OL47548249M</field>
+        <field name="author_id" ref="author_ol66452a" />
+    </record>
+    <record id="book_ol12952757m" model="library.book">
+        <field name="name">Martin Fierro</field>
+        <field name="isbn">9789500393669</field>
+        <field name="openlibrary_key">OL12952757M</field>
+        <field name="author_id" ref="author_ol4280830a" />
+    </record>
+    <record id="book_ol37622845m" model="library.book">
+        <field name="name">Muerte en el Nilo</field>
+        <field name="isbn">9786070772177</field>
+        <field name="openlibrary_key">OL37622845M</field>
+        <field name="author_id" ref="author_ol27695a" />
+    </record>
+    <record id="book_ol3174961m" model="library.book">
+        <field name="name">Nineteen eighty-four</field>
+        <field name="isbn">0198185219</field>
+        <field name="openlibrary_key">OL3174961M</field>
+        <field name="author_id" ref="author_ol15318546a" />
+    </record>
+    <record id="book_ol13268279m" model="library.book">
+        <field name="name">Noches De Cocaina</field>
+        <field name="isbn">9788445074602</field>
+        <field name="openlibrary_key">OL13268279M</field>
+        <field name="author_id" ref="author_ol402789a" />
+    </record>
+    <record id="book_ol9130091m" model="library.book">
+        <field name="name">Novelas Ejemplares: 1</field>
+        <field name="isbn">9788437602219</field>
+        <field name="openlibrary_key">OL9130091M</field>
+        <field name="author_id" ref="author_ol66452a" />
+    </record>
+    <record id="book_ol28340325m" model="library.book">
+        <field name="name">Numancia</field>
+        <field name="isbn">9788409122141</field>
+        <field name="openlibrary_key">OL28340325M</field>
+        <field name="author_id" ref="author_ol8006446a" />
+    </record>
+    <record id="book_ol18341081m" model="library.book">
+        <field name="name">Paula</field>
+        <field name="isbn">840137541X</field>
+        <field name="openlibrary_key">OL18341081M</field>
+        <field name="author_id" ref="author_ol228079a" />
+    </record>
+    <record id="book_ol13190261m" model="library.book">
+        <field name="name">Peggy Sue Contra Los Invisibles</field>
+        <field name="isbn">9788420443188</field>
+        <field name="openlibrary_key">OL13190261M</field>
+        <field name="author_id" ref="author_ol70026a" />
+    </record>
+    <record id="book_ol47352840m" model="library.book">
+        <field name="name">Pseudolo</field>
+        <field name="isbn">9789500393706</field>
+        <field name="openlibrary_key">OL47352840M</field>
+        <field name="author_id" ref="author_ol12421017a" />
+    </record>
+    <record id="book_ol13187031m" model="library.book">
+        <field name="name">Suave Es LA Noche</field>
+        <field name="isbn">9788401421167</field>
+        <field name="openlibrary_key">OL13187031M</field>
+        <field name="author_id" ref="author_ol27349a" />
+    </record>
+    <record id="book_ol35617822m" model="library.book">
+        <field name="name">Sudoku Moderado. Nivel 5</field>
+        <field name="isbn">9788415618904</field>
+        <field name="openlibrary_key">OL35617822M</field>
+        <field name="author_id" ref="author_ol7934749a" />
+    </record>
+    <record id="book_ol33119651m" model="library.book">
+        <field name="name">The Murders in the Rue Morgue</field>
+        <field name="openlibrary_key">OL33119651M</field>
+        <field name="author_id" ref="author_ol28127a" />
+    </record>
+    <record id="book_ol3569779m" model="library.book">
+        <field name="name">The minority report</field>
+        <field name="isbn">0375421874</field>
+        <field name="openlibrary_key">OL3569779M</field>
+        <field name="author_id" ref="author_ol274606a" />
+    </record>
+    <record id="book_ol32557466m" model="library.book">
+        <field name="name">Tormenta de espadas: Canción de hielo y fuego/3</field>
+        <field name="isbn">9788496208988</field>
+        <field name="openlibrary_key">OL32557466M</field>
+        <field name="author_id" ref="author_ol234664a" />
+    </record>
+    <record id="book_ol13241592m" model="library.book">
+        <field name="name">Tristan Eiseo</field>
+        <field name="isbn">9788437605104</field>
+        <field name="openlibrary_key">OL13241592M</field>
+        <field name="author_id" ref="author_ol365607a" />
+    </record>
+    <record id="book_ol9117032m" model="library.book">
+        <field name="name">Tristana</field>
+        <field name="isbn">9788420633305</field>
+        <field name="openlibrary_key">OL9117032M</field>
+        <field name="author_id" ref="author_ol68704a" />
+    </record>
+    <record id="book_ol9618808m" model="library.book">
+        <field name="name">Tuareg</field>
+        <field name="isbn">9788497598903</field>
+        <field name="openlibrary_key">OL9618808M</field>
+        <field name="author_id" ref="author_ol90715a" />
+    </record>
+    <record id="book_ol47151948m" model="library.book">
+        <field name="name">Vengadoras angelicales</field>
+        <field name="isbn">9788466332439</field>
+        <field name="openlibrary_key">OL47151948M</field>
+        <field name="author_id" ref="author_ol135127a" />
+    </record>
+</odoo>

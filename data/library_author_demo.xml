@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+    <record id="author_ol27695a" model="library.author">
+        <field name="name">Agatha Christie</field>
+        <field name="openlibrary_key">OL27695A</field>
+    </record>
+    <record id="author_ol82609a" model="library.author">
+        <field name="name">Alberto Pezzotta</field>
+        <field name="openlibrary_key">OL82609A</field>
+    </record>
+    <record id="author_ol90715a" model="library.author">
+        <field name="name">Alberto Vázquez-Figueroa</field>
+        <field name="openlibrary_key">OL90715A</field>
+    </record>
+    <record id="author_ol7934749a" model="library.author">
+        <field name="name">Anders Producciones</field>
+        <field name="openlibrary_key">OL7934749A</field>
+    </record>
+    <record id="author_ol68704a" model="library.author">
+        <field name="name">Benito Pérez Galdós</field>
+        <field name="openlibrary_key">OL68704A</field>
+    </record>
+    <record id="author_ol10316489a" model="library.author">
+        <field name="name">Bram Stoker</field>
+        <field name="openlibrary_key">OL10316489A</field>
+    </record>
+    <record id="author_ol365607a" model="library.author">
+        <field name="name">Béroul</field>
+        <field name="openlibrary_key">OL365607A</field>
+    </record>
+    <record id="author_ol39307a" model="library.author">
+        <field name="name">Dan Brown</field>
+        <field name="openlibrary_key">OL39307A</field>
+    </record>
+    <record id="author_ol28127a" model="library.author">
+        <field name="name">Edgar Allan Poe</field>
+        <field name="openlibrary_key">OL28127A</field>
+    </record>
+    <record id="author_ol13640a" model="library.author">
+        <field name="name">Ernest Hemingway</field>
+        <field name="openlibrary_key">OL13640A</field>
+    </record>
+    <record id="author_ol27349a" model="library.author">
+        <field name="name">F. Scott Fitzgerald</field>
+        <field name="openlibrary_key">OL27349A</field>
+    </record>
+    <record id="author_ol22242a" model="library.author">
+        <field name="name">Fiódor Dostoievski</field>
+        <field name="openlibrary_key">OL22242A</field>
+    </record>
+    <record id="author_ol33146a" model="library.author">
+        <field name="name">Franz Kafka</field>
+        <field name="openlibrary_key">OL33146A</field>
+    </record>
+    <record id="author_ol27363a" model="library.author">
+        <field name="name">Gabriel García Márquez</field>
+        <field name="openlibrary_key">OL27363A</field>
+    </record>
+    <record id="author_ol15318546a" model="library.author">
+        <field name="name">George Orwell</field>
+        <field name="openlibrary_key">OL15318546A</field>
+    </record>
+    <record id="author_ol234664a" model="library.author">
+        <field name="name">George R. R. Martin</field>
+        <field name="openlibrary_key">OL234664A</field>
+    </record>
+    <record id="author_ol22161a" model="library.author">
+        <field name="name">H.P. Lovecraft</field>
+        <field name="openlibrary_key">OL22161A</field>
+    </record>
+    <record id="author_ol631719a" model="library.author">
+        <field name="name">Iosu Perales</field>
+        <field name="openlibrary_key">OL631719A</field>
+    </record>
+    <record id="author_ol228079a" model="library.author">
+        <field name="name">Isabel Allende</field>
+        <field name="openlibrary_key">OL228079A</field>
+    </record>
+    <record id="author_ol135127a" model="library.author">
+        <field name="name">Isak Dinesen</field>
+        <field name="openlibrary_key">OL135127A</field>
+    </record>
+    <record id="author_ol402789a" model="library.author">
+        <field name="name">J. G. Ballard</field>
+        <field name="openlibrary_key">OL402789A</field>
+    </record>
+    <record id="author_ol23919a" model="library.author">
+        <field name="name">J. K. Rowling</field>
+        <field name="openlibrary_key">OL23919A</field>
+    </record>
+    <record id="author_ol26320a" model="library.author">
+        <field name="name">J.R.R. Tolkien</field>
+        <field name="openlibrary_key">OL26320A</field>
+    </record>
+    <record id="author_ol21594a" model="library.author">
+        <field name="name">Jane Austen</field>
+        <field name="openlibrary_key">OL21594A</field>
+    </record>
+    <record id="author_ol340606a" model="library.author">
+        <field name="name">Jesús Mosterín</field>
+        <field name="openlibrary_key">OL340606A</field>
+    </record>
+    <record id="author_ol1223555a" model="library.author">
+        <field name="name">John W. Wall</field>
+        <field name="openlibrary_key">OL1223555A</field>
+    </record>
+    <record id="author_ol8006446a" model="library.author">
+        <field name="name">Jorge Guillermo Palomera</field>
+        <field name="openlibrary_key">OL8006446A</field>
+    </record>
+    <record id="author_ol18928a" model="library.author">
+        <field name="name">Jorge Luis Borges</field>
+        <field name="openlibrary_key">OL18928A</field>
+    </record>
+    <record id="author_ol66624a" model="library.author">
+        <field name="name">Josefina Ludmer</field>
+        <field name="openlibrary_key">OL66624A</field>
+    </record>
+    <record id="author_ol83711a" model="library.author">
+        <field name="name">José María Blázquez</field>
+        <field name="openlibrary_key">OL83711A</field>
+    </record>
+    <record id="author_ol4280830a" model="library.author">
+        <field name="name">José Hernández</field>
+        <field name="openlibrary_key">OL4280830A</field>
+    </record>
+    <record id="author_ol3214503a" model="library.author">
+        <field name="name">Juan Vernet</field>
+        <field name="openlibrary_key">OL3214503A</field>
+    </record>
+    <record id="author_ol113611a" model="library.author">
+        <field name="name">Jules Verne</field>
+        <field name="openlibrary_key">OL113611A</field>
+    </record>
+    <record id="author_ol74490a" model="library.author">
+        <field name="name">Mario Vargas Llosa</field>
+        <field name="openlibrary_key">OL74490A</field>
+    </record>
+    <record id="author_ol66452a" model="library.author">
+        <field name="name">Miguel de Cervantes Saavedra</field>
+        <field name="openlibrary_key">OL66452A</field>
+    </record>
+    <record id="author_ol89930a" model="library.author">
+        <field name="name">Pablo Neruda</field>
+        <field name="openlibrary_key">OL89930A</field>
+    </record>
+    <record id="author_ol274606a" model="library.author">
+        <field name="name">Philip K. Dick</field>
+        <field name="openlibrary_key">OL274606A</field>
+    </record>
+    <record id="author_ol12421017a" model="library.author">
+        <field name="name">Plauto</field>
+        <field name="openlibrary_key">OL12421017A</field>
+    </record>
+    <record id="author_ol910511a" model="library.author">
+        <field name="name">Richard Krautheimer</field>
+        <field name="openlibrary_key">OL910511A</field>
+    </record>
+    <record id="author_ol6164173a" model="library.author">
+        <field name="name">Rosa López Torrijos</field>
+        <field name="openlibrary_key">OL6164173A</field>
+    </record>
+    <record id="author_ol70026a" model="library.author">
+        <field name="name">Serge Brussolo</field>
+        <field name="openlibrary_key">OL70026A</field>
+    </record>
+    <record id="author_ol1033275a" model="library.author">
+        <field name="name">T. Sharpe</field>
+        <field name="openlibrary_key">OL1033275A</field>
+    </record>
+    <record id="author_ol239800a" model="library.author">
+        <field name="name">Truman Capote</field>
+        <field name="openlibrary_key">OL239800A</field>
+    </record>
+    <record id="author_ol20735a" model="library.author">
+        <field name="name">Umberto Eco</field>
+        <field name="openlibrary_key">OL20735A</field>
+    </record>
+    <record id="author_ol19677a" model="library.author">
+        <field name="name">Антон Павлович Чехов</field>
+        <field name="openlibrary_key">OL19677A</field>
+    </record>
+    <record id="author_ol382524a" model="library.author">
+        <field name="name">村上春樹</field>
+        <field name="openlibrary_key">OL382524A</field>
+    </record>
+</odoo>

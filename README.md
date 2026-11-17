@@ -44,7 +44,7 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 - **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
 - **Settings screen** (*Settings > Library*): Gemini API key and model, default loan period and days of grace before suspending. The key and model keep the same system-parameter names, so existing installations need no migration.
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
-- **Demo data**: categories, authors, books, members and ~60 historical loans spread over the last months (so the statistics have something to show). It is only loaded in databases created with demo data.
+- **Demo data**: 46 authors and 67 books from the supplied Open Library export (all with Open Library IDs; ISBNs where available), plus demo members and 35 historical loans. It is only loaded in databases created with demo data.
 
 ## Overdue email notifications
 
