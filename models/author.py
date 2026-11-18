@@ -364,7 +364,15 @@ class LibraryAuthor(models.Model):
         body = ''.join(
             '<p>%s</p>' % html.escape(message) for message in messages
         )
-        self.message_post(body=body, subtype_xmlid='mail.mt_note')
+        try:
+            self.message_post(body=body, subtype_xmlid='mail.mt_note')
+        except UserError as error:
+            # Chatter is useful audit information, but it must not roll back
+            # metadata updates when Odoo cannot determine a sender address.
+            _logger.warning(
+                'Could not post Open Library refresh note for author %s: %s',
+                self.display_name, error,
+            )
         return changed, retained, ' '.join(messages)
 
     def action_fill_from_openlibrary(self):

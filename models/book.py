@@ -342,7 +342,9 @@ class LibraryBook(models.Model):
         ) if author_key else Author
 
         if not author and aliases:
-            candidates = Author.search([])
+            # Solo hace falta el nombre: evita cargar bio, enlaces, etc. de
+            # todos los autores en la caché.
+            candidates = Author.search_fetch([], ['name'])
             matching = candidates.filtered(
                 lambda record: Author._normalize_openlibrary_name(record.name) in aliases
             )
@@ -895,9 +897,10 @@ class LibraryBook(models.Model):
                 )
         return changed
 
-    def _openlibrary_local_fields_without_source(self, available):
-        self.ensure_one()
-        labels = {
+    @api.model
+    def _openlibrary_field_labels(self):
+        """Etiquetas traducidas de los campos que rellena Open Library."""
+        return {
             'name': _('title'),
             'isbn': _('ISBN'),
             'openlibrary_key': _('Open Library ID'),
@@ -915,6 +918,10 @@ class LibraryBook(models.Model):
             'cover_image': _('cover'),
             'category_ids': _('Categories'),
         }
+
+    def _openlibrary_local_fields_without_source(self, available):
+        self.ensure_one()
+        labels = self._openlibrary_field_labels()
         local_values = {
             'name': self.name,
             'isbn': self.isbn,
@@ -946,22 +953,7 @@ class LibraryBook(models.Model):
         self.ensure_one()
         messages = [_('Open Library metadata check completed.')]
         if changed_fields:
-            labels = {
-                'name': _('title'), 'isbn': _('ISBN'),
-                'openlibrary_key': _('Open Library ID'),
-                'author_id': _('author'),
-                'publication_year': _('publication year'),
-                'first_publication_year': _('first publication year'),
-                'publisher': _('publisher'),
-                'publication_place': _('publication place'),
-                'language': _('language'),
-                'physical_format': _('physical format'),
-                'dewey_decimal_class': _('Dewey Decimal classification'),
-                'lc_classification': _('Library of Congress classification'),
-                'pages': _('pages'), 'description': _('description'),
-                'cover_image': _('cover'),
-                'category_ids': _('Categories'),
-            }
+            labels = self._openlibrary_field_labels()
             messages.append(_('Updated fields: %s') % ', '.join(
                 labels[field_name] for field_name in changed_fields
             ))
@@ -982,7 +974,15 @@ class LibraryBook(models.Model):
         body = ''.join(
             '<p>%s</p>' % html.escape(message) for message in messages
         )
-        self.message_post(body=body, subtype_xmlid='mail.mt_note')
+        try:
+            self.message_post(body=body, subtype_xmlid='mail.mt_note')
+        except UserError as error:
+            # The metadata refresh must succeed even if chatter cannot infer
+            # an email sender for the current user.
+            _logger.warning(
+                'Could not post Open Library refresh note for book %s: %s',
+                self.display_name, error,
+            )
         return ' '.join(messages)
 
     def action_fill_from_isbn(self):
@@ -1124,47 +1124,13 @@ class LibraryBook(models.Model):
                 "target": "current",
             }
 
-        filled = []
-        if "name" in changed_values:
-            filled.append(_("title"))
-        if "author_id" in changed_values:
-            filled.append(_("author"))
-        if "publication_year" in changed_values:
-            filled.append(_("publication year"))
-        if "first_publication_year" in changed_values:
-            filled.append(_("first publication year"))
-        if "publisher" in changed_values:
-            filled.append(_("publisher"))
-        if "publication_place" in changed_values:
-            filled.append(_("publication place"))
-        if "language" in changed_values:
-            filled.append(_("language"))
-        if "physical_format" in changed_values:
-            filled.append(_("physical format"))
-        if "dewey_decimal_class" in changed_values:
-            filled.append(_("Dewey Decimal classification"))
-        if "lc_classification" in changed_values:
-            filled.append(_("Library of Congress classification"))
-        if "pages" in changed_values:
-            filled.append(_("pages"))
-        if "cover_image" in changed_values:
-            filled.append(_("cover"))
-        if "description" in changed_values:
-            filled.append(_("description"))
-        if "openlibrary_key" in changed_values:
-            filled.append(_("Open Library ID"))
-        if "isbn" in changed_values:
-            filled.append(_("ISBN"))
-        if "category_ids" in changed_values:
-            filled.append(_("Categories"))
-
         if changed_values:
             self.write(changed_values)
         message = self._post_openlibrary_refresh_note(
             changed_values, retained_fields, isbn_conflict, cover_failed
         )
 
-        notification_type = "success" if filled else "info"
+        notification_type = "success" if changed_values else "info"
         if retained_fields or isbn_conflict or cover_failed:
             notification_type = "warning"
 

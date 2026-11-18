@@ -40,46 +40,78 @@ export class LibraryDashboard extends Component {
                 title: _t("Books"),
                 icon: "fa-book",
                 cards: [
-                    { label: _t("Total books"), model: "library.book", domain: [], color: "primary", icon: "fa-book" },
-                    { label: _t("Available"), model: "library.book", domain: [["state", "=", "available"]], color: "success", icon: "fa-check-circle" },
-                    { label: _t("Borrowed"), model: "library.book", domain: [["state", "=", "borrowed"]], color: "warning", icon: "fa-hand-paper-o" },
-                    { label: _t("Lost"), model: "library.book", domain: [["state", "=", "lost"]], color: "danger", icon: "fa-question-circle" },
+                    { label: _t("Total books"), model: "library.book", domain: [], total: true, color: "primary", icon: "fa-book" },
+                    { label: _t("Available"), model: "library.book", domain: [["state", "=", "available"]], state: "available", color: "success", icon: "fa-check-circle" },
+                    { label: _t("Borrowed"), model: "library.book", domain: [["state", "=", "borrowed"]], state: "borrowed", color: "warning", icon: "fa-hand-paper-o" },
+                    { label: _t("Lost"), model: "library.book", domain: [["state", "=", "lost"]], state: "lost", color: "danger", icon: "fa-question-circle" },
                 ],
             },
             {
                 title: _t("Members"),
                 icon: "fa-users",
                 cards: [
-                    { label: _t("Active members"), model: "library.member", domain: [["state", "=", "active"]], color: "success", icon: "fa-user" },
-                    { label: _t("Suspended"), model: "library.member", domain: [["state", "=", "suspended"]], color: "danger", icon: "fa-ban" },
+                    { label: _t("Active members"), model: "library.member", domain: [["state", "=", "active"]], state: "active", color: "success", icon: "fa-user" },
+                    { label: _t("Suspended"), model: "library.member", domain: [["state", "=", "suspended"]], state: "suspended", color: "danger", icon: "fa-ban" },
                 ],
             },
             {
                 title: _t("Loans"),
                 icon: "fa-exchange",
                 cards: [
-                    { label: _t("Ongoing"), model: "library.loan", domain: [["state", "=", "ongoing"]], color: "primary", icon: "fa-exchange" },
+                    { label: _t("Ongoing"), model: "library.loan", domain: [["state", "=", "ongoing"]], state: "ongoing", color: "primary", icon: "fa-exchange" },
                     { label: _t("Overdue"), model: "library.loan", domain: [["state", "=", "ongoing"], ["due_date", "<", today]], color: "danger", icon: "fa-clock-o" },
-                    { label: _t("Returned"), model: "library.loan", domain: [["state", "=", "returned"]], color: "secondary", icon: "fa-undo" },
+                    { label: _t("Returned"), model: "library.loan", domain: [["state", "=", "returned"]], state: "returned", color: "secondary", icon: "fa-undo" },
                 ],
             },
         ];
     }
 
+    // Cuenta los registros de un modelo agrupados por estado con UNA sola
+    // consulta (en lugar de un searchCount por tarjeta).
+    async countByState(model) {
+        const groups = await this.orm.readGroup(model, [], ["state"], ["state"]);
+        const byState = {};
+        let total = 0;
+        for (const group of groups) {
+            const count = group.__count ?? group.state_count ?? 0;
+            byState[group.state] = (byState[group.state] || 0) + count;
+            total += count;
+        }
+        return { byState, total };
+    }
+
     async loadStats() {
         const sections = this.getSections();
         const cards = sections.flatMap((section) => section.cards);
+        // Las tarjetas con "state" o "total" salen de un único agrupado por
+        // modelo; el resto (p. ej. "Overdue", que depende de la fecha) se cuenta
+        // con su propio dominio.
+        const groupedModels = [
+            ...new Set(cards.filter((card) => card.state || card.total).map((card) => card.model)),
+        ];
+        const singleCards = cards.filter((card) => !card.state && !card.total);
         // Todas las consultas en paralelo (incluye los permisos de creación,
         // para no enseñar botones que darían error a un lector)
-        const [counts, canCreateLoan, canCreateBook] = await Promise.all([
+        const [grouped, singleCounts, canCreateLoan, canCreateBook] = await Promise.all([
+            Promise.all(groupedModels.map((model) => this.countByState(model))),
             Promise.all(
-                cards.map((card) => this.orm.searchCount(card.model, card.domain))
+                singleCards.map((card) => this.orm.searchCount(card.model, card.domain))
             ),
             this.orm.call("library.loan", "check_access_rights", ["create", false]),
             this.orm.call("library.book", "check_access_rights", ["create", false]),
         ]);
-        cards.forEach((card, index) => {
-            card.count = counts[index];
+        const countsByModel = Object.fromEntries(
+            groupedModels.map((model, index) => [model, grouped[index]])
+        );
+        cards.forEach((card) => {
+            if (card.total) {
+                card.count = countsByModel[card.model].total;
+            } else if (card.state) {
+                card.count = countsByModel[card.model].byState[card.state] || 0;
+            }
+        });
+        singleCards.forEach((card, index) => {
+            card.count = singleCounts[index];
         });
         this.state.sections = sections;
         this.state.canCreateLoan = canCreateLoan;

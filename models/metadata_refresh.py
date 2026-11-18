@@ -59,6 +59,14 @@ class LibraryMetadataRefresh(models.Model):
 
     @api.depends('state', 'create_date', 'started_at', 'processed_at')
     def _compute_estimated_at(self):
+        # Solo los trabajos en cola tienen estimación: si no hay ninguno, se
+        # evitan las búsquedas de la cola y de los trabajos completados.
+        queued_jobs = self.filtered(lambda job: job.state == 'queued')
+        for job in self - queued_jobs:
+            job.estimated_at = False
+        if not queued_jobs:
+            return
+
         now = fields.Datetime.now()
         queued = self.search([('state', '=', 'queued')], order='id')
         positions = {job.id: position for position, job in enumerate(queued)}
@@ -86,8 +94,8 @@ class LibraryMetadataRefresh(models.Model):
         first_run = max(now, nextcall or now)
         first_run += timedelta(seconds=average_seconds * processing_count)
 
-        for job in self:
-            if job.state != 'queued' or job.id not in positions:
+        for job in queued_jobs:
+            if job.id not in positions:
                 job.estimated_at = False
                 continue
             batch, offset = divmod(positions[job.id], REFRESH_BATCH_SIZE)

@@ -21,12 +21,12 @@ class LibraryLoan(models.Model):
 
     book_id = fields.Many2one(
         'library.book', string='Book', required=True,
-        ondelete='restrict', tracking=True,
+        ondelete='restrict', tracking=True, index=True,
         domain=[('state', '=', 'available')])
 
     member_id = fields.Many2one(
         'library.member', string='Member', required=True,
-        ondelete='restrict', tracking=True)
+        ondelete='restrict', tracking=True, index=True)
 
     loan_date = fields.Date(
         string='Loan Date', required=True,
@@ -50,7 +50,7 @@ class LibraryLoan(models.Model):
         ('returned', 'Returned'),
         ('cancelled', 'Cancelled'),
         ('lost', 'Lost'),
-    ], string='Status', default='draft', tracking=True)
+    ], string='Status', default='draft', tracking=True, index=True)
 
     # Estado del socio, para poder avisar en el formulario
     member_state = fields.Selection(related='member_id.state', string='Member Status')

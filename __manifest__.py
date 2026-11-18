@@ -34,7 +34,7 @@
         'data/library_author_demo.xml',
         'data/library_book_demo.xml',
         'data/library_member_demo.xml',
-        'data/library_loan_demo.xml',
+
     ],
     'assets': {
         'web.assets_backend': [

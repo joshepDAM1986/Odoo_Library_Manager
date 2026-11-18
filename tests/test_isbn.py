@@ -92,7 +92,7 @@ class TestIsbnAutofill(TransactionCase):
         self.assertEqual(action['tag'], 'display_notification')
         self.assertEqual(action['params']['type'], 'success')
 
-    def test_does_not_overwrite_existing_values(self):
+    def test_overwrites_existing_values_with_openlibrary_data(self):
         book = self.Book.create({
             'name': 'My own title',
             'isbn': ISBN_13,
@@ -101,17 +101,18 @@ class TestIsbnAutofill(TransactionCase):
             'pages': 20,
             'cover_image': PNG_BASE64,
         })
-        cover_before = book.cover_image
-        with patch(GET, return_value=open_library_response()) as mock_get:
+        with patch(GET, side_effect=[
+            open_library_response(), cover_response(),
+        ]) as mock_get:
             action = book.action_fill_from_isbn()
 
-        self.assertEqual(book.name, 'My own title')
-        self.assertEqual(book.author_id.name, 'Known Author')
-        self.assertEqual(book.publication_year, 2001)
-        self.assertEqual(book.pages, 20)
-        self.assertEqual(book.cover_image, cover_before)
-        self.assertEqual(mock_get.call_count, 1)
-        self.assertEqual(action['params']['type'], 'warning')
+        self.assertEqual(book.name, 'Fantastic Mr. Fox')
+        self.assertEqual(book.author_id.name, 'Roald Dahl')
+        self.assertEqual(book.publication_year, 1988)
+        self.assertEqual(book.pages, 96)
+        self.assertTrue(book.cover_image)
+        self.assertEqual(mock_get.call_count, 2)
+        self.assertEqual(action['params']['type'], 'success')
 
     def test_creates_the_author_when_it_does_not_exist(self):
         with patch(GET, side_effect=[
@@ -181,9 +182,14 @@ class TestIsbnAutofill(TransactionCase):
         book = self.Book.create({
             'name': 'Bad ISBN', 'isbn': '9780140328722'})
         with patch(GET) as mock_get:
-            with self.assertRaises(UserError):
-                book.action_fill_from_isbn()
+            action = book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
         mock_get.assert_not_called()
+
+    def _assert_lookup_warning(self, action):
+        self.assertEqual(action.get('tag'), 'display_notification')
+        self.assertEqual(action['params']['type'], 'warning')
+        self.assertTrue(action['params']['sticky'])
 
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_duplicate_isbn_is_rejected_without_calling_the_api(self):
@@ -200,8 +206,8 @@ class TestIsbnAutofill(TransactionCase):
         response.status_code = 200
         response.json.return_value = {}
         with patch(GET, return_value=response):
-            with self.assertRaises(UserError):
-                self.book.action_fill_from_isbn()
+            action = self.book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
 
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_http_error_is_reported(self):
@@ -209,8 +215,8 @@ class TestIsbnAutofill(TransactionCase):
         response.ok = False
         response.status_code = 500
         with patch(GET, return_value=response):
-            with self.assertRaises(UserError):
-                self.book.action_fill_from_isbn()
+            action = self.book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
 
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_not_found_is_reported(self):
@@ -218,20 +224,20 @@ class TestIsbnAutofill(TransactionCase):
         response.ok = False
         response.status_code = 404
         with patch(GET, return_value=response):
-            with self.assertRaises(UserError):
-                self.book.action_fill_from_isbn()
+            action = self.book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
 
     def test_timeout_is_reported(self):
         with patch(GET, side_effect=requests.exceptions.Timeout()):
-            with self.assertRaises(UserError):
-                self.book.action_fill_from_isbn()
+            action = self.book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
 
     @mute_logger('odoo.addons.library_manager.models.book')
     def test_network_error_is_reported(self):
         with patch(GET,
                    side_effect=requests.exceptions.ConnectionError()):
-            with self.assertRaises(UserError):
-                self.book.action_fill_from_isbn()
+            action = self.book.action_fill_from_isbn()
+        self._assert_lookup_warning(action)
 
     # --- permisos ----------------------------------------------------------
     def _user_in_group(self, login, group_xmlid):
