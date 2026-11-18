@@ -51,7 +51,6 @@ library_manager/
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
 ├── data/          sequences, scheduled job, mail template and demo data
-├── migrations/    data migrations between module versions
 ├── i18n/          translations (Spanish: `es.po`)
 ├── static/src/dashboard/   OWL component, template and styles
 ├── docs/          functional specification and screenshots
