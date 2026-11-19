@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="library_manager.NaField">
+        <span t-if="props.readonly and isEmpty" class="o_library_na text-muted">NA</span>
+        <t t-else="">
+            <t t-component="baseField.component" t-props="props"/>
+        </t>
+    </t>
+</templates>

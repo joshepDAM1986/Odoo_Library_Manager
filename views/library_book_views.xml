@@ -19,11 +19,11 @@
                 <field name="isbn"/>
                 <field name="openlibrary_key"/>
                 <field name="author_id"/>
-                <field name="publication_year" options="{'format': false}"/>
-                <field name="first_publication_year" options="{'format': false}" optional="hide"/>
-                <field name="publisher" optional="hide"/>
-                <field name="language" optional="hide"/>
-                <field name="pages" optional="hide"/>
+                <field name="publication_year" widget="library_na_integer" options="{'format': false}"/>
+                <field name="first_publication_year" widget="library_na_integer" options="{'format': false}" optional="show"/>
+                <field name="publisher" widget="library_na_char" optional="show"/>
+                <field name="language" widget="library_na_char" optional="show"/>
+                <field name="pages" widget="library_na_integer" optional="show"/>
                 <field name="category_ids" widget="many2many_tags"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'available'"
@@ -84,14 +84,20 @@
                                         <i class="fa fa-user me-1" title="Author"/> <field name="author_id"/>
                                     </div>
 
-                                    <div t-if="record.publication_year.raw_value" class="text-muted small">
-                                        <i class="fa fa-calendar me-1" title="Year"/> <field name="publication_year" options="{'format': false}"/>
+                                    <div class="text-muted small">
+                                        <i class="fa fa-calendar me-1" title="Year"/>
+                                        <t t-if="record.publication_year.raw_value"><field name="publication_year" options="{'format': false}"/></t>
+                                        <t t-else="">NA</t>
                                     </div>
-                                    <div t-if="record.publisher.raw_value" class="text-muted small text-truncate">
-                                        <i class="fa fa-building me-1" title="Publisher"/> <field name="publisher"/>
+                                    <div class="text-muted small text-truncate">
+                                        <i class="fa fa-building me-1" title="Publisher"/>
+                                        <t t-if="record.publisher.raw_value"><field name="publisher"/></t>
+                                        <t t-else="">NA</t>
                                     </div>
-                                    <div t-if="record.language.raw_value" class="text-muted small">
-                                        <i class="fa fa-language me-1" title="Language"/> <field name="language"/>
+                                    <div class="text-muted small">
+                                        <i class="fa fa-language me-1" title="Language"/>
+                                        <t t-if="record.language.raw_value"><field name="language"/></t>
+                                        <t t-else="">NA</t>
                                     </div>
 
                                     <div class="mt-2">
@@ -161,15 +167,15 @@
                                 options="{'no_create_edit': True}"/>
                         </group>
                         <group string="Publication Details">
-                            <field name="publication_year" options="{'format': false}"/>
-                            <field name="first_publication_year" options="{'format': false}"/>
-                            <field name="publisher"/>
-                            <field name="publication_place"/>
-                            <field name="language"/>
-                            <field name="physical_format"/>
-                            <field name="pages"/>
-                            <field name="dewey_decimal_class"/>
-                            <field name="lc_classification"/>
+                            <field name="publication_year" widget="library_na_integer" options="{'format': false}"/>
+                            <field name="first_publication_year" widget="library_na_integer" options="{'format': false}"/>
+                            <field name="publisher" widget="library_na_char" placeholder="NA"/>
+                            <field name="publication_place" widget="library_na_char" placeholder="NA"/>
+                            <field name="language" widget="library_na_char" placeholder="NA"/>
+                            <field name="physical_format" widget="library_na_char" placeholder="NA"/>
+                            <field name="pages" widget="library_na_integer"/>
+                            <field name="dewey_decimal_class" widget="library_na_char" placeholder="NA"/>
+                            <field name="lc_classification" widget="library_na_char" placeholder="NA"/>
                         </group>
                     </group>
 
@@ -207,8 +213,8 @@
                 </group>
                 <!-- Panel lateral: aparece a la izquierda en lista y kanban, con contadores -->
                 <searchpanel>
+                    <field name="name_initial" string="Initial" icon="fa-sort-alpha-asc" enable_counters="1"/>
                     <field name="state" string="Status" icon="fa-flag" enable_counters="1"/>
-                    <field name="category_ids" select="multi" string="Categories" icon="fa-tags" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

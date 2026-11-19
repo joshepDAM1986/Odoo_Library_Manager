@@ -58,6 +58,27 @@
         border-top: 3px solid #7662a8 !important;
     }
 
+    .o_library_book_card,
+    .o_library_author_card,
+    .o_library_member_card {
+        padding-left: 0.9rem !important;
+    }
+
+    .o_library_author_card,
+    .o_library_member_card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .o_dropdown_kanban {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+    }
+
     .o_library_member_card .o_kanban_record_title {
         color: var(--lm-view-ink) !important;
         font-family: Georgia, "Times New Roman", serif;
@@ -149,4 +170,9 @@
     .o_kanban_view.o_library_member_kanban .o_library_member_card {
         transition: none;
     }
+}
+
+.o_field_widget.o_field_library_na_text {
+    display: block;
+    width: 100%;
 }

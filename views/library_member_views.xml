@@ -165,6 +165,11 @@
                 <group expand="0" string="Group By">
                     <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
                 </group>
+                <!-- Panel lateral: estado y letra inicial, con contadores -->
+                <searchpanel>
+                    <field name="name_initial" string="Initial" icon="fa-sort-alpha-asc" enable_counters="1"/>
+                    <field name="state" string="Status" icon="fa-flag" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>

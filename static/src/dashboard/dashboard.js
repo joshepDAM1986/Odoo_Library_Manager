@@ -5,6 +5,9 @@ import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { Component, onWillStart, useState } from "@odoo/owl";
 
+// Modelos cuya acción de menú tiene vista kanban (kanban,tree,form)
+const KANBAN_MODELS = ["library.book", "library.author", "library.member"];
+
 // Fecha de hoy en formato YYYY-MM-DD (hora local del navegador)
 function todayString() {
     const d = new Date();
@@ -120,11 +123,16 @@ export class LibraryDashboard extends Component {
 
     // Abre la lista del modelo con el mismo filtro de la tarjeta
     openCard(card) {
+        // Mismas vistas que las acciones del menú: sin kanban la lista sería
+        // la única vista y no aparecerían los botones para cambiar de vista.
+        const views = KANBAN_MODELS.includes(card.model)
+            ? [[false, "kanban"], [false, "list"], [false, "form"]]
+            : [[false, "list"], [false, "form"]];
         this.action.doAction({
             type: "ir.actions.act_window",
             name: card.label,
             res_model: card.model,
-            views: [[false, "list"], [false, "form"]],
+            views,
             domain: card.domain,
         });
     }

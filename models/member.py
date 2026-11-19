@@ -1,5 +1,7 @@
 from odoo import _, api, fields, models
 
+from .name_initial import INITIAL_SELECTION, name_initial
+
 
 class LibraryMember(models.Model):
     _name = 'library.member'
@@ -31,6 +33,10 @@ class LibraryMember(models.Model):
     ], string='Status', default='active', tracking=True)
     notes = fields.Text(string='Member Notes')
     active = fields.Boolean(default=True)
+    name_initial = fields.Selection(
+        INITIAL_SELECTION, string='Initial',
+        compute='_compute_name_initial', store=True,
+        help='First letter of the name, used by the side panel filter.')
 
     loan_ids = fields.One2many('library.loan', 'member_id', string='Loans')
     loan_count = fields.Integer(string='Loan Count', compute='_compute_loan_count')
@@ -43,6 +49,11 @@ class LibraryMember(models.Model):
     @api.constrains('partner_id')
     def _check_unique_member_vat(self):
         self.mapped('partner_id')._check_library_member_vat_unique()
+
+    @api.depends('partner_id.name')
+    def _compute_name_initial(self):
+        for member in self:
+            member.name_initial = name_initial(member.partner_id.name)
 
     @api.depends('loan_ids')
     def _compute_loan_count(self):

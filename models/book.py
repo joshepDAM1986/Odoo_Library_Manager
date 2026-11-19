@@ -13,6 +13,8 @@ import requests
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from .name_initial import INITIAL_SELECTION, name_initial
+
 
 _logger = logging.getLogger(__name__)
 
@@ -36,8 +38,16 @@ class LibraryBook(models.Model):
     # Campos básicos del libro
     name = fields.Char(
         string="Book Title",
-        required=True,
+        required=False,
         index=True,
+    )
+
+    name_initial = fields.Selection(
+        INITIAL_SELECTION,
+        string="Initial",
+        compute="_compute_name_initial",
+        store=True,
+        help="First letter of the title, used by the side panel filter.",
     )
 
     isbn = fields.Char(
@@ -149,6 +159,11 @@ class LibraryBook(models.Model):
     ]
 
     # Campos calculados y dependientes de otros campos
+    @api.depends("name")
+    def _compute_name_initial(self):
+        for book in self:
+            book.name_initial = name_initial(book.name)
+
     @api.depends("loan_ids")
     def _compute_loan_count(self):
         data = self.env["library.loan"]._read_group(

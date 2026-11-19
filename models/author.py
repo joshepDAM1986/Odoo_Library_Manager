@@ -11,6 +11,8 @@ import requests
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from .name_initial import INITIAL_SELECTION, name_initial
+
 
 _logger = logging.getLogger(__name__)
 
@@ -35,7 +37,7 @@ class LibraryAuthor(models.Model):
              'manually to link an existing author when their name differs.',
     )
     birth_date = fields.Date(string='Birth Date')
-    death_date = fields.Char(string='Death Date')
+    death_date = fields.Date(string='Death Date')
     bio = fields.Text(string='Biography')
     alternate_names = fields.Text(string='Alternate Names')
     external_links = fields.Text(string='External Links')
@@ -49,6 +51,10 @@ class LibraryAuthor(models.Model):
     )
 
     # One2many relacion con los libros
+    name_initial = fields.Selection(
+        INITIAL_SELECTION, string='Initial',
+        compute='_compute_name_initial', store=True,
+        help='First letter of the name, used by the side panel filter.')
     book_ids = fields.One2many(
         'library.book',
         'author_id',
@@ -69,6 +75,11 @@ class LibraryAuthor(models.Model):
         ('openlibrary_key_unique', 'UNIQUE(openlibrary_key)',
          'The Open Library ID must be unique.'),
     ]
+
+    @api.depends('name')
+    def _compute_name_initial(self):
+        for author in self:
+            author.name_initial = name_initial(author.name)
 
     @api.depends('book_ids')
     def _compute_book_count(self):
@@ -209,12 +220,12 @@ class LibraryAuthor(models.Model):
         return matches[0]
 
     @api.model
-    def _openlibrary_birth_date(self, value):
+    def _openlibrary_date(self, value):
         if not isinstance(value, str):
             return False
         value = value.strip()
         for date_format in (
-            '%Y-%m-%d', '%d %B %Y', '%B %d, %Y', '%d %b %Y', '%b %d, %Y',
+            '%Y-%m-%d', '%d %B %Y', '%B %d, %Y', '%d %b %Y', '%b %d, %Y', '%Y',
         ):
             try:
                 parsed = datetime.strptime(value, date_format).date()
@@ -266,9 +277,7 @@ class LibraryAuthor(models.Model):
             if self.openlibrary_key != author_key:
                 values['openlibrary_key'] = author_key
 
-        birth_date = self._openlibrary_birth_date(
-            author_data.get('birth_date')
-        )
+        birth_date = self._openlibrary_date(author_data.get('birth_date'))
         if birth_date:
             available.add('birth_date')
             if fields.Date.to_string(self.birth_date) != birth_date:
@@ -280,11 +289,10 @@ class LibraryAuthor(models.Model):
             if (self.bio or '') != bio:
                 values['bio'] = bio
 
-        death_date = author_data.get('death_date')
-        if isinstance(death_date, str) and death_date.strip():
-            death_date = death_date.strip()
+        death_date = self._openlibrary_date(author_data.get('death_date'))
+        if death_date:
             available.add('death_date')
-            if (self.death_date or '') != death_date:
+            if fields.Date.to_string(self.death_date) != death_date:
                 values['death_date'] = death_date
 
         alternate_names = author_data.get('alternate_names') or []
@@ -367,8 +375,6 @@ class LibraryAuthor(models.Model):
         try:
             self.message_post(body=body, subtype_xmlid='mail.mt_note')
         except UserError as error:
-            # Chatter is useful audit information, but it must not roll back
-            # metadata updates when Odoo cannot determine a sender address.
             _logger.warning(
                 'Could not post Open Library refresh note for author %s: %s',
                 self.display_name, error,

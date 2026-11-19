@@ -2657,3 +2657,17 @@ msgstr "Falló la consulta a Open Library: %s"
 #: code:addons/library_manager/models/author.py:0
 msgid "Open Library did not return usable author details."
 msgstr "Open Library no devolvió datos utilizables del autor."
+
+#. module: library_manager
+#: model:ir.model.fields,field_description:library_manager.field_library_author__name_initial
+#: model:ir.model.fields,field_description:library_manager.field_library_member__name_initial
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_author_search
+#: model_terms:ir.ui.view,arch_db:library_manager.view_library_member_search
+msgid "Initial"
+msgstr "Inicial"
+
+#. module: library_manager
+#: model:ir.model.fields,help:library_manager.field_library_author__name_initial
+#: model:ir.model.fields,help:library_manager.field_library_member__name_initial
+msgid "First letter of the name, used by the side panel filter."
+msgstr "Primera letra del nombre, usada por el filtro del panel lateral."
