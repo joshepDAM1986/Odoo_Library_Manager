@@ -80,11 +80,51 @@ class LibraryMember(models.Model):
                 vals['member_number'] = self.env['ir.sequence'].next_by_code('library.member')
         return super().create(vals_list)
 
+    def _send_suspension_email(self):
+        template = self.env.ref(
+            'library_manager.mail_template_library_member_suspended',
+            raise_if_not_found=False,
+        )
+        if not template:
+            return
+        for member in self:
+            if not member.email:
+                continue
+            template.send_mail(
+                member.id,
+                force_send=False,
+                raise_exception=False,
+            )
+
+    def _send_activation_email(self):
+        template = self.env.ref(
+            'library_manager.mail_template_library_member_activated',
+            raise_if_not_found=False,
+        )
+        if not template:
+            return
+        for member in self:
+            if not member.email:
+                continue
+            template.send_mail(
+                member.id,
+                force_send=False,
+                raise_exception=False,
+            )
+
     def action_suspend(self):
-        self.write({'state': 'suspended'})
+        to_notify = self.filtered(lambda member: member.state != 'suspended')
+        if not to_notify:
+            return
+        to_notify.write({'state': 'suspended'})
+        to_notify._send_suspension_email()
 
     def action_activate(self):
-        self.write({'state': 'active'})
+        to_notify = self.filtered(lambda member: member.state != 'active')
+        if not to_notify:
+            return
+        to_notify.write({'state': 'active'})
+        to_notify._send_activation_email()
 
     def action_view_loans(self):
         self.ensure_one()

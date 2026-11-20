@@ -8,13 +8,13 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
 
 - **Books**: title, ISBN, optional Open Library work/edition ID, publication year and first publication year, publisher, publication place, language, physical format, Dewey / Library of Congress classification, pages, author, categories, cover image and status (available / borrowed / lost).
   - Editorial-style kanban view with cover-led cards and a colour status label, plus refined list and form views.
-  - Side filter panel (status and categories, with counters) to browse large catalogs.
+  - Side filter panel (initial letter of the title and status, with counters) to browse large catalogs. Authors and members have a similar panel by initial letter (members also by status).
   - *Mark as Lost* / *Recover* buttons with validation, loans smart button and chatter tracking. Borrow / Return are done through loans.
 - **AI category suggestion**: a button asks the Google Gemini API to pick up to three **existing** categories from the book title, author, year and description (see [Enable the AI suggestion](#enable-the-ai-suggestion)).
 - **Book autofill (Open Library)**: enter an ISBN or an Open Library ID (`OL…M` edition or `OL…W` work), then use **Autofill from ISBN or Open Library ID** in the book form's top header. It refreshes supported book fields and author metadata whenever Open Library has usable data. Librarians can queue a refresh for selected books from the list view.
 - **Authors**: photo, biography, birth and death dates, alternate names, external links, Open Library ID, book counter (smart button), total pages written, an **Autofill from Open Library** button and a **Print PDF** button for the author sheet. List and kanban views show author photos when available; autofill downloads the photo by Open Library ID and keeps manually added photos when Open Library has none. The author form includes chatter for refresh history, and librarians can queue refreshes for selected authors from the list view.
 - **Categories**: plain tags, many-to-many with books.
-- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`), so the member's **DNI/NIF is the contact's Tax ID (`vat`)** and is unique among library members. Demo members include fictitious DNI values with valid check letters. An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it; enter the DNI/NIF on the contact first or on the member form afterwards. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown.
+- **Members**: each member is linked to a contact (`res.partner`) through delegation inheritance (`_inherits`), so the member's **DNI/NIF is the contact's Tax ID (`vat`)** and is unique among library members. Demo members include fictitious DNI values with valid check letters. An existing contact can be turned into a member from the contact list/form (*Action > Create library member*) without duplicating it; enter the DNI/NIF on the contact first or on the member form afterwards. Automatic member number (`LM0001`), status (active / suspended) with Suspend / Activate buttons, archiving, loans smart button, and suspended members shown as *(Suspended)* in every dropdown. When a member is suspended (manually or automatically) or reactivated, a notice email is queued if the member has an email address.
 - **Contacts (`res.partner`) extended** with `_inherit` and an XPath view inheritance: smart button and *Library* tab showing the contact's memberships.
 - **Loans**: automatic reference (`LN0001`), book, member, loan / due / return dates (due date defaults to the configured loan period, 14 days by default) and status (draft / ongoing / returned / cancelled / lost).
   - *Confirm* checks that the member is active and borrows the book.
@@ -23,38 +23,43 @@ Built as a learning project to practise Odoo development (ORM, views, security, 
   - *Lost*: marking a book as lost closes its ongoing loan as `lost` (final state, kept as history of who had it). The book cannot then be returned or cancelled through that loan.
   - Date constraints: the due date and the return date cannot be earlier than the loan date (the same date is allowed).
   - Only draft loans can be deleted (`@api.ondelete`); the rest are history.
-  - Computed *days overdue*, overdue warning in the form and an *Overdue* filter.
+  - Computed *days overdue*, overdue warning in the form, and filters for each status plus *Overdue* in the list.
   - A daily scheduled job queues one overdue email per loan for members with an email address. Changing the due date re-arms the notice.
-  - A second daily job **suspends members with an overdue loan** (even without an email), and marking a book as lost suspends the member who had it. The reason is logged in the member's chatter. A suspended member cannot borrow but can still return books.
-  - **Reactivation is always manual** (*Activate* button): recovering a book does not reactivate the member, since a replacement copy does not forgive the member. If a member is reactivated while still holding an overdue loan, the next run suspends them again.
+  - A second daily job **suspends members with an overdue loan** (even without an email), and marking a book as lost suspends the member who had it. The reason is logged in the member's chatter, and a suspension notice email is queued when the member has an email address (manual suspensions also send this notice). A suspended member cannot borrow but can still return books.
+  - **Reactivation is always manual** (*Activate* button): recovering a book does not reactivate the member, since a replacement copy does not forgive the member. When a member is reactivated, a notice email is queued if they have an email address. If a member is reactivated while still holding an overdue loan, the next run suspends them again.
 - **PDF report** (QWeb): author sheet with their books.
 - **Home dashboard** (OWL client action, with SCSS): counters for books, members and loans (including overdue loans). Each card opens the matching list, already filtered.
 - **Statistics** (read-only SQL-view model `library.loan.report`, graph and pivot views): loans per month, most borrowed books, most read authors, most active readers, loans by status and a pivot analysis. Popularity reports default to the top 10 and offer Top 5 / 10 / 20 / 50 filters.
-- **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories).
+- **Menus** as top-bar tabs: Home, Books, Authors, Members, Loans, Statistics and a Configuration dropdown (Categories and, for librarians, Open Library Refreshes).
 - **Settings screen** (*Settings > Library*): Gemini API key and model, default loan period and days of grace before suspending. The key and model keep the same system-parameter names, so existing installations need no migration.
 - **Security**: two groups, *Library: Reader* (read only) and *Library: Librarian* (full access, includes contact management).
-- **Demo data**: 46 authors and 67 books from the supplied Open Library export (all with Open Library IDs; ISBNs where available), plus demo members and 35 historical loans. It is only loaded in databases created with demo data.
+- **Demo data**: 46 authors and 67 books from the supplied Open Library export (all with Open Library IDs; ISBNs where available), plus 53 demo members (no demo loans are shipped). It is only loaded in databases created with demo data.
 
-## Overdue email notifications
+## Email notifications
+
+### Overdue loans
 
 Odoo checks overdue loans once a day. When an ongoing loan has passed its due date, it queues one email for the member, provided the member has an email address. The email is sent on the due date and does not wait for the grace period: the grace period only delays the automatic suspension (*Settings > Library*). A loan remains in the `ongoing` state; overdue is determined from its due date. The notification timestamp is stored on the loan so the daily job does not send duplicates (it is reset if the due date changes). The scheduled action is defined with `numbercall = -1`; without it Odoo 17 would run it once and then deactivate it. The email template is written in English and rendered in the member's language, so it can be translated like the rest of the module.
 
-Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail Servers) and make sure the mail queue is running. Loans without a member email are skipped and can be notified later if an address is added.
+### Membership suspension and reactivation
+
+When a member is suspended, either manually with the *Suspend* button or automatically (because of an overdue loan after the grace period, or because a borrowed book was marked as lost), Odoo queues a suspension notice email if the member has an email address. When a member is reactivated with the *Activate* button, Odoo queues a reactivation notice email if the member has an email address. The status change itself still happens even when the member has no email.
+
+Configure an outgoing mail server in Odoo (Settings > Technical > Outgoing Mail Servers) and make sure the mail queue is running. Overdue notices for loans without a member email are skipped and can be sent later if an address is added. Suspension and reactivation notices are only sent at the time of the status change, so members without an email address are not notified by email.
 
 ## Structure
 
 ```
 library_manager/
 ├── __manifest__.py
-├── models/        author, book, category, member, loan, res_partner, loan_report (SQL view), res_config_settings
+├── models/        author, book, category, member, loan, res_partner, loan_report (SQL view), metadata_refresh (Open Library queue), name_initial (helper), res_config_settings
 ├── views/         views (incl. kanban and res.partner inheritance), actions and menus
 ├── report/        QWeb PDF report
 ├── security/      groups and access rules
-├── data/          sequences, scheduled job, mail template and demo data
+├── data/          sequences, scheduled jobs (overdue emails, suspensions, Open Library queue), mail template and demo data
 ├── i18n/          translations (Spanish: `es.po`)
-├── static/src/dashboard/   OWL component, template and styles
-├── docs/          functional specification and screenshots
-│   └── screenshots/
+├── static/src/    dashboard (OWL component, template, styles), fields ("NA" field widgets) and scss (theme)
+├── docs/          functional specification
 └── tests/         automated tests
 ```
 
@@ -66,17 +71,17 @@ library_manager/
 - `ir.sequence`, `@api.model_create_multi`, `@api.ondelete`, status workflows with buttons.
 - Odoo 17 view syntax (`<tree>`, `invisible="state != 'draft'"`, no `attrs`), kanban, search views, search panel and chatter.
 - Security groups and `ir.model.access.csv`.
-- OWL 2 client action with the `orm` and `action` services, and SCSS.
+- OWL 2 client action with the `orm` and `action` services, custom field widgets, and SCSS.
 - QWeb PDF reports.
-- Reporting with a SQL-view model (`_auto = False`), graph and pivot views, window functions (`RANK`) for top-N rankings.
+- Reporting with a SQL-view model (`_auto = False`), graph and pivot views, window functions (`ROW_NUMBER`) for top-N rankings.
 - `TransactionCase` tests, including mocking an external API.
 - Calling an external API with the key stored in `ir.config_parameter`.
 - A standard Odoo settings screen (`res.config.settings`) with `config_parameter` fields and the *Settings* app block.
-- A public API without a key (Open Library), ISBN-10/13 check-digit validation and downloading an image.
+- A public API without a key (Open Library), ISBN-10/13 check-digit validation, downloading an image and a background job queue processed by a cron.
 
 From an author form, librarians can use **Autofill from Open Library** in the header to refresh the author's name, birth and death dates, biography, alternate names, external links and photo when available. It uses the saved Open Library ID or searches for an exact normalized author name or alias; if the search is ambiguous, enter the correct ID on the author record and retry.
 
-To refresh existing records, select books or authors in their list views and use **Queue Open Library Refresh**. You can select all books from the list view. The background job processes up to ten records per minute and saves each job's progress independently, so the current record appears as **Processing** while its Open Library requests run. Results and failures appear under **Library > Configuration > Open Library Refreshes**, along with an estimated processing time for queued jobs. The estimate uses the cron's next run, queue position, and recent average processing duration, so it can change with network and API response times. Jobs that remain in progress for over ten minutes are automatically requeued. Book and author refreshes replace changed local metadata whenever Open Library returns a value, and make no write when the value already matches. Existing values are kept when Open Library has no usable value; the refresh records those fields in the record chatter. Books without an ISBN or Open Library ID are skipped.
+To refresh existing records, select books or authors in their list views and use **Queue Open Library Refresh**. You can select all books from the list view. Records that already have a queued or processing job are not queued twice. The background job processes up to ten records per minute, pausing one second before each Open Library request, and saves each job's progress independently, so the current record appears as **Processing** while its Open Library requests run. Results and failures appear under **Library > Configuration > Open Library Refreshes**, along with an estimated processing time for queued jobs. The estimate uses the cron's next run, queue position, and recent average processing duration, so it can change with network and API response times. Jobs that remain in progress for over ten minutes are automatically requeued. Book and author refreshes replace changed local metadata whenever Open Library returns a value, and make no write when the value already matches. Existing values are kept when Open Library has no usable value; the refresh records those fields in the record chatter. Books without an ISBN or Open Library ID are skipped.
 
 ## Installation and development
 
@@ -88,7 +93,7 @@ Restart the Odoo service after Python changes, then update the module from Apps 
 odoo -d YOUR_DB -u library_manager --stop-after-init
 ```
 
-Use `-i library_manager` instead of `-u` for a first CLI installation. Enable demo data when creating the database if you want the sample catalog and historical loans. After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
+Use `-i library_manager` instead of `-u` for a first CLI installation. Enable demo data when creating the database if you want the sample catalog and members. After changing JavaScript, hard-refresh the browser (Ctrl+Shift+R).
 
 To run the automated suite, use a separate test database:
 

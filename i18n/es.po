@@ -78,6 +78,44 @@ msgstr ""
 "        "
 
 #. module: library_manager
+#: model:mail.template,body_html:library_manager.mail_template_library_member_suspended
+msgid ""
+"<div>\n"
+"                <p>Hello <t t-out=\"object.name or ''\"/>,</p>\n"
+"                <p>Your library membership has been suspended.</p>\n"
+"                <p>Please contact the library for more information.</p>\n"
+"                <p>Thank you,<br/>The Library</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Hola <t t-out=\"object.name or ''\"/>,</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Tu condición de socio de la biblioteca ha sido suspendida.</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Ponte en contacto con la biblioteca para más información.</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Gracias,<br>Biblioteca</p>\n"
+"            </div>\n"
+"        "
+
+#. module: library_manager
+#: model:mail.template,body_html:library_manager.mail_template_library_member_activated
+msgid ""
+"<div>\n"
+"                <p>Hello <t t-out=\"object.name or ''\"/>,</p>\n"
+"                <p>Your library membership has been reactivated.</p>\n"
+"                <p>You can borrow books again.</p>\n"
+"                <p>Thank you,<br/>The Library</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Hola <t t-out=\"object.name or ''\"/>,</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Tu condición de socio de la biblioteca ha sido reactivada.</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Ya puedes volver a recibir préstamos de libros.</p>\n"
+"                <p style=\"margin:0px 0 16px 0;box-sizing:border-box;\">Gracias,<br>Biblioteca</p>\n"
+"            </div>\n"
+"        "
+
+#. module: library_manager
 #: model_terms:ir.ui.view,arch_db:library_manager.view_library_book_kanban
 msgid "<i class=\"fa fa-calendar me-1\" title=\"Year\"/>"
 msgstr "<i class=\"fa fa-calendar me-1\" title=\"Año\"/>"
@@ -1215,6 +1253,16 @@ msgid "Library: Overdue loan notice"
 msgstr "Biblioteca: Aviso de préstamo vencido"
 
 #. module: library_manager
+#: model:mail.template,name:library_manager.mail_template_library_member_activated
+msgid "Library: Membership reactivated notice"
+msgstr "Biblioteca: Aviso de reactivación de socio"
+
+#. module: library_manager
+#: model:mail.template,name:library_manager.mail_template_library_member_suspended
+msgid "Library: Membership suspended notice"
+msgstr "Biblioteca: Aviso de suspensión de socio"
+
+#. module: library_manager
 #: model:res.groups,name:library_manager.group_library_user
 msgid "Library: Reader"
 msgstr "Biblioteca: Lector"
@@ -1689,6 +1737,16 @@ msgstr "Aviso de retraso enviado el"
 #: model:ir.model.fields,field_description:library_manager.field_library_loan_report__overdue_count
 msgid "Overdue Loans"
 msgstr "Préstamos con retraso"
+
+#. module: library_manager
+#: model:mail.template,subject:library_manager.mail_template_library_member_activated
+msgid "Library membership reactivated"
+msgstr "Reactivación de socio de biblioteca"
+
+#. module: library_manager
+#: model:mail.template,subject:library_manager.mail_template_library_member_suspended
+msgid "Library membership suspended"
+msgstr "Suspensión de socio de biblioteca"
 
 #. module: library_manager
 #: model:mail.template,subject:library_manager.mail_template_library_loan_overdue

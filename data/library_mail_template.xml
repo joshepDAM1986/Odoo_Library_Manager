@@ -21,4 +21,38 @@
         </field>
         <field name="auto_delete" eval="False"/>
     </record>
+
+    <record id="mail_template_library_member_suspended" model="mail.template">
+        <field name="name">Library: Membership suspended notice</field>
+        <field name="model_id" ref="model_library_member"/>
+        <field name="subject">Library membership suspended</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="lang">{{ object.lang }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.name or ''"/>,</p>
+                <p>Your library membership has been suspended.</p>
+                <p>Please contact the library for more information.</p>
+                <p>Thank you,<br/>The Library</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+
+    <record id="mail_template_library_member_activated" model="mail.template">
+        <field name="name">Library: Membership reactivated notice</field>
+        <field name="model_id" ref="model_library_member"/>
+        <field name="subject">Library membership reactivated</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="lang">{{ object.lang }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.name or ''"/>,</p>
+                <p>Your library membership has been reactivated.</p>
+                <p>You can borrow books again.</p>
+                <p>Thank you,<br/>The Library</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
 </odoo>
